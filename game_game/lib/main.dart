@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'QR.dart';
-import 'ColorGame.dart';
 import 'BallGame.dart';
 
 void main() => runApp(MyApp());
@@ -53,18 +52,6 @@ class MainMenu extends StatelessWidget {
               },
             ),
           ),
-        Center(
-          child: RaisedButton(
-            color: Colors.green[300],
-            child: Text('Pelaa väripeliä'),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ColorMain()),
-              );
-            },
-          ),
-        ),
       ],)
     );
   }
