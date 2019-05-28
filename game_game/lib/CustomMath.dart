@@ -1,3 +1,4 @@
+// Custom math stuff that isn't implemented in dart or flutter
 import 'dart:math';
 
 class Vector2 {

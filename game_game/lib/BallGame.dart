@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'Globals.dart';
 import 'CustomMath.dart';
 import 'Object.dart';
 
 //void main() => runApp(MyApp());
 
-// Global variables
-bool GAMELOOP = true;
-double SCREENWIDTH, SCREENHEIGHT;
-
 class BallMain extends StatelessWidget {
-  void intializeValues(BuildContext context) {
-    SCREENWIDTH = MediaQuery.of(context).size.width;
-    SCREENWIDTH /= 2.0;
-    SCREENHEIGHT = MediaQuery.of(context).size.height;
-  }
-
   @override
   Widget build(BuildContext context) {
-    intializeValues(context);
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -69,7 +59,7 @@ class BallGameState extends State<BallGame> {
                     child: Text('Start'),
                     onPressed: () {
                       setState(() {
-                        GAMELOOP = true;
+                        Global.GAMELOOP = true;
                         GameLoop();
                       });
                     },
@@ -79,7 +69,7 @@ class BallGameState extends State<BallGame> {
                     child: Text('Stop'),
                     onPressed: () {
                       setState(() {
-                        GAMELOOP = false;
+                        Global.GAMELOOP = false;
                       });
                     },
                   ),
@@ -122,24 +112,24 @@ class BallGameState extends State<BallGame> {
   void GameLoop() async {
     // Runs only on first run.
     if (firstRun) {
-      ball.position.x = CustomMath.getRandomDoubleBetweenRange(-SCREENWIDTH + (ball.scale.x / 2), SCREENWIDTH - (ball.scale.x / 2));
+      ball.position.x = CustomMath.getRandomDoubleBetweenRange(-Global.SCREENWIDTH + (ball.scale.x / 2), Global.SCREENWIDTH - (ball.scale.x / 2));
       ball.velocity = 0.0;
       ball.position.y = -ball.scale.y;
       firstRun = false;
     }
-    while (GAMELOOP) {
+    while (Global.GAMELOOP) {
       CalculateDeltatime();
       // Ball stuff
       ball.velocity += gravity;
       ball.position.y += ball.velocity;
-      if(ball.position.y > SCREENHEIGHT) {
+      if(ball.position.y > Global.SCREENHEIGHT) {
         score--;
-        ball.position.x = CustomMath.getRandomDoubleBetweenRange(-SCREENWIDTH + (ball.scale.x / 2), SCREENWIDTH - (ball.scale.x / 2));
+        ball.position.x = CustomMath.getRandomDoubleBetweenRange(-Global.SCREENWIDTH + (ball.scale.x / 2), Global.SCREENWIDTH - (ball.scale.x / 2));
         ball.velocity = 0.0;
         ball.position.y = -ball.scale.y;
       }
       // Basket stuff
-      basket.position.x = touchPos.x - SCREENWIDTH;
+      basket.position.x = touchPos.x - Global.SCREENWIDTH;
       await new Future.delayed(const Duration(milliseconds: 17));
       setState(() {});
     }
