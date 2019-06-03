@@ -1,4 +1,5 @@
 import 'main.dart';
+import 'mainTrivia.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 

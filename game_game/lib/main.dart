@@ -4,6 +4,7 @@ import 'dart:io';
 import 'Globals.dart';
 import 'QR.dart';
 import 'BallGame.dart';
+import 'PassTheBall.dart';
 
 void main() => runApp(MyApp());
 
@@ -68,18 +69,12 @@ class MainMenu extends StatelessWidget {
           Center(
             child: RaisedButton(
               color: Colors.green[300],
-              child: Text('Kirjoita tekstitiedostoon'),
+              child: Text('Pass the ball'),
               onPressed: (){
-                writeQuestions("Kyssäri 1\nKyssäri 2\nKyssäri 3\nKyssäri 4");
-              },
-            ),
-          ),
-          Center(
-            child: RaisedButton(
-              color: Colors.green[100],
-              child: Text('Lue tekstitiedostosta'),
-              onPressed: (){
-                print(readQuestions());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PassTheBallMain()),
+                );
               },
             ),
           ),

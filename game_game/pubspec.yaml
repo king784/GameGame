@@ -69,7 +69,7 @@ flutter:
     - images/kooteepee.jpg
     - images/kentta.jpg
     - images/backGround.jpg
-    - assets/questions.txt
+   # - assets/questions.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
