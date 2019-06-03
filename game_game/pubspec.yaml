@@ -60,6 +60,16 @@ flutter:
     - assets/jee.mp3
     - assets/horn.mp3
   #  - images/a_dot_ham.jpeg
+    - images/pepe.jpg
+    - images/pepe2.jpg
+    - images/pepe3.jpg
+    - images/Halli.jpg
+    - images/Halli2.jpg
+    - images/backBtn.png
+    - images/kooteepee.jpg
+    - images/kentta.jpg
+    - images/backGround.jpg
+    - assets/questions.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
