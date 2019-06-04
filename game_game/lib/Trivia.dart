@@ -1,3 +1,6 @@
+import 'package:flutter_testuu/Globals.dart';
+import 'package:flutter_testuu/mainTrivia.dart';
+
 import 'main.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
