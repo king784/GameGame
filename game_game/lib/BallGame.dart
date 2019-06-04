@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/mainTrivia.dart';
 import 'dart:async';
 import 'Globals.dart';
 import 'CustomMath.dart';
@@ -82,10 +83,14 @@ class BallGameState extends State<BallGame> {
     }
     else
       {
-        return GestureDetector(
-          onTapDown: (TapDownDetails details) => SaveTouchPos(details),
-          child: Column(
+        return Column(
             children: <Widget>[
+              GestureDetector(
+                onForcePressUpdate: (ForcePressDetails details) => SaveTouchPos(details),
+                child: Container(
+                  
+                ),
+              ),
               Transform.translate(
                 offset: Offset(basket.position.x, basket.position.y),
                 child: basket.GetAsset(),
@@ -104,8 +109,7 @@ class BallGameState extends State<BallGame> {
                   ),),
               ),
             ],
-          ),
-        );
+          );
       }
   }
 
@@ -135,7 +139,7 @@ class BallGameState extends State<BallGame> {
     }
   }
 
-  void SaveTouchPos(TapDownDetails details)
+  void SaveTouchPos(ForcePressDetails details)
   {
     touchPos.x = details.globalPosition.dx;
     touchPos.y = details.globalPosition.dy;
