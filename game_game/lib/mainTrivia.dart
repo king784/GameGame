@@ -1,3 +1,7 @@
+
+
+//TÄMÄ ON TÄYSIN TURHA KOODI :DDDDD
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -164,7 +168,6 @@ class QuizState extends State<triviaApp> {
 
         // Read the file
         globals.contents = await file.readAsString();
-        //print(globaalii.contents);
 
         return globals.contents.toString();
       }
@@ -176,8 +179,6 @@ class QuizState extends State<triviaApp> {
 }
 
 void backBtn() {
-  print("Back");
-
   new Container(
     child: new Column(
       //crossAxisAlignment: CrossAxisAlignment.stretch,

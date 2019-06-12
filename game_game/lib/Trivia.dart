@@ -1,7 +1,8 @@
-import 'package:flutter_testuu/Globals.dart';
-import 'package:flutter_testuu/mainTrivia.dart';
+import 'dart:async';
 
 import 'main.dart';
+//import 'mainTrivia.dart';
+import 'Globals.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,7 @@ List<int> randNums = [0, 1, 2, 3];
 int rand1, rand2, rand3, rand4;
 bool firstRun = true;
 
+int timeLeft = 10;
 
 class Trivia extends StatefulWidget{
   @override
@@ -47,8 +49,38 @@ class Trivia extends StatefulWidget{
   }
 }
 
+//class TimerPainter extends CustomPainter{
+//  TimerPainter({
+//    this.animation,
+//    this.backgroundColor,
+//    this.color,
+//  }) : super(repaint: animation);
+//  final Animation<double> animation;
+//  final Color backgroundColor, color;
+//
+//  void paint(Canvas canvas, Size size){
+//    Paint paint = Paint()
+//    ..color = backgroundColor
+//    ..strokeWidth = 5.0
+//    ..strokeCap = StrokeCap.round
+//    ..style = PaintingStyle.stroke;
+//
+//
+//  canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
+//  paint.color = color;
+//  double progress = (1.0 - animation.value) * 2 * 3.14;
+//  canvas.drawArc(Offset.zero & size, 3.14 * 1.5, -progress, false, paint);
+//  }
+//
+//@override
+//bool shouldRepaint(TimerPainter old){
+//  return animation.value != old.animation.value ||
+//  color != old.color ||
+//  backgroundColor != old.backgroundColor;
+//}
+//}
 
-class TriviaState extends State<Trivia> {
+class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery
@@ -65,9 +97,9 @@ class TriviaState extends State<Trivia> {
     double buttonHeight = screenHeight / 10;
 
     Startade();
-    List<List<String>> quizContents = new List<List<String>>();
-    quizContents.add(globals.contents.split(";"));
 
+    List<List<String>> quizContents = new List<List<String>>();
+    quizContents.add(Global.contents.split(";"));
     // TODO: implement build
     return new WillPopScope(
         child: Scaffold(
@@ -75,6 +107,7 @@ class TriviaState extends State<Trivia> {
             decoration: new BoxDecoration(
               image: new DecorationImage(
                   image: new AssetImage("images/backGround.jpg"),
+                  fit: BoxFit.fill,
                   colorFilter: new ColorFilter.mode(
                       Colors.white.withOpacity(0.15), BlendMode.dstATop)
                 //fit: BoxFit.cover,
@@ -85,10 +118,16 @@ class TriviaState extends State<Trivia> {
             child: new Column(
               children: <Widget>[
 
-
                 //new Text(readFromFile,
                 new Text(quizContents[0][questionNumber],
                 //new Text(quiz.questions[questionNumber],
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    fontSize: screenHeight / 25,
+                  ),
+                ),
+
+                new Text("Aika: ${timeLeft}",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                     fontSize: screenHeight / 25,
@@ -115,11 +154,9 @@ class TriviaState extends State<Trivia> {
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand1] ==
                             quiz.correctAnswers[questionNumber]) {
-                          debugPrint("Correct!");
                           finalScore++;
                         }
                         else {
-                          print(quiz.correctAnswers[questionNumber]);
                         }
                         updateQuestion();
                       },
@@ -141,11 +178,9 @@ class TriviaState extends State<Trivia> {
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand2] ==
                             quiz.correctAnswers[questionNumber]) {
-                          debugPrint("Correct!");
                           finalScore++;
                         }
                         else {
-                          print(quiz.correctAnswers[questionNumber]);
                         }
                         updateQuestion();
                       },
@@ -174,11 +209,9 @@ class TriviaState extends State<Trivia> {
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand3] ==
                             quiz.correctAnswers[questionNumber]) {
-                          debugPrint("Correct!");
                           finalScore++;
                         }
                         else {
-                          print(quiz.correctAnswers[questionNumber]);
                         }
                         updateQuestion();
                       },
@@ -201,11 +234,9 @@ class TriviaState extends State<Trivia> {
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand4] ==
                             quiz.correctAnswers[questionNumber]) {
-                          debugPrint("Correct!");
                           finalScore++;
                         }
                         else {
-                          print(quiz.correctAnswers[questionNumber]);
                         }
                         updateQuestion();
                       },
@@ -246,8 +277,6 @@ class TriviaState extends State<Trivia> {
   }
 
   void Startade() async{
-
-    print(globals.contents.split(";").length);
     if(firstRun)
     {
       //loadQuestions();
@@ -257,6 +286,16 @@ class TriviaState extends State<Trivia> {
       firstRun = false;
     }
   }
+
+void _timer() async{
+  setState(() {
+    timeLeft = 10;    
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      timeLeft--;
+      print(timeLeft);
+    });   
+  });
+}
 
   void resetQuiz() {
     setState(() {
@@ -269,8 +308,8 @@ class TriviaState extends State<Trivia> {
 
   void updateQuestion() {
     setState(() {
-      print(globals.contents.length);
-      if (questionNumber == globals.contents.split(";").length - 1) {
+      timeLeft = 10;
+      if (questionNumber == Global.contents.split(";").length - 1) {
         Navigator.push(context, new MaterialPageRoute(
             builder: (context) => new Summary(score: finalScore)));
       }
@@ -284,6 +323,7 @@ class TriviaState extends State<Trivia> {
 
   void RandomizeQuestions()
   {
+    //timeLeft = 10;
     rand1 = randNums.removeAt(Random().nextInt(randNums.length));
     rand2 = randNums.removeAt(Random().nextInt(randNums.length));
     rand3 = randNums.removeAt(Random().nextInt(randNums.length));
@@ -301,7 +341,7 @@ class TriviaState extends State<Trivia> {
 }
 
 String scoreText(final int score){
-  double percentage = (((score).toDouble()) / globals.contents.split(";").length) * 100;
+  double percentage = (((score).toDouble()) / Global.contents.split(";").length) * 100;
 
   if(percentage <= 15)
     return "Harmillista. Sait vain $score pistettä.";
