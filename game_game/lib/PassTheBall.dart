@@ -94,6 +94,8 @@ class PassTheBallState extends State<PassTheBallGame> {
               ),
             ),
             RaisedButton(
+              padding: const EdgeInsets.fromLTRB(200, 200, 200, 400),
+              color: Colors.transparent,
               onPressed: () {
                 bounce = true;
               },
@@ -115,11 +117,14 @@ class PassTheBallState extends State<PassTheBallGame> {
     while (Global.GAMELOOP) {
       CalculateDeltatime();
 
-      if(bounce){
+      //This do the bounce effect
+      if(bounce){ 
+        ball.velocity /= 1.1;
         ball.position.y += ball.velocity * -1;
-        if(ball.position.y < 10)
+        if(ball.position.y < 200)
           bounce = false;
       }
+
       else {
         ball.velocity += gravity;
         ball.position.y += ball.velocity;
