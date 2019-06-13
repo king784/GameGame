@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_testuu/Trivia.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'Globals.dart';
@@ -10,6 +14,23 @@ import 'mainTrivia.dart';
 import 'Trivia.dart';
 
 void main() => runApp(MyApp());
+
+class BallMain extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Arial',
+      ),
+      home: BallGame(),
+    );
+  }
+}
+
+class BallGame extends StatefulWidget {
+  createState() => BallGameState();
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -24,11 +45,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget{
+  createState() => MainMenuState();
+}
+
+class MainMenuState extends State<MainMenu>  {
   bool firstRun = true;
 
-    String kysymysLista = "\nMikä on kuvassa?;\nMontako pelaajaa kentällä voi olla enintään?;\nMikä on Larry Poundsin pelinumero KTP-Basketissa?;\nKuinka monta raitaa on koripallossa?;\nMitkä ovat kansainvälisen koripalloliiton säännöissä koripallokentän mitat?";
-
+  String kysymysLista = "\nMikä on kuvassa?;\nMontako pelaajaa kentällä voi olla enintään?;\nMikä on Larry Poundsin pelinumero KTP-Basketissa?;\nKuinka monta raitaa on koripallossa?;\nMitkä ovat kansainvälisen koripalloliiton säännöissä koripallokentän mitat?";
+  //DateFormat myFormat = new DateFormat("yyyy");
+  DateFormat fullFormat = new DateFormat("d/MM/yyyy");
+  String nextDate = "";
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +69,7 @@ class MainMenu extends StatelessWidget {
       screenWidth /= 2.0;
       screenHeight = MediaQuery.of(context).size.height;
       Global.intializeValues(screenWidth, screenHeight);
+      Timer.periodic(Duration(seconds: 1), (Timer t) => nextGameCountdown(Global.nextGameDate));
       firstRun = false;
     }
     // TODO: implement build
@@ -55,6 +83,27 @@ class MainMenu extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
 
+         Column(
+           children: <Widget>[
+
+             new Text("Mario Maker 2 julkasu: ${fullFormat.format(Global.nextGameDate)}",
+             style: new TextStyle(
+               fontSize: 20,
+                color: Global.dateTimeColor.withGreen(Global.mainColorValue - 10),
+                
+             ),
+             ),
+
+             new Text(nextDate,
+              style: new TextStyle(
+               fontSize: 20,
+               color: Global.dateTimeColor.withGreen(Global.mainColorValue + 50),
+             ),
+             ),
+
+            ],
+
+            ),
             //Image.asset("images/backGround.jpg",
             //  width: 100,
             //  
@@ -173,4 +222,32 @@ class MainMenu extends StatelessWidget {
       return "";
     }
   }
+
+  void nextGameCountdown(DateTime nextGameTime){
+    DateTime dateCounter;
+    var now = DateTime.now();
+
+    //dateCounter = nextGameTime.difference(now)
+    dateCounter = new DateTime(
+      nextGameTime.year - now.year,
+      nextGameTime.month - now.month,
+      nextGameTime.day - now.day,
+      nextGameTime.hour - now.hour,
+      nextGameTime.minute - now.minute,
+      nextGameTime.second - now.second,
+    );
+
+    DateFormat newFormat = new DateFormat("dd H:m:s");
+    nextDate = "${newFormat.format(dateCounter)}";
+    setState(() {
+      
+    });
+    //print(myFormat.format(dateCounter));
+
+    //print("Next game: $nextGameTime. Date counter: $dateCounter");
+    //print("What? ${nextGameTime.year - now.year}");
+
+    //return "${myFormat.format(dateCounter)}"; //dateCounter;
+  }
+
 }
