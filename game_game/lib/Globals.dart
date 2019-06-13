@@ -23,3 +23,20 @@ class Global{
 
   }
 }
+
+class Player{
+  int currentVotes;
+  final String firstName;
+  final String lastName;
+  final String team;
+
+  Player(this.currentVotes, this.firstName, this.lastName, this.team){}
+
+  Map<String, dynamic> toJson() =>
+  {
+    'firstName': firstName,
+    'lastName': lastName,
+    'team': team,
+    'currentVotes': 0,
+  };
+}

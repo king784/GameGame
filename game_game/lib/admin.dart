@@ -1,52 +1,35 @@
-// https://www.youtube.com/watch?v=R12ks4yDpMM
-// https://www.youtube.com/watch?v=DqJ_KjFzL9I
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Globals.dart';
 
-void main() => runApp(PlayerVotingMain());
 
-class Player{
-  int currentVotes;
-  final String firstName;
-  final String lastName;
-  final String team;
+void main() => runApp(AdminMain());
 
-  Player(this.currentVotes, this.firstName, this.lastName, this.team){}
 
-  Map<String, dynamic> toJson() =>
-  {
-    'firstName': firstName,
-    'lastName': lastName,
-    'team': team,
-    'currentVotes': 0,
-  };
-}
-
-class PlayerVotingMain extends StatelessWidget {
+class AdminMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Arial',
       ),
-      home: PlayerVoting(),
+      home: Admin(),
     );
   }
 }
 
-class PlayerVoting extends StatefulWidget {
-  createState() => PlayerVotingState();
+class Admin extends StatefulWidget {
+  createState() => AdminState();
 }
 
-class PlayerVotingState extends State<PlayerVoting> {
+class AdminState extends State<Admin> {
 
   @override
     Widget build(BuildContext context) {
       return Scaffold(
       appBar: AppBar(
         title: (
-          Text('Vote the best player!')),
+          Text('Add players')),
       ),
       body:
         Column(
@@ -54,6 +37,14 @@ class PlayerVotingState extends State<PlayerVoting> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
+              child: const Text("Aloita 3 minuutin ajastin."),
+              onPressed: (){
+                // CollectionReference dbCollectionRef = Firestore.instance.collection('games');
+                // print(DateTime.now().toString());
+              },
+            ),
+            RaisedButton(
+              child: const Text("Lisää pelimies"),
               onPressed: (){
                 Player pelaaja = new Player(0, 'Peli', 'Mies', 'KTP');
                 CollectionReference dbCollectionRef = Firestore.instance.collection('players');
@@ -65,6 +56,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                 });
               },
             ),
+            Text("Pelaajat: "),
             StreamBuilder(
             stream: Firestore.instance.collection('players').snapshots(),
             builder: (context, snapshot){
@@ -101,25 +93,8 @@ class PlayerVotingState extends State<PlayerVoting> {
                 style: Theme.of(context).textTheme.display1,
               ),
             ),
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.green,
-              ),
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                document['currentVotes'].toString()
-              ),
-            ),
           ],
         ),
-        onTap: () {
-            Firestore.instance.runTransaction((transaction) async{
-              DocumentSnapshot freshSnap = await transaction.get(document.reference);
-                await transaction.update(freshSnap.reference, {
-                  'currentVotes': freshSnap['currentVotes'] + 1,
-                });
-            });
-        },
       );
     }
 }
