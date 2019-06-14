@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../mainMenu.dart';
+import './ohje.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -35,7 +38,11 @@ class _HomeState extends State<Home> {
                   Icons.home,
                   color: Colors.green,
                 ),
-              ),
+                onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => Home()));
+                  }),
               Divider(),
               ListTile(
                 title: Text('Aktiviteettejä',
@@ -44,16 +51,24 @@ class _HomeState extends State<Home> {
                   Icons.beach_access,
                   color: Colors.green,
                 ),
-              ),
+                onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => MainMenu()));
+                  }),
               Divider(),
               ListTile(
-                title: Text('Ohje',
-                    style: TextStyle(fontSize: 20, color: Colors.green)),
-                trailing: Icon(
-                  Icons.help,
-                  color: Colors.green,
-                ),
-              ),
+                  title: Text('Ohje',
+                      style: TextStyle(fontSize: 20, color: Colors.green)),
+                  trailing: Icon(
+                    Icons.help,
+                    color: Colors.green,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => Ohje()));
+                  }),
               Divider(),
               ListTile(
                 title: Text('Peruuta',
@@ -62,6 +77,7 @@ class _HomeState extends State<Home> {
                   Icons.cancel,
                   color: Colors.green,
                 ),
+                onTap: () => Navigator.of(context).pop(),
               ),
             ],
           ),
