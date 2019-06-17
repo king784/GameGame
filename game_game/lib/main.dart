@@ -2,6 +2,7 @@
 // https://www.youtube.com/watch?v=DqJ_KjFzL9I
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 import 'Globals.dart';
 
 void main() => runApp(PlayerVotingMain());
@@ -24,18 +25,40 @@ class PlayerVoting extends StatefulWidget {
 
 class PlayerVotingState extends State<PlayerVoting> {
 
+  String homeTeam;
+  String awayTeam;
+  List<Player> homePlayers = new List<Player>();
+  List<Player> awayPlayers = new List<Player>();
+
+  String timeText = "";
+  DateTime votingEndTime = null;
+  Timer customTimer;
+
   @override
     Widget build(BuildContext context) {
+      getGameValues();
+
       return Scaffold(
       appBar: AppBar(
         title: (
-          Text('Vote the best player!')),
+          Text('Pelaajaäänestys')),
+          backgroundColor: Global.titleBarColor,
       ),
       body:
         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(30.0),
+              child: Text(
+              "Aikaa jäljellä: " + timeText,
+              style: TextStyle(
+                fontSize: 30, 
+                ),
+            ),
+            ),
+            
             StreamBuilder(
             stream: Firestore.instance.collection('players').snapshots(),
             builder: (context, snapshot){
@@ -59,6 +82,47 @@ class PlayerVotingState extends State<PlayerVoting> {
           ],
         )
       );
+    }
+
+    // Function to get needed values from database. Gets the start time of voting, so we can start calculating how much time is left.
+    // Also retrieves the names of the playing teams.
+    void getGameValues() async {
+      // Get players in their own lists.
+      CollectionReference playersRef = await Firestore.instance.collection('players');
+      playersRef.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          
+        })
+      })
+
+      // Get player voting start time and team names.
+      DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
+      DateTime convertedTime;
+      gamesRef.get().then((DocumentSnapshot ds){
+        homeTeam = ds['HomeTeam'];
+        awayTeam = ds['AwayTeam'];
+        
+        convertedTime = DateTime.fromMillisecondsSinceEpoch(ds['VotingStartTime'].millisecondsSinceEpoch);
+        //print(convertedTime.toString());
+        //timeText = convertedTime.toString();
+        
+        votingEndTime = convertedTime.add(Duration(minutes: 3));
+        timeText = votingEndTime.second.toString();
+        // Start timer which updates every second, and sets the text to show how much time is left in voting.
+        customTimer = Timer.periodic(Duration(seconds: 1), (Timer t) => updateTimeLeft());
+      }); 
+    }
+
+    // Updates the visible timer.
+    void updateTimeLeft(){
+      Duration difference = votingEndTime.difference(DateTime.now());   
+      //timeText = new DateFormat.format(votingEndTime.difference(DateTime.now()));
+      //timeText = DateFormat.MINUTE_SECOND;
+      //timeText = (votingEndTime.minute - DateTime.now().minute).toString() + ':' + (votingEndTime.second - DateTime.now().second).toString();
+      String seconds = ((difference.inMinutes * 60 - difference.inSeconds) * -1).toString();
+      timeText = difference.inMinutes.toString() + ":" + seconds;
+      print(timeText);
+      setState(() {});
     }
 
     Widget buildListItem(BuildContext context, DocumentSnapshot document)

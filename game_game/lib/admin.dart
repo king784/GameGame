@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'Globals.dart';
 
 
@@ -24,12 +27,17 @@ class Admin extends StatefulWidget {
 
 class AdminState extends State<Admin> {
 
+  String timeText = "";
+  DateTime votingEndTime = null;
+  Timer customTimer;
+
   @override
     Widget build(BuildContext context) {
       return Scaffold(
       appBar: AppBar(
         title: (
           Text('Add players')),
+          backgroundColor: Global.titleBarColor,
       ),
       body:
         Column(
@@ -37,16 +45,33 @@ class AdminState extends State<Admin> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              child: const Text("Aloita 3 minuutin ajastin."),
+              child: const Text("Aloita 3 minuutin ajastin"),
               onPressed: (){
-                // CollectionReference dbCollectionRef = Firestore.instance.collection('games');
-                // print(DateTime.now().toString());
+                setVotingStartTime();
+                //getVotingStartTime();
+                //print(DateTime.now().toString());
+                setState(() {
+                  
+                });
               },
             ),
             RaisedButton(
-              child: const Text("Lisää pelimies"),
+              child: const Text("Kerro paljon aikaa"),
               onPressed: (){
-                Player pelaaja = new Player(0, 'Peli', 'Mies', 'KTP');
+                getVotingStartTime();
+                //print(DateTime.now().toString());
+                setState(() {
+                  
+                });
+              },
+            ),
+            Text(
+              timeText
+            ),
+            RaisedButton(
+              child: const Text("Lisää pelaaja"),
+              onPressed: (){
+                Player pelaaja = new Player(0, 'Kobe', 'Bryant', 'Lakers');
                 CollectionReference dbCollectionRef = Firestore.instance.collection('players');
                 Firestore.instance.runTransaction((Transaction tx) async {
                   var result = await dbCollectionRef.add(pelaaja.toJson());
@@ -80,6 +105,39 @@ class AdminState extends State<Admin> {
           ],
         )
       );
+    }
+
+    void getVotingStartTime() async {
+      DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
+      DateTime convertedTime;
+      gamesRef.get().then((DocumentSnapshot ds){
+        convertedTime = DateTime.fromMillisecondsSinceEpoch(ds['VotingStartTime'].millisecondsSinceEpoch);
+        print(convertedTime.toString());
+        //timeText = convertedTime.toString();
+        votingEndTime = convertedTime.add(Duration(minutes: 3));
+        timeText = votingEndTime.second.toString();
+        customTimer = Timer.periodic(Duration(seconds: 1), (Timer t) => updateTimeLeft());
+      }); 
+    }
+
+    void setVotingStartTime() async {
+      DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
+      DateTime currentTime = DateTime.now();
+      FieldValue.serverTimestamp();
+      gamesRef.setData({
+        "VotingStartTime":currentTime
+      });
+    }
+
+    void updateTimeLeft(){
+      Duration difference = votingEndTime.difference(DateTime.now());   
+      //timeText = new DateFormat.format(votingEndTime.difference(DateTime.now()));
+      //timeText = DateFormat.MINUTE_SECOND;
+      //timeText = (votingEndTime.minute - DateTime.now().minute).toString() + ':' + (votingEndTime.second - DateTime.now().second).toString();
+      String seconds = ((difference.inMinutes * 60 - difference.inSeconds) * -1).toString();
+      timeText = difference.inMinutes.toString() + ":" + seconds;
+      print(timeText);
+      setState(() {});
     }
 
     Widget buildListItem(BuildContext context, DocumentSnapshot document)
