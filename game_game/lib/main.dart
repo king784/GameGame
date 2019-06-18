@@ -1,5 +1,7 @@
 // https://www.youtube.com/watch?v=R12ks4yDpMM
 // https://www.youtube.com/watch?v=DqJ_KjFzL9I
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
@@ -27,6 +29,7 @@ class PlayerVotingState extends State<PlayerVoting> {
 
   String homeTeam;
   String awayTeam;
+  List<Player> allPlayers = new List<Player>();
   List<Player> homePlayers = new List<Player>();
   List<Player> awayPlayers = new List<Player>();
 
@@ -58,27 +61,26 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
             ),
             ),
-            
-            StreamBuilder(
-            stream: Firestore.instance.collection('players').snapshots(),
-            builder: (context, snapshot){
-              if(!snapshot.hasData)
-              {
-                print("joo");
-                return new CircularProgressIndicator();
-              }
-              else
-              {
-                print(snapshot.data);
-                return new ListView.builder(
-                  shrinkWrap: true,
-                  itemExtent: 80.0,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) =>
-                    buildListItem(context, snapshot.data.documents[index]),
-                );
-              }
-            }),
+            getPlayers(),
+            // StreamBuilder(
+            // stream: Firestore.instance.collection('players').snapshots(),
+            // builder: (context, snapshot){
+            //   if(!snapshot.hasData)
+            //   {
+            //     return new CircularProgressIndicator();
+            //   }
+            //   else
+            //   {
+            //     print(snapshot.data);
+            //     return new ListView.builder(
+            //       shrinkWrap: true,
+            //       itemExtent: 80.0,
+            //       itemCount: snapshot.data.documents.length,
+            //       itemBuilder: (context, index) =>
+            //         buildListItem(context, snapshot.data.documents[index]),
+            //     );
+            //   }
+            // }),
           ],
         )
       );
@@ -88,12 +90,25 @@ class PlayerVotingState extends State<PlayerVoting> {
     // Also retrieves the names of the playing teams.
     void getGameValues() async {
       // Get players in their own lists.
-      CollectionReference playersRef = await Firestore.instance.collection('players');
-      playersRef.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+      // CollectionReference playersRef = await Firestore.instance.collection('players');
+      // playersRef. .get().then(function(querySnapshot) {
+      //   querySnapshot.forEach(function(doc) {
           
-        })
-      })
+      //   })
+      // })
+      QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+      List<DocumentSnapshot> playerSnapshot = new List<DocumentSnapshot>();
+      playerSnapshot = querySnapshot.documents;
+      String playersString = playerSnapshot.toString();
+      print(playersString);
+      Map playerMap;
+      Player thePlayer;
+      //Map playerMap = jsonDecode(jsonString);
+      playerSnapshot.forEach((player) {
+        //playerMap = jsonDecode(player.data.toString());
+        thePlayer = new Player.fromJson(player.data);
+        allPlayers.add(thePlayer);
+      });
 
       // Get player voting start time and team names.
       DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
@@ -110,7 +125,9 @@ class PlayerVotingState extends State<PlayerVoting> {
         timeText = votingEndTime.second.toString();
         // Start timer which updates every second, and sets the text to show how much time is left in voting.
         customTimer = Timer.periodic(Duration(seconds: 1), (Timer t) => updateTimeLeft());
-      }); 
+      });
+
+       
     }
 
     // Updates the visible timer.
@@ -121,8 +138,48 @@ class PlayerVotingState extends State<PlayerVoting> {
       //timeText = (votingEndTime.minute - DateTime.now().minute).toString() + ':' + (votingEndTime.second - DateTime.now().second).toString();
       String seconds = ((difference.inMinutes * 60 - difference.inSeconds) * -1).toString();
       timeText = difference.inMinutes.toString() + ":" + seconds;
-      print(timeText);
+      //print(timeText);
       setState(() {});
+    }
+
+    Widget getPlayers()
+    {
+      if(allPlayers.length <= 0)
+      {
+        return CircularProgressIndicator();
+      }
+      else
+      {
+        List<Widget> list = new List<Widget>();
+        for(int i = 0; i < allPlayers.length; i++)
+        {
+          list.add(new ListTile(
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    allPlayers[i].currentVotes.toString()
+                  ),
+                ),
+              ],
+            ),
+          ));
+        }
+        return SizedBox(
+          height: 2000,
+          width: Global.SCREENWIDTH,
+          child: ListView(
+            shrinkWrap: true,
+            children: list
+          )
+        );
+      }
     }
 
     Widget buildListItem(BuildContext context, DocumentSnapshot document)

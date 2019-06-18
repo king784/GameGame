@@ -37,6 +37,12 @@ class Player{
 
   Player(this.currentVotes, this.firstName, this.lastName, this.team){}
 
+  Player.fromJson(Map<String, dynamic> json)
+  : firstName = json['firstName'],
+    lastName = json['lastName'],
+    team = json['team'],
+    currentVotes = json['currentVotes'];
+
   Map<String, dynamic> toJson() =>
   {
     'firstName': firstName,
