@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../mainMenu.dart';
 import './ohje.dart';
+import '../radialMenu.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,26 +33,26 @@ class _HomeState extends State<Home> {
                 ),
               ),
               ListTile(
-                title: Text('Pelin tiedot',
-                    style: TextStyle(fontSize: 20, color: Colors.green)),
-                trailing: Icon(
-                  Icons.home,
-                  color: Colors.green,
-                ),
-                onTap: () {
+                  title: Text('Pelin tiedot',
+                      style: TextStyle(fontSize: 20, color: Colors.green)),
+                  trailing: Icon(
+                    Icons.home,
+                    color: Colors.green,
+                  ),
+                  onTap: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => Home()));
                   }),
               Divider(),
               ListTile(
-                title: Text('Aktiviteettejä',
-                    style: TextStyle(fontSize: 20, color: Colors.green)),
-                trailing: Icon(
-                  Icons.beach_access,
-                  color: Colors.green,
-                ),
-                onTap: () {
+                  title: Text('Aktiviteettejä',
+                      style: TextStyle(fontSize: 20, color: Colors.green)),
+                  trailing: Icon(
+                    Icons.beach_access,
+                    color: Colors.green,
+                  ),
+                  onTap: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => MainMenu()));
@@ -83,9 +84,21 @@ class _HomeState extends State<Home> {
           ),
         ),
         body: Center(
-            child: Text(
-          'data',
-          style: TextStyle(fontSize: 35.0, color: Colors.green),
-        )));
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'data',
+                  style: TextStyle(fontSize: 35.0, color: Colors.green),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: RadialMenu(),
+              )
+            ],
+          ),
+        ));
   }
 }
