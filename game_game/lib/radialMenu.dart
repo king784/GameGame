@@ -72,7 +72,7 @@ class RadialAnimation extends StatelessWidget {
               child: FloatingActionButton(
                   child: Icon(FontAwesomeIcons.poo),
                   onPressed: _close,
-                  backgroundColor: Colors.black),
+                  backgroundColor: Colors.black,),
             ),
             Transform.scale(
                 scale: scale.value,
