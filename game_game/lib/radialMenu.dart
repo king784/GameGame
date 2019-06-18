@@ -64,21 +64,22 @@ class RadialAnimation extends StatelessWidget {
         animation: controller,
         builder: (context, builder) {
           return Stack(alignment: Alignment.center, children: [
-            _buildButton(5, color: Colors.red, icon: FontAwesomeIcons.basketballBall),
-            _buildButton(45, color: Colors.green, icon: FontAwesomeIcons.gamepad),
-            _buildButton(85, color: Colors.orange, icon: FontAwesomeIcons.question),
+            _buildButton(5, color: Colors.green, icon: FontAwesomeIcons.basketballBall),
+            _buildButton(45, color: Colors.green, icon: FontAwesomeIcons.dAndD),
+            _buildButton(85, color: Colors.green, icon: FontAwesomeIcons.question),
             Transform.scale(
-              scale: scale.value - 1.5,
+              scale: scale.value - 1.5, // subtract the beginning value to run the opposite animation
               child: FloatingActionButton(
-                  child: Icon(FontAwesomeIcons.timesCircle),
+                  child: Icon(FontAwesomeIcons.poo),
                   onPressed: _close,
-                  backgroundColor: Colors.red),
+                  backgroundColor: Colors.black),
             ),
             Transform.scale(
                 scale: scale.value,
                 child: FloatingActionButton(
-                  child: Icon(FontAwesomeIcons.solidDotCircle),
+                  child: Icon(FontAwesomeIcons.bars),
                   onPressed: _open,
+                  backgroundColor: Colors.green,
                 )),
           ]);
         });
