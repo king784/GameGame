@@ -32,6 +32,8 @@ class PlayerVotingState extends State<PlayerVoting> {
   List<Player> allPlayers = new List<Player>();
   List<Player> homePlayers = new List<Player>();
   List<Player> awayPlayers = new List<Player>();
+  List<Widget> playerWidgets = new List<Widget>();
+  bool firstRun = true;
 
   String timeText = "";
   DateTime votingEndTime = null;
@@ -150,34 +152,41 @@ class PlayerVotingState extends State<PlayerVoting> {
       }
       else
       {
-        List<Widget> list = new List<Widget>();
-        for(int i = 0; i < allPlayers.length; i++)
+        
+        if(firstRun)
         {
-          list.add(new ListTile(
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+          firstRun = false;
+          List<Widget> list = new List<Widget>();
+          for(int i = 0; i < allPlayers.length; i++)
+          {
+            list.add(new ListTile(
+              title: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                    ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    allPlayers[i].currentVotes.toString()
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      allPlayers[i].currentVotes.toString()
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ));
+                ],
+              ),
+            ));
+          }
+          playerWidgets = list;
         }
-        return SizedBox(
-          height: 2000,
-          width: Global.SCREENWIDTH,
-          child: ListView(
-            shrinkWrap: true,
-            children: list
-          )
+        
+        return Expanded(
+            child: SingleChildScrollView(
+              child: ListView(
+                shrinkWrap: true,
+                children: playerWidgets
+              )
+            )
         );
       }
     }
