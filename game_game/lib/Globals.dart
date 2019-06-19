@@ -19,7 +19,7 @@ class Global{
 
   //Next game date                          
   static DateTime nextGameDate = new DateTime(2019, 06, 28, 00, 00, 00); //Year, month, day, hours, minutes, seconds
-  static Color dateTimeColor = new Color.fromRGBO(0, mainColorValue, 0, 1)
+  static Color dateTimeColor = new Color.fromRGBO(0, mainColorValue, 0, 1);
 
   static void intializeValues(double newScreenWidth, double newScreenHeight) {
     SCREENWIDTH = newScreenWidth;

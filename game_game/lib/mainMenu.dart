@@ -12,6 +12,7 @@ import 'BallGame.dart';
 import 'PassTheBall.dart';
 import 'mainTrivia.dart';
 import 'Trivia.dart';
+import 'votePics.dart';
 
 void main() => runApp(MyApp());
 
@@ -57,11 +58,15 @@ class MainMenuState extends State<MainMenu>  {
   DateFormat fullFormat = new DateFormat("d/MM/yyyy");
   String nextDate = "";
 
+  bool menuIsActive = true;
+
   @override
   Widget build(BuildContext context) {
 
     writeQuestions(kysymysLista);
     readQuestions();
+
+    //if(mounted) menuIsActive = true;
 
     if(firstRun){
       double screenWidth, screenHeight;
@@ -179,6 +184,24 @@ class MainMenuState extends State<MainMenu>  {
           ),
 
 
+          Center(
+            child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1).toInt()),
+              child: Text('Vote photos',
+              style: new TextStyle(
+                fontSize: 25
+              ),
+              ),
+              onPressed: (){
+                menuIsActive = false;
+               Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VotePics()),
+                );
+              },
+            ),
+          ),
+
       ],
       )
     );
@@ -239,9 +262,12 @@ class MainMenuState extends State<MainMenu>  {
 
     DateFormat newFormat = new DateFormat("dd H:m:s");
     nextDate = "${newFormat.format(dateCounter)}";
-    setState(() {
+
+    if(menuIsActive){
+      setState(() {
       
-    });
+      });
+    }
     //print(myFormat.format(dateCounter));
 
     //print("Next game: $nextGameTime. Date counter: $dateCounter");
