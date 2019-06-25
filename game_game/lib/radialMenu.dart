@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' show radians;
 
@@ -68,15 +69,15 @@ class RadialAnimation extends StatelessWidget {
             width: 170,
             child: Stack(alignment: Alignment.topLeft, children: [
               _buildButton(5, "HomeBtn",
-                  color: Colors.green,
+                  color: MasterTheme.primaryColour,
                   icon: FontAwesomeIcons.basketballBall,
                   function: () => openMainPage(context)),
               _buildButton(45, "ActivitiesBtn",
-                  color: Colors.green,
+                  color: MasterTheme.primaryColour,
                   icon: FontAwesomeIcons.dAndD,
                   function: () => openGames(context)),
               _buildButton(85, "HelpBtn",
-                  color: Colors.green,
+                  color: MasterTheme.primaryColour,
                   icon: FontAwesomeIcons.question,
                   function: () => openHelp(context)),
               Transform.scale(
@@ -86,7 +87,7 @@ class RadialAnimation extends StatelessWidget {
                   child: Icon(FontAwesomeIcons.poo),
                   heroTag: "CloseMenuBtn",
                   onPressed: _close,
-                  backgroundColor: Colors.black,
+                  backgroundColor: MasterTheme.accentColour,
                 ),
               ),
               Transform.scale(
@@ -95,7 +96,7 @@ class RadialAnimation extends StatelessWidget {
                     child: Icon(FontAwesomeIcons.bars),
                     heroTag: "OpenMenuBtn",
                     onPressed: _open,
-                    backgroundColor: Colors.green,
+                    backgroundColor: MasterTheme.primaryColour,
                   )),
             ]),
           );

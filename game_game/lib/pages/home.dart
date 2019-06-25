@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
 import '../Globals.dart';
 import '../radialMenu.dart';
@@ -16,33 +17,34 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       //onwill popscope disables the use of the android back button
       onWillPop: () async => false,
-      child: Scaffold(
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
-              child: Row(
+      child: Theme(
+        data: MasterTheme.mainTheme,
+        child: Scaffold(
+          body: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    RadialMenu(),
+                    Text(
+                      'Pelin tiedot',
+                    ),
+                  ],
+                ),
+              ),
+              Row(
                 children: <Widget>[
-                  RadialMenu(),
-                  Text(
-                    'Pelin tiedot',
-                    style: TextStyle(fontSize: 20.0, color: Colors.green),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'data',
+                    ),
                   ),
                 ],
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    'data',
-                    style: TextStyle(fontSize: 35.0, color: Colors.green),
-                  ),
-                ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
