@@ -50,10 +50,15 @@ class PlayerVotingState extends State<PlayerVoting> {
   // Do initialization stuff if first run
   bool firstRun = true;
   bool playersGot = false;
+  bool valuesOnce = true;
 
   @override
   Widget build(BuildContext context) {
-    getGameValues();
+    if(valuesOnce)
+    {
+      getGameValues();
+      valuesOnce = false;
+    }
 
     if(!playersGot)
     {
