@@ -39,6 +39,8 @@ class PlayerVotingState extends State<PlayerVoting> {
   String searchText = "";
   List<Player> filteredPlayers = new List<Player>();
   List<Widget> filteredPlayerWidgets = new List<Widget>();
+  Icon searchIcon = new Icon(Icons.search);
+  String textBarHint = 'Etsi Pelaajaa';
 
   // Voting timer variables
   String timeText = "";
@@ -222,14 +224,31 @@ class PlayerVotingState extends State<PlayerVoting> {
     });
   }
 
+  void searchPressed()
+  {
+    setState(() {
+     if(searchIcon.icon == Icons.search)
+     {
+       searchIcon = new Icon(Icons.close);
+     }
+     else
+     {
+       searchIcon = new Icon(Icons.search);
+       filteredPlayers = allPlayers;
+       filter.clear();
+     } 
+    });
+  }
+
   Widget getPlayers() {
+    playerWidgets.clear();
     if (allPlayers.length <= 0) {
       return CircularProgressIndicator();
     } else {
       if (firstRun) {
         firstRun = false;
         List<Widget> list = new List<Widget>();
-        list.add(new Row(
+        list.add(Row(
           children: <Widget>[
             Flexible(
               child: TextField(
@@ -237,13 +256,15 @@ class PlayerVotingState extends State<PlayerVoting> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
+              icon: searchIcon,
+              onPressed: () {
+                searchPressed();
+              },
             ),
           ],
         ));
         for (int i = 0; i < allPlayers.length; i++) {
-          list.add(new ListTile(
+          list.add(ListTile(
             title: Row(
               children: <Widget>[
                 Expanded(
@@ -259,22 +280,27 @@ class PlayerVotingState extends State<PlayerVoting> {
             ),
           ));
         }
-        playerWidgets = list;
-        filteredPlayerWidgets = playerWidgets;
+        setState(() {
+          playerWidgets = list;
+          filteredPlayerWidgets = playerWidgets;
+        });
+        
         playersGot = true;
         addFilterListener();
       }
 
       return Expanded(
-          child: SingleChildScrollView(
-              child: ListView(shrinkWrap: true, children: playerWidgets)));
+              child: SingleChildScrollView(
+            child:
+                ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
     }
   }
 
   Widget buildFilteredPlayers() {
     filteredPlayerWidgets.clear();
     List<Widget> list = new List<Widget>();
-    list.add(new Row(
+    list.clear();
+    list.add(Row(
       children: <Widget>[
         Flexible(
           child: TextField(
@@ -282,14 +308,16 @@ class PlayerVotingState extends State<PlayerVoting> {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {},
+          icon: searchIcon,
+          onPressed: () {
+            searchPressed();
+          },
         ),
       ],
     ));
     if (searchText.isEmpty) {
       for (int i = 0; i < allPlayers.length; i++) {
-        list.add(new ListTile(
+        list.add(ListTile(
           title: Row(
             children: <Widget>[
               Expanded(
@@ -305,20 +333,22 @@ class PlayerVotingState extends State<PlayerVoting> {
           ),
         ));
       }
-      playerWidgets = list;
-      filteredPlayerWidgets = playerWidgets;
+      setState(() {
+          playerWidgets = list;
+          filteredPlayerWidgets = playerWidgets;
+        });
     } else {
-      for (int i = 0; i < filteredPlayers.length; i++) {
+      for (int i = 0; i < allPlayers.length; i++) {
         // Check if search text matches first or last name
-        if ((filteredPlayers[i]
+        if ((allPlayers[i]
                 .firstName
                 .toLowerCase()
                 .contains(searchText.toLowerCase())) ||
-            (filteredPlayers[i]
+            (allPlayers[i]
                 .lastName
                 .toLowerCase()
                 .contains(searchText.toLowerCase()))) {
-          list.add(new ListTile(
+          list.add(ListTile(
             title: Row(
               children: <Widget>[
                 Expanded(
@@ -328,20 +358,23 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(allPlayers[i].currentVotes.toString()),
+                  child: Text(filteredPlayers[i].currentVotes.toString()),
                 ),
               ],
             ),
           ));
         }
-        filteredPlayerWidgets = list;
+        setState(() {
+          filteredPlayerWidgets = list;
+        });
       }
     }
 
     return Expanded(
-        child: SingleChildScrollView(
+              child: SingleChildScrollView(
             child:
                 ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+
   }
 
   Widget buildListItem(BuildContext context, DocumentSnapshot document) {
