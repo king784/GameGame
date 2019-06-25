@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: Column(
+          body: Column(//column isn't propably scrollable but listview is
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
@@ -33,13 +33,55 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Row(
+              ListView(
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      'data',
-                    ),
+                  Text(
+                    'Peli tilanne:',
+                    textAlign: TextAlign.left,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          'Koti',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Vieras',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          '0',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '-',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '0',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               )

@@ -11,6 +11,8 @@ class MasterTheme {
   static double titleSize = 40;
   static double bodySize = 15;
 
+  static var btnColours=[Colors.orange, Colors.pink, Colors.blue];
+
   static ThemeData mainTheme = new ThemeData(
     brightness: brightness,
     primaryColor: primaryColour,

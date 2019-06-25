@@ -31,6 +31,8 @@ class RadialAnimation extends StatelessWidget {
   final Animation<double> scale;
   final Animation<double> translation;
   final Animation<double> rotation;
+  final Color iconColour = Colors.black;
+  static int btnIndex = 0;
 
   RadialAnimation({Key key, this.controller})
       : scale = Tween<double>(begin: 1.5, end: 0.0).animate(
@@ -68,23 +70,26 @@ class RadialAnimation extends StatelessWidget {
             height: 200,
             width: 170,
             child: Stack(alignment: Alignment.topLeft, children: [
-              _buildButton(5, "HomeBtn",
-                  color: MasterTheme.primaryColour,
+              _buildButton(5,
+                  color: MasterTheme.btnColours[0],
                   icon: FontAwesomeIcons.basketballBall,
                   function: () => openMainPage(context)),
-              _buildButton(45, "ActivitiesBtn",
-                  color: MasterTheme.primaryColour,
+              _buildButton(45,
+                  color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.dAndD,
                   function: () => openGames(context)),
-              _buildButton(85, "HelpBtn",
-                  color: MasterTheme.primaryColour,
+              _buildButton(85,
+                  color: MasterTheme.btnColours[2],
                   icon: FontAwesomeIcons.question,
                   function: () => openHelp(context)),
               Transform.scale(
                 scale: scale.value -
                     1.5, // subtract the beginning value to run the opposite animation
                 child: FloatingActionButton(
-                  child: Icon(FontAwesomeIcons.poo),
+                  child: Icon(
+                    FontAwesomeIcons.poo,
+                    color: iconColour,
+                  ),
                   heroTag: "CloseMenuBtn",
                   onPressed: _close,
                   backgroundColor: MasterTheme.accentColour,
@@ -93,7 +98,7 @@ class RadialAnimation extends StatelessWidget {
               Transform.scale(
                   scale: scale.value,
                   child: FloatingActionButton(
-                    child: Icon(FontAwesomeIcons.bars),
+                    child: Icon(FontAwesomeIcons.bars, color: iconColour),
                     heroTag: "OpenMenuBtn",
                     onPressed: _open,
                     backgroundColor: MasterTheme.primaryColour,
@@ -123,16 +128,20 @@ class RadialAnimation extends StatelessWidget {
     Navigator.of(context).pushNamed('/activities', arguments: 'activities');
   }
 
-  _buildButton(double angle, String btnTag,
+  _buildButton(double angle,
       {Color color, IconData icon, Function() function}) {
     final double rad = radians(angle);
+    btnIndex++;
     return Transform(
       transform: Matrix4.identity()
         ..translate(
             (translation.value) * cos(rad), (translation.value) * sin(rad)),
       child: FloatingActionButton(
-          heroTag: btnTag,
-          child: Icon(icon),
+          heroTag: 'btn' + btnIndex.toString(),
+          child: Icon(
+            icon,
+            color: Colors.black,
+          ),
           backgroundColor: color,
           onPressed: () {
             _close();
