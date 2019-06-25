@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../Globals.dart';
 import '../radialMenu.dart';
-import 'package:flutter_testuu/Globals.dart';
 
-class Ohje extends StatefulWidget {
+class Activities extends StatefulWidget {
   @override
-  _OhjeState createState() => _OhjeState();
+  _ActivitiesState createState() => _ActivitiesState();
 }
 
-class _OhjeState extends State<Ohje> {
+class _ActivitiesState extends State<Activities> {
   double screenWidth = Global.SCREENWIDTH * .9;
 
   @override
@@ -25,19 +25,20 @@ class _OhjeState extends State<Ohje> {
                 children: <Widget>[
                   RadialMenu(),
                   Text(
-                    'Apuva!',
+                    'Aktiviteettejä',
                     style: TextStyle(fontSize: 20.0, color: Colors.green),
                   ),
                 ],
               ),
             ),
             Container(
+              //text stays inside of screen
               padding: EdgeInsets.all(10.0),
               width: screenWidth,
               child: Column(
                 children: <Widget>[
                   Text(
-                    'Here you might get help for using this app!',
+                    'Test your ignorance on facts, play basketball, vote for the best player and the best picture of the game.',
                     textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 35.0, color: Colors.green),
                   ),

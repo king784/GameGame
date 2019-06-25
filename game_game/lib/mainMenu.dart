@@ -69,11 +69,6 @@ class MainMenuState extends State<MainMenu>  {
     //if(mounted) menuIsActive = true;
 
     if(firstRun){
-      double screenWidth, screenHeight;
-      screenWidth = MediaQuery.of(context).size.width;
-      screenWidth /= 2.0;
-      screenHeight = MediaQuery.of(context).size.height;
-      Global.intializeValues(screenWidth, screenHeight);
       Timer.periodic(Duration(seconds: 1), (Timer t) => nextGameCountdown(Global.nextGameDate));
       firstRun = false;
     }

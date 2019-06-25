@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:routing_prep/main.dart';
 
-import 'package:flutter_testuu/mainMenu.dart';
+import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
 import './pages/home.dart';
 
@@ -13,10 +13,10 @@ class RouteGenerator {
       case '/home':
         return MaterialPageRoute(builder: (_) => Home());
 
-      case '/games':
+      case '/activities':
         if (args is String) {
           return MaterialPageRoute(
-            builder: (_) => MainMenu(),
+            builder: (_) => Activities(),
           );
         }
         return _errorRoute();

@@ -66,16 +66,16 @@ class RadialAnimation extends StatelessWidget {
           return Container(
             height: 200,
             width: 170,
-            child: Stack(alignment: Alignment.centerLeft, children: [
+            child: Stack(alignment: Alignment.topLeft, children: [
               _buildButton(5, "HomeBtn",
                   color: Colors.green,
                   icon: FontAwesomeIcons.basketballBall,
                   function: () => openMainPage(context)),
-              _buildButton(45, "GamesBtn",
+              _buildButton(45, "ActivitiesBtn",
                   color: Colors.green,
                   icon: FontAwesomeIcons.dAndD,
                   function: () => openGames(context)),
-              _buildButton(85, "HelpBtns",
+              _buildButton(85, "HelpBtn",
                   color: Colors.green,
                   icon: FontAwesomeIcons.question,
                   function: () => openHelp(context)),
@@ -119,7 +119,7 @@ class RadialAnimation extends StatelessWidget {
   }
 
   openGames(BuildContext context) {
-    Navigator.of(context).pushNamed('/games', arguments: 'games');
+    Navigator.of(context).pushNamed('/activities', arguments: 'activities');
   }
 
   _buildButton(double angle, String btnTag,
