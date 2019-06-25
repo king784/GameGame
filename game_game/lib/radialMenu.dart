@@ -63,45 +63,80 @@ class RadialAnimation extends StatelessWidget {
     return AnimatedBuilder(
         animation: controller,
         builder: (context, builder) {
-          return Stack(alignment: Alignment.center, children: [
-            _buildButton(5, color: Colors.red, icon: FontAwesomeIcons.basketballBall),
-            _buildButton(45, color: Colors.green, icon: FontAwesomeIcons.gamepad),
-            _buildButton(85, color: Colors.orange, icon: FontAwesomeIcons.question),
-            Transform.scale(
-              scale: scale.value - 1.5,
-              child: FloatingActionButton(
-                  child: Icon(FontAwesomeIcons.timesCircle),
-                  onPressed: _close,
-                  backgroundColor: Colors.red),
-            ),
-            Transform.scale(
-                scale: scale.value,
+          return Container(
+            height: 200,
+            width: 170,
+            child: Stack(alignment: Alignment.centerLeft, children: [
+              _buildButton(5, "HomeBtn",
+                  color: Colors.green,
+                  icon: FontAwesomeIcons.basketballBall,
+                  function: () => openMainPage(context)),
+              _buildButton(45, "GamesBtn",
+                  color: Colors.green,
+                  icon: FontAwesomeIcons.dAndD,
+                  function: () => openGames(context)),
+              _buildButton(85, "HelpBtns",
+                  color: Colors.green,
+                  icon: FontAwesomeIcons.question,
+                  function: () => openHelp(context)),
+              Transform.scale(
+                scale: scale.value -
+                    1.5, // subtract the beginning value to run the opposite animation
                 child: FloatingActionButton(
-                  child: Icon(FontAwesomeIcons.solidDotCircle),
-                  onPressed: _open,
-                )),
-          ]);
+                  child: Icon(FontAwesomeIcons.poo),
+                  heroTag: "CloseMenuBtn",
+                  onPressed: _close,
+                  backgroundColor: Colors.black,
+                ),
+              ),
+              Transform.scale(
+                  scale: scale.value,
+                  child: FloatingActionButton(
+                    child: Icon(FontAwesomeIcons.bars),
+                    heroTag: "OpenMenuBtn",
+                    onPressed: _open,
+                    backgroundColor: Colors.green,
+                  )),
+            ]),
+          );
         });
   }
 
-  _open() {
+  void _open() {
     controller.forward();
   }
 
-  _close() {
+  void _close() {
     controller.reverse();
   }
 
-  _buildButton(double angle, {Color color, IconData icon}) {
+  openMainPage(BuildContext context) {
+    Navigator.of(context).pushNamed('/home', arguments: 'home');
+  }
+
+  openHelp(BuildContext context) {
+    Navigator.of(context).pushNamed('/help', arguments: 'help');
+  }
+
+  openGames(BuildContext context) {
+    Navigator.of(context).pushNamed('/games', arguments: 'games');
+  }
+
+  _buildButton(double angle, String btnTag,
+      {Color color, IconData icon, Function() function}) {
     final double rad = radians(angle);
     return Transform(
       transform: Matrix4.identity()
         ..translate(
             (translation.value) * cos(rad), (translation.value) * sin(rad)),
       child: FloatingActionButton(
+          heroTag: btnTag,
           child: Icon(icon),
           backgroundColor: color,
-          onPressed: _close,
+          onPressed: () {
+            _close();
+            function();
+          },
           elevation: 0),
     );
   }
