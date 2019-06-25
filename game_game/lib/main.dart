@@ -1,226 +1,279 @@
-// https://www.youtube.com/watch?v=R12ks4yDpMM
-// https://www.youtube.com/watch?v=DqJ_KjFzL9I
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_testuu/Trivia.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 import 'Globals.dart';
+import 'QR.dart';
+import 'BallGame.dart';
+import 'PassTheBall.dart';
+import 'mainTrivia.dart';
+import 'Trivia.dart';
+import 'votePics.dart';
 
-void main() => runApp(PlayerVotingMain());
+void main() => runApp(MyApp());
 
-class PlayerVotingMain extends StatelessWidget {
+class BallMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Arial',
       ),
-      home: PlayerVoting(),
+      home: BallGame(),
     );
   }
 }
 
-class PlayerVoting extends StatefulWidget {
-  createState() => PlayerVotingState();
+class BallGame extends StatefulWidget {
+  createState() => BallGameState();
 }
 
-class PlayerVotingState extends State<PlayerVoting> {
 
-  String homeTeam;
-  String awayTeam;
-  List<Player> allPlayers = new List<Player>();
-  List<Player> homePlayers = new List<Player>();
-  List<Player> awayPlayers = new List<Player>();
-  List<Widget> playerWidgets = new List<Widget>();
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        fontFamily: 'Arial',
+      ),
+      home: MainMenu(),
+    );
+  }
+}
+
+class MainMenu extends StatefulWidget{
+  createState() => MainMenuState();
+}
+
+class MainMenuState extends State<MainMenu>  {
   bool firstRun = true;
 
-  String timeText = "";
-  DateTime votingEndTime = null;
-  Timer customTimer;
+  String kysymysLista = "\nMikä on kuvassa?;\nMontako pelaajaa kentällä voi olla enintään?;\nMikä on Larry Poundsin pelinumero KTP-Basketissa?;\nKuinka monta raitaa on koripallossa?;\nMitkä ovat kansainvälisen koripalloliiton säännöissä koripallokentän mitat?";
+  //DateFormat myFormat = new DateFormat("yyyy");
+  DateFormat fullFormat = new DateFormat("d/MM/yyyy");
+  String nextDate = "";
+
+  bool menuIsActive = true;
 
   @override
-    Widget build(BuildContext context) {
-      getGameValues();
+  Widget build(BuildContext context) {
 
-      return Scaffold(
+    writeQuestions(kysymysLista);
+    readQuestions();
+
+    //if(mounted) menuIsActive = true;
+
+    if(firstRun){
+      double screenWidth, screenHeight;
+      screenWidth = MediaQuery.of(context).size.width;
+      screenWidth /= 2.0;
+      screenHeight = MediaQuery.of(context).size.height;
+      Global.intializeValues(screenWidth, screenHeight);
+      Timer.periodic(Duration(seconds: 1), (Timer t) => nextGameCountdown(Global.nextGameDate));
+      firstRun = false;
+    }
+    // TODO: implement build
+    return Scaffold(
       appBar: AppBar(
-        title: (
-          Text('Pelaajaäänestys')),
-          backgroundColor: Global.titleBarColor,
+        backgroundColor: Global.titleBarColor,
+        title: Text('Valikko'),
       ),
-      body:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child: Text(
-              "Aikaa jäljellä: " + timeText,
-              style: TextStyle(
-                fontSize: 30, 
-                ),
+
+      body: Column( 
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+
+         Column(
+           children: <Widget>[
+
+             new Text("Mario Maker 2 julkasu: ${fullFormat.format(Global.nextGameDate)}",
+             style: new TextStyle(
+               fontSize: 20,
+                color: Global.dateTimeColor.withGreen(Global.mainColorValue - 10),
+                
+             ),
+             ),
+
+             new Text(nextDate,
+              style: new TextStyle(
+               fontSize: 20,
+               color: Global.dateTimeColor.withGreen(Global.mainColorValue + 50),
+             ),
+             ),
+
+            ],
+
             ),
-            ),
-            getPlayers(),
-            // StreamBuilder(
-            // stream: Firestore.instance.collection('players').snapshots(),
-            // builder: (context, snapshot){
-            //   if(!snapshot.hasData)
-            //   {
-            //     return new CircularProgressIndicator();
-            //   }
-            //   else
-            //   {
-            //     print(snapshot.data);
-            //     return new ListView.builder(
-            //       shrinkWrap: true,
-            //       itemExtent: 80.0,
-            //       itemCount: snapshot.data.documents.length,
-            //       itemBuilder: (context, index) =>
-            //         buildListItem(context, snapshot.data.documents[index]),
-            //     );
-            //   }
-            // }),
-          ],
-        )
-      );
-    }
+            //Image.asset("images/backGround.jpg",
+            //  width: 100,
+            //  
+            //),
 
-    // Function to get needed values from database. Gets the start time of voting, so we can start calculating how much time is left.
-    // Also retrieves the names of the playing teams.
-    void getGameValues() async {
-      // Get players in their own lists.
-      // CollectionReference playersRef = await Firestore.instance.collection('players');
-      // playersRef. .get().then(function(querySnapshot) {
-      //   querySnapshot.forEach(function(doc) {
-          
-      //   })
-      // })
-      QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
-      List<DocumentSnapshot> playerSnapshot = new List<DocumentSnapshot>();
-      playerSnapshot = querySnapshot.documents;
-      String playersString = playerSnapshot.toString();
-      print(playersString);
-      Map playerMap;
-      Player thePlayer;
-      //Map playerMap = jsonDecode(jsonString);
-      playerSnapshot.forEach((player) {
-        //playerMap = jsonDecode(player.data.toString());
-        thePlayer = new Player.fromJson(player.data);
-        allPlayers.add(thePlayer);
-      });
-
-      // Get player voting start time and team names.
-      DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
-      DateTime convertedTime;
-      gamesRef.get().then((DocumentSnapshot ds){
-        homeTeam = ds['HomeTeam'];
-        awayTeam = ds['AwayTeam'];
-        
-        convertedTime = DateTime.fromMillisecondsSinceEpoch(ds['VotingStartTime'].millisecondsSinceEpoch);
-        //print(convertedTime.toString());
-        //timeText = convertedTime.toString();
-        
-        votingEndTime = convertedTime.add(Duration(minutes: 3));
-        timeText = votingEndTime.second.toString();
-        // Start timer which updates every second, and sets the text to show how much time is left in voting.
-        customTimer = Timer.periodic(Duration(seconds: 1), (Timer t) => updateTimeLeft());
-      });
-
-       
-    }
-
-    // Updates the visible timer.
-    void updateTimeLeft(){
-      Duration difference = votingEndTime.difference(DateTime.now());   
-      //timeText = new DateFormat.format(votingEndTime.difference(DateTime.now()));
-      //timeText = DateFormat.MINUTE_SECOND;
-      //timeText = (votingEndTime.minute - DateTime.now().minute).toString() + ':' + (votingEndTime.second - DateTime.now().second).toString();
-      String seconds = ((difference.inMinutes * 60 - difference.inSeconds) * -1).toString();
-      timeText = difference.inMinutes.toString() + ":" + seconds;
-      //print(timeText);
-      setState(() {});
-    }
-
-    Widget getPlayers()
-    {
-      if(allPlayers.length <= 0)
-      {
-        return CircularProgressIndicator();
-      }
-      else
-      {
-        
-        if(firstRun)
-        {
-          firstRun = false;
-          List<Widget> list = new List<Widget>();
-          for(int i = 0; i < allPlayers.length; i++)
-          {
-            list.add(new ListTile(
-              title: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      allPlayers[i].currentVotes.toString()
-                    ),
-                  ),
-                ],
-              ),
-            ));
-          }
-          playerWidgets = list;
-        }
-        
-        return Expanded(
-            child: SingleChildScrollView(
-              child: ListView(
-                shrinkWrap: true,
-                children: playerWidgets
-              )
-            )
-        );
-      }
-    }
-
-    Widget buildListItem(BuildContext context, DocumentSnapshot document)
-    {
-      return ListTile(
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                document['firstName'] + ' ' + document['lastName'],
-                style: Theme.of(context).textTheme.display1,
+        Center(
+          child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1.4).toInt()),
+            child: Text('QR Tunnistus',
+              style: new TextStyle(
+                fontSize: 25
               ),
             ),
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.green,
-              ),
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                document['currentVotes'].toString()
-              ),
-            ),
-          ],
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRReader()),
+              );
+            },
+          ),
         ),
-        onTap: () {
-            Firestore.instance.runTransaction((transaction) async{
-              DocumentSnapshot freshSnap = await transaction.get(document.reference);
-                await transaction.update(freshSnap.reference, {
-                  'currentVotes': freshSnap['currentVotes'] + 1,
-                });
-            });
-        },
-      );
+
+          Center(
+            child: Center(
+            child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1.3).toInt()),
+              child: Text('Pelaa ballopeliä',
+              style: new TextStyle(
+                fontSize: 25
+              ),),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BallMain()),
+                );
+              },
+            ),
+          ),
+          ),
+
+          Center(
+            child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1.2).toInt()),
+              child: Text('Pass the ball',
+              style: new TextStyle(
+                fontSize: 25
+              ),
+              ),
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PassTheBallMain()),
+                );
+              },
+            ),
+          ),
+
+          Center(
+            child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1.1).toInt()),
+              child: Text('Trivia',
+              style: new TextStyle(
+                fontSize: 25
+              ),
+              ),
+              onPressed: (){
+               Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Trivia()),
+                );
+              },
+            ),
+          ),
+
+
+          Center(
+            child: RaisedButton(
+            color: Global.buttonColors.withGreen((Global.mainColorValue * 1).toInt()),
+              child: Text('Vote photos',
+              style: new TextStyle(
+                fontSize: 25
+              ),
+              ),
+              onPressed: (){
+                menuIsActive = false;
+               Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VotePics()),
+                );
+              },
+            ),
+          ),
+
+      ],
+      )
+    );
+  }
+
+  // Move these file management functions to own dart file
+  // Find path to file
+  Future<String> get localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  // Create reference to file location
+  Future<File> get localFile async {
+    final path = await localPath;
+    //print('$path/questions.txt');
+    return File('$path/questions.txt');
+  }
+
+  Future<File> writeQuestions(String questions) async {
+    final file = await localFile;
+
+    print(questions.length);
+
+    // Write the file
+    return file.writeAsString(questions);
+  }
+
+  Future<String> readQuestions() async {
+    try {
+      final file = await localFile;
+
+      // Read the file
+      Global.contents = await file.readAsString();
+      //print(contents);
+
+      return Global.contents.toString();
+    } catch (e) {
+      // If encountering an error, return empty string
+      return "";
     }
+  }
+
+  void nextGameCountdown(DateTime nextGameTime){
+    DateTime dateCounter;
+    var now = DateTime.now();
+
+    //dateCounter = nextGameTime.difference(now)
+    dateCounter = new DateTime(
+      nextGameTime.year - now.year,
+      nextGameTime.month - now.month,
+      nextGameTime.day - now.day,
+      nextGameTime.hour - now.hour,
+      nextGameTime.minute - now.minute,
+      nextGameTime.second - now.second,
+    );
+
+    DateFormat newFormat = new DateFormat("dd H:m:s");
+    nextDate = "${newFormat.format(dateCounter)}";
+
+    if(menuIsActive){
+      setState(() {
+      
+      });
+    }
+    //print(myFormat.format(dateCounter));
+
+    //print("Next game: $nextGameTime. Date counter: $dateCounter");
+    //print("What? ${nextGameTime.year - now.year}");
+
+    //return "${myFormat.format(dateCounter)}"; //dateCounter;
+  }
+
 }
