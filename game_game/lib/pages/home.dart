@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../mainMenu.dart';
-import './ohje.dart';
 import '../radialMenu.dart';
 
 class Home extends StatefulWidget {
@@ -13,78 +11,21 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Pelin tiedot',
-            style: TextStyle(color: Colors.green),
-          ),
-          backgroundColor: Colors.black,
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                        'https://images.cdn.yle.fi/image/upload//w_1199,h_799,f_auto,fl_lossy,q_auto:eco/13-3-8654556.jpg'),
-                  ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(20,0,0,0),
+            child: Row(
+              children: <Widget>[
+                RadialMenu(),
+                Text(
+                  'Pelin tiedot',
+                  style: TextStyle(fontSize: 20.0, color: Colors.green),
                 ),
-              ),
-              ListTile(
-                  title: Text('Pelin tiedot',
-                      style: TextStyle(fontSize: 20, color: Colors.green)),
-                  trailing: Icon(
-                    Icons.home,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => Home()));
-                  }),
-              Divider(),
-              ListTile(
-                  title: Text('Aktiviteettejä',
-                      style: TextStyle(fontSize: 20, color: Colors.green)),
-                  trailing: Icon(
-                    Icons.beach_access,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => MainMenu()));
-                  }),
-              Divider(),
-              ListTile(
-                  title: Text('Ohje',
-                      style: TextStyle(fontSize: 20, color: Colors.green)),
-                  trailing: Icon(
-                    Icons.help,
-                    color: Colors.green,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => Ohje()));
-                  }),
-              Divider(),
-              ListTile(
-                title: Text('Peruuta',
-                    style: TextStyle(fontSize: 20, color: Colors.green)),
-                trailing: Icon(
-                  Icons.cancel,
-                  color: Colors.green,
-                ),
-                onTap: () => Navigator.of(context).pop(),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        body: Center(
-          child: Column(
+          Row(
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(20),
@@ -93,12 +34,10 @@ class _HomeState extends State<Home> {
                   style: TextStyle(fontSize: 35.0, color: Colors.green),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: RadialMenu(),
-              )
             ],
-          ),
-        ));
+          )
+        ],
+      ),
+    );
   }
 }
