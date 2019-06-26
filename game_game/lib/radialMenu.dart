@@ -67,8 +67,9 @@ class RadialAnimation extends StatelessWidget {
         animation: controller,
         builder: (context, builder) {
           return Container(
-            height: 200,
+            height: 150,
             width: 170,
+            margin: EdgeInsets.fromLTRB(20, 45,0,0),
             child: Stack(alignment: Alignment.topLeft, children: [
               _buildButton(5,
                   color: MasterTheme.btnColours[0],
@@ -78,7 +79,7 @@ class RadialAnimation extends StatelessWidget {
                   color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.dAndD,
                   function: () => openGames(context)),
-              _buildButton(85,
+              _buildButton(90,
                   color: MasterTheme.btnColours[2],
                   icon: FontAwesomeIcons.question,
                   function: () => openHelp(context)),

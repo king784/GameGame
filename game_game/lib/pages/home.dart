@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
 import '../Globals.dart';
@@ -20,71 +21,79 @@ class _HomeState extends State<Home> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: Column(//column isn't propably scrollable but listview is
+          body: ListView(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
+              Align(
+                alignment: Alignment.topCenter,
                 child: Row(
                   children: <Widget>[
                     RadialMenu(),
-                    Text(
-                      'Pelin tiedot',
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Tilanne',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      'Koti',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Vieras',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.body1,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '0',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '-',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '0',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
                     ),
                   ],
                 ),
               ),
-              ListView(
-                children: <Widget>[
-                  Text(
-                    'Peli tilanne:',
-                    textAlign: TextAlign.left,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          'Koti',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Vieras',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          '0',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '-',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          '0',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
             ],
           ),
         ),

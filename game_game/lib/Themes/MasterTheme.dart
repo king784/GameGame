@@ -8,7 +8,7 @@ class MasterTheme {
   static String bestFont = 'Fredericka';
 
   static double headlineSize = 70;
-  static double titleSize = 40;
+  static double titleSize = 30;
   static double bodySize = 15;
 
   static var btnColours=[Colors.orange, Colors.pink, Colors.blue];
