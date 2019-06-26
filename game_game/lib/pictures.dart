@@ -23,6 +23,8 @@ var newVotes = new List<dynamic>();
 bool voteButtonsEnabled = true;
 
 class PicturesState extends State<Pictures> {
+  ImageVotes imgVotes;
+
   @override
   Widget build(BuildContext context) {
 
@@ -180,19 +182,27 @@ class PicturesState extends State<Pictures> {
       newVotes = [1,2,2,3,4,5,2];
       int numberOfbestImages = 0;
       int winnersID = 2;
-      var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+      //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+
+      DocumentReference docRef =
+        await Firestore.instance.collection('variables').document("7nqCGxfYuNlmfhAwMoAp");
 
       docRef.get().then((DocumentSnapshot ds){
         //votes = ds['votes'];
 
-        print(votes);
+        imgVotes = ImageVotes.fromJson(ds.data);
+        print("imgVotes: " + imgVotes.votes.toString());
 
         
         print("Winner is number " + winnersID.toString() + " votes: " + numberOfbestImages.toString());
         //print(countArray(votes, 6));
         //print(newVotes.toString() + " " + countArray(newVotes, 2).toString());
-
     });
+
+    for(int i = 0; i < imgVotes.votes.length; i++)
+    {
+      print("JEE: " + imgVotes.votes[i]);
+    }
   }
 
   //int countArray(List<dynamic> arr, int value){

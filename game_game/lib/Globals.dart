@@ -51,5 +51,16 @@ class Player{
 }
 
 class ImageVotes{
-  
+  int imgIndex;
+  var votes;
+
+  ImageVotes(this.imgIndex, this.votes);
+
+  ImageVotes.fromJson(Map<String, dynamic> json)
+  : votes = json['votes'];
+
+  Map<String, dynamic> toJson() =>
+  {
+    'votes': votes,
+  };
 }
