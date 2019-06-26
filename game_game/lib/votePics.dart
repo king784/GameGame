@@ -1,6 +1,9 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'pictures.dart';
 import 'Globals.dart';
 
@@ -35,6 +38,7 @@ class VoteState extends State<_VotePics>{
   Widget build(BuildContext context) {
 
     //uploadPhoto();
+    loadStorageFiles();
 
     return Scaffold(
       appBar: new AppBar(
@@ -115,6 +119,22 @@ class VoteState extends State<_VotePics>{
 
                     Text(infoText),
 
+                    new MaterialButton(
+                      padding: EdgeInsets.all(10),
+                      minWidth: 100,
+                      height: 50,
+                      color: Colors.red,
+                      onPressed: () {
+                        resetImages();
+                      },
+                      child: new Text("Nollaa",
+                        style: new TextStyle(
+                            fontSize: 100 / 7,
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+
             ],
 
             ),
@@ -144,20 +164,64 @@ class VoteState extends State<_VotePics>{
   }
 
   Future uploadPhoto(BuildContext context) async{
-    setState(() {
-      infoText = "Kuvaa lähetetään. Odota hetki."; 
+
+    //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+//
+    //docRef.get().then((DocumentSnapshot ds){
+    //  print(ds['numOfImages'].toString());
+    //  //fileName = ds['numOfImages'].toString();
+    //  storageSize = ds['numOfImages'];
+    //  //print(fileName);
+//
+    //  setState(() {
+    //    infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + storageSize.toString(); 
+    //  });
+//
+    //});
+
+    loadStorageFiles();
+
+      setState(() {
+        infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + storageSize.toString(); 
+      });
+
+    await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp").updateData({
+      'numOfImages': storageSize + 1
     });
-    //String fileName = basename(_image.path);
-    String fileName = basename(storageSize.toString());
+
+    String fileName = storageSize.toString();
+
     StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+    //_image.rename(fileName);
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-    storageSize++;
+    //storageSize++;
     
     setState(() {
-      print("Image uploaded");
+      print("File named: " + fileName + " uploaded");
       Navigator.push(context, new MaterialPageRoute(builder: (context) => new Pictures()));
       //Scaffold.of(context).showSnackBar(snackbar);
+    });
+  }
+
+  void resetImages(){
+    voteButtonsEnabled = true;
+    setState(() {
+      infoText = "Nollataan";
+      storageSize = 0;
+      imageIndex = 1;
+      infoText = "Nollattu";
+    });
+  }
+
+  void loadStorageFiles() async{
+    var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+
+    docRef.get().then((DocumentSnapshot ds){
+      print(ds['numOfImages'].toString());
+      //fileName = ds['numOfImages'].toString();
+      storageSize = ds['numOfImages'];
+      //print(fileName);
     });
   }
 }
