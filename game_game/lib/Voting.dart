@@ -1,6 +1,5 @@
 // https://www.youtube.com/watch?v=R12ks4yDpMM
 // https://www.youtube.com/watch?v=DqJ_KjFzL9I
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,6 +45,9 @@ class PlayerVotingState extends State<PlayerVoting> {
   String timeText = "";
   DateTime votingEndTime;
   Timer customTimer;
+
+  // Debug votes
+  int votes = 1;
 
   // Do initialization stuff if first run
   bool firstRun = true;
@@ -125,6 +127,25 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
             ),
+            Center(
+              child: Text(
+                "Ääniä jäljellä: " + votes.toString(),
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                "Etsi pelaaja",
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          
             buildFilteredPlayers(),
             // StreamBuilder(
             // stream: Firestore.instance.collection('players').snapshots(),
@@ -220,9 +241,17 @@ class PlayerVotingState extends State<PlayerVoting> {
         setState(() {
           searchText = "";
           filteredPlayers = allPlayers;
+          if(searchIcon.icon == Icons.close)
+          {
+            searchIcon = new Icon(Icons.search);
+          }
         });
       } else {
         setState(() {
+          if(searchIcon.icon == Icons.search)
+          {
+            searchIcon = new Icon(Icons.close);
+          }
           searchText = filter.text;
         });
       }
@@ -248,14 +277,19 @@ class PlayerVotingState extends State<PlayerVoting> {
   Widget getPlayers() {
     playerWidgets.clear();
     if (allPlayers.length <= 0) {
-      return CircularProgressIndicator();
+      return Center(
+        child: CircularProgressIndicator()
+        );
     } else {
       if (firstRun) {
         firstRun = false;
         List<Widget> list = new List<Widget>();
         list.add(Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Flexible(
+            SizedBox(
+              width: 250,
               child: TextField(
                 controller: filter,
               ),
@@ -306,8 +340,11 @@ class PlayerVotingState extends State<PlayerVoting> {
     List<Widget> list = new List<Widget>();
     list.clear();
     list.add(Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Flexible(
+        SizedBox(
+          width: 250,
           child: TextField(
             controller: filter,
           ),

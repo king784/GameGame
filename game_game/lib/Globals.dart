@@ -49,3 +49,7 @@ class Player{
     'currentVotes': 0,
   };
 }
+
+class ImageVotes{
+  
+}
