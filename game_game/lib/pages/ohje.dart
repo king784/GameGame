@@ -15,39 +15,119 @@ class _OhjeState extends State<Ohje> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        //onwill popscope disables the use of the android back button
-        onWillPop: () async => false,
-        child: Theme(
-          data: MasterTheme.mainTheme,
-          child: Scaffold(
-            body: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
-                  child: Row(
-                    children: <Widget>[
-                      RadialMenu(),
-                      Text(
-                        'Apuva!',
+      //onwill popscope disables the use of the android back button
+      onWillPop: () async => false,
+      child: Theme(
+        data: MasterTheme.mainTheme,
+        child: Scaffold(
+          body: ListView(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    RadialMenu(),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Apuja',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.all(10.0),
-                  width: screenWidth,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Here you might get help for using this app!',
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Koti',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Vieras',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '0',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '-',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '0',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Peliä pelattu:',
                         textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.body1,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '00:00:00',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

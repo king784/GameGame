@@ -9,7 +9,8 @@ class MasterTheme {
 
   static double headlineSize = 70;
   static double titleSize = 30;
-  static double bodySize = 15;
+  static double body1Size = 15;
+  static double body2Size = 15;
 
   static var btnColours=[Colors.orange, Colors.pink, Colors.blue];
 
@@ -22,7 +23,8 @@ class MasterTheme {
       headline:
           TextStyle(fontSize: headlineSize, fontWeight: FontWeight.normal),
       title: TextStyle(fontSize: titleSize, fontWeight: FontWeight.bold),
-      body1: TextStyle(fontSize: bodySize, fontWeight: FontWeight.normal),
+      body1: TextStyle(fontSize: body1Size, fontWeight: FontWeight.normal),
+      body2: TextStyle(fontSize: body2Size, fontWeight: FontWeight.bold),
     ),
   );
 }

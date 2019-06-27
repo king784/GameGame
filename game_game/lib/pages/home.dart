@@ -11,6 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
+  int homePoints, opponentPoints;
+
+
   @override
   Widget build(BuildContext context) {
     Global.intializeValues(
@@ -41,30 +45,33 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      'Koti',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.body1,
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Koti',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      '',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.body1,
+                    Expanded(
+                      child: Text(
+                        '',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Vieras',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.body1,
+                    Expanded(
+                      child: Text(
+                        'Vieras',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -87,6 +94,34 @@ class _HomeState extends State<Home> {
                     Expanded(
                       child: Text(
                         '0',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Peliä pelattu:',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '00:00:00',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline,
                       ),
