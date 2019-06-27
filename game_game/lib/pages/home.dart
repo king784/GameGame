@@ -123,7 +123,7 @@ class _HomeState extends State<Home> {
                       child: Text(
                         '00:00:00',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline,
+                        style: Theme.of(context).textTheme.title,
                       ),
                     ),
                   ],
