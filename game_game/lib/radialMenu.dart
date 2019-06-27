@@ -77,7 +77,7 @@ class RadialAnimation extends StatelessWidget {
                   function: () => openMainPage(context)),
               _buildButton(45,
                   color: MasterTheme.btnColours[1],
-                  icon: FontAwesomeIcons.dAndD,
+                  icon: FontAwesomeIcons.gamepad,
                   function: () => openGames(context)),
               _buildButton(90,
                   color: MasterTheme.btnColours[2],
