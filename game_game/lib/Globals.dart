@@ -51,13 +51,22 @@ class Player{
 }
 
 class ImageVotes{
-  int imgIndex;
-  var votes;
+  // ImageVotes instance, we need only 1 that we can access
+  ImageVotes.imgVotesPrivate();
 
-  ImageVotes(this.imgIndex, this.votes);
+  static final ImageVotes _instance = ImageVotes.imgVotesPrivate();
+
+  static ImageVotes get instance{return _instance;}
+
+  int imgIndex;
+  List<int> votes;
 
   ImageVotes.fromJson(Map<String, dynamic> json)
-  : votes = json['votes'];
+  {
+    var votesFromJson = json['votes'];
+    List<int> votesList = votesFromJson.cast<int>();
+    votes = votesList;
+  }
 
   Map<String, dynamic> toJson() =>
   {

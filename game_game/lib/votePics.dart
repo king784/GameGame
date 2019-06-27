@@ -180,13 +180,23 @@ class VoteState extends State<_VotePics>{
     //});
 
     loadStorageFiles();
+    String tmpString = "";
+    if(ImageVotes.instance.votes == null)
+    {
+      tmpString = "0";
+    }
+    else
+    {
+      ImageVotes.instance.votes.add(0);
+      tmpString = ImageVotes.instance.votes.length.toString();
+    }
 
       setState(() {
-        infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + storageSize.toString(); 
+        infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " +  tmpString; 
       });
 
     await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp").updateData({
-      'numOfImages': storageSize + 1
+      'votes': ImageVotes.instance.votes
     });
 
     String fileName = storageSize.toString();
@@ -217,11 +227,17 @@ class VoteState extends State<_VotePics>{
   void loadStorageFiles() async{
     var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
 
+    // docRef.get().then((DocumentSnapshot ds){
+    //   //print(ds['numOfImages'].toString());
+    //   //fileName = ds['numOfImages'].toString();
+    //   //storageSize = ds['numOfImages'];
+    //   //print(fileName);
+    // });
+    var jsonList;
     docRef.get().then((DocumentSnapshot ds){
-      print(ds['numOfImages'].toString());
-      //fileName = ds['numOfImages'].toString();
-      storageSize = ds['numOfImages'];
-      //print(fileName);
+        jsonList = ImageVotes.fromJson(ds.data);
+        
+        print("imgVotes: " + jsonList.toString());
     });
   }
 }
