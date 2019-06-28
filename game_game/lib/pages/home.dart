@@ -11,9 +11,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
-  int homePoints, opponentPoints;
+  int homePoints = 0, opponentPoints = 0;
+  String homeLogo, opponentLogo, homeTeamName, opponentTeamName;
+  double _logoSize = 100;
 
+  @override
+  void initState() {
+    super.initState();
+    getTeamLogosAndNames();
+    _logoSize = Global.SCREENWIDTH*.2;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +49,24 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Image.network(
+                      homeLogo,
+                      width: _logoSize,
+                      height: _logoSize,
+                    ),
+                    
+                    Image.network(
+                      opponentLogo,
+                      width: _logoSize,
+                      height: _logoSize,
+                    ),
                   ],
                 ),
               ),
@@ -134,5 +159,14 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void getGameInfo() {}
+
+  void getTeamLogosAndNames() {
+    homeLogo = 'https://upload.wikimedia.org/wikipedia/fi/thumb/f/f5/KTP-Basket_logo.svg/1280px-KTP-Basket_logo.svg.png';
+    opponentLogo = 'https://upload.wikimedia.org/wikipedia/fi/thumb/9/9b/Kauhajoen_Karhu_Basket_logo.svg/866px-Kauhajoen_Karhu_Basket_logo.svg.png';
+    homeTeamName = 'KTP';
+    opponentTeamName = 'Kauhajoen Karhut';
   }
 }
