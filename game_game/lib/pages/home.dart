@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getTeamLogosAndNames();
-    _logoSize = Global.SCREENWIDTH*.2;
+    _logoSize = Global.SCREENWIDTH * .2;
   }
 
   @override
@@ -56,16 +56,30 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Image.network(
-                      homeLogo,
-                      width: _logoSize,
-                      height: _logoSize,
+                    Expanded(
+                      child: Image.network(
+                        homeLogo,
+                        width: _logoSize,
+                        height: _logoSize,
+                      ),
                     ),
-                    
-                    Image.network(
-                      opponentLogo,
-                      width: _logoSize,
-                      height: _logoSize,
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(""),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: null,
+                      ),
+                    ),
+                    Expanded(
+                      child: Image.network(
+                        opponentLogo,
+                        width: _logoSize,
+                        height: _logoSize,
+                      ),
                     ),
                   ],
                 ),
@@ -164,8 +178,10 @@ class _HomeState extends State<Home> {
   void getGameInfo() {}
 
   void getTeamLogosAndNames() {
-    homeLogo = 'https://upload.wikimedia.org/wikipedia/fi/thumb/f/f5/KTP-Basket_logo.svg/1280px-KTP-Basket_logo.svg.png';
-    opponentLogo = 'https://upload.wikimedia.org/wikipedia/fi/thumb/9/9b/Kauhajoen_Karhu_Basket_logo.svg/866px-Kauhajoen_Karhu_Basket_logo.svg.png';
+    homeLogo =
+        'https://upload.wikimedia.org/wikipedia/fi/thumb/f/f5/KTP-Basket_logo.svg/1280px-KTP-Basket_logo.svg.png';
+    opponentLogo =
+        'https://upload.wikimedia.org/wikipedia/fi/thumb/9/9b/Kauhajoen_Karhu_Basket_logo.svg/866px-Kauhajoen_Karhu_Basket_logo.svg.png';
     homeTeamName = 'KTP';
     opponentTeamName = 'Kauhajoen Karhut';
   }
