@@ -17,7 +17,7 @@ class Pictures extends StatefulWidget{
 
 Image nextImage;
 String errorMessage = "Image not found";
-int imageIndex = 1; 
+int imageIndex = 0; 
 var votes = new List<dynamic>();
 var newVotes = new List<dynamic>();
 bool voteButtonsEnabled = true;
@@ -138,9 +138,10 @@ class PicturesState extends State<Pictures> {
     print("I like it");
 
     var docRef = Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+    ImageVotes.imgVotesPrivate().votes[imageIndex] += 1;
 
      await docRef.updateData({
-       'votes': [imageIndex, 0, 2, 1, 5]
+       'votes': ImageVotes.imgVotesPrivate().votes
      });
 
     
@@ -151,8 +152,8 @@ class PicturesState extends State<Pictures> {
   }
 
   Future notLike() async{
-    if(imageIndex <= storageSize){
-      print("I do not like it. Next image index: " + imageIndex.toString());
+    if(imageIndex <= ImageVotes.imgVotesPrivate().votes.length){
+      print("I do not like it. Next image index: " + (imageIndex).toString());
 
       final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
 
@@ -172,7 +173,7 @@ class PicturesState extends State<Pictures> {
     else{
       setState(() {
         print("Yli meni");
-        imageIndex = 1;
+        imageIndex = 0;
       });
     }
   }
