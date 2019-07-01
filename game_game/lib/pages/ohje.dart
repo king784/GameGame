@@ -58,6 +58,38 @@ class _OhjeState extends State<Ohje> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
                 child: Text(
+                  'Käyttäjä sivu',
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                child: IconButton(
+                  icon: Icon(FontAwesomeIcons.user),
+                  onPressed: () {},
+                  color: MasterTheme.btnColours[0],
+                  alignment: Alignment.topLeft,
+                  iconSize: 50,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 10, 20),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Käyttäjä sivulla näet omat tilastosi.',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
+                child: Text(
                   'Pelin tilanne',
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.subtitle,
@@ -68,7 +100,7 @@ class _OhjeState extends State<Ohje> {
                 child: IconButton(
                   icon: Icon(FontAwesomeIcons.basketballBall),
                   onPressed: () {},
-                  color: MasterTheme.btnColours[0],
+                  color: MasterTheme.btnColours[1],
                   alignment: Alignment.topLeft,
                   iconSize: 50,
                 ),
@@ -100,7 +132,7 @@ class _OhjeState extends State<Ohje> {
                 child: IconButton(
                   icon: Icon(FontAwesomeIcons.gamepad),
                   onPressed: () {},
-                  color: MasterTheme.btnColours[1],
+                  color: MasterTheme.btnColours[2],
                   alignment: Alignment.topLeft,
                   iconSize: 50,
                 ),

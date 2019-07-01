@@ -13,7 +13,12 @@ class MasterTheme {
   static double body1Size = 15;
   static double body2Size = 15;
 
-  static var btnColours = [Colors.orange, Colors.pink, Colors.blue];
+  static var btnColours = [
+    Color.fromARGB(255, 0, 127, 0),
+    Colors.orange,
+    Colors.pink,
+    Colors.blue
+  ];
 
   static ThemeData mainTheme = new ThemeData(
     brightness: brightness,
@@ -24,7 +29,8 @@ class MasterTheme {
       headline:
           TextStyle(fontSize: headlineSize, fontWeight: FontWeight.normal),
       title: TextStyle(fontSize: titleSize, fontWeight: FontWeight.bold),
-      subtitle: TextStyle(fontSize: subTitleSize, fontWeight: FontWeight.normal),
+      subtitle:
+          TextStyle(fontSize: subTitleSize, fontWeight: FontWeight.normal),
       body1: TextStyle(fontSize: body1Size, fontWeight: FontWeight.normal),
       body2: TextStyle(fontSize: body2Size, fontWeight: FontWeight.bold),
     ),
