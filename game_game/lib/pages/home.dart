@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/Timer.dart';
 
 import '../Globals.dart';
 import '../radialMenu.dart';
@@ -63,17 +64,24 @@ class _HomeState extends State<Home> {
                         height: _logoSize,
                       ),
                     ),
-                    Expanded(
-                      child: Container(
+                    Container(
+                        width: 30,
+                        height: _logoSize + 50,
+                        //color: Colors.white,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(""),
-                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/middleLine.png"),
+                            fit: BoxFit.contain,
                           ),
                         ),
-                        child: null,
-                      ),
-                    ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'vs',
+                            style: Theme.of(context).textTheme.body1,
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
                     Expanded(
                       child: Image.network(
                         opponentLogo,
