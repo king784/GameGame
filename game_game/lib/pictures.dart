@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_testuu/votePics.dart';
 import 'Globals.dart';
 import 'votePics.dart';
@@ -17,14 +18,23 @@ class Pictures extends StatefulWidget{
 
 Image nextImage;
 String errorMessage = "Image not found";
-int imageIndex = 1; 
+int imageIndex = 0; 
 var votes = new List<dynamic>();
 var newVotes = new List<dynamic>();
+List<Image> allImages = new List<Image>();
+List<Widget> imagesWidget = new List<Widget>();
+bool firstTime = true;
 bool voteButtonsEnabled = true;
 
 class PicturesState extends State<Pictures> {
+
   @override
   Widget build(BuildContext context) {
+    if(firstTime)
+    {
+      GetAllImages();
+      firstTime = false;
+    }
 
     // TODO: implement build
     return new WillPopScope(
@@ -34,17 +44,89 @@ class PicturesState extends State<Pictures> {
             child: new Column(
               children: <Widget>[
 
-                SizedBox(
-                  height: Global.SCREENHEIGHT / 10,
-                  ),
-
-                new Container(
-                  child: nextImage == null ? Text(errorMessage) : (nextImage),
-                  height: Global.SCREENHEIGHT / 2,
+                SingleChildScrollView(
+                  child: new Column(
+                  children:
+                    //nextImage == null ? Text(errorMessage) : (nextImage),
+                    imagesWidget,
+                ),
                 ),
 
 
-                Row(
+                
+
+                //nextImage != null ? Text("I like it ;)") : Text(""),
+                new Text("Image " +  imageIndex.toString() + " / " + storageSize.toString() + "\n"),
+
+
+                new MaterialButton(
+                      padding: EdgeInsets.all(10),
+                      minWidth: 100,
+                      height: 50,
+                      color: Global.buttonColors,
+                      onPressed: () {
+                        getTheWinner();
+                      },
+                      child: new Text("Laske äänet",
+                        style: new TextStyle(
+                            fontSize: 100 / 7,
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+
+              ],
+            ),
+          )
+        )
+    );
+  }
+
+  void GetAllImages() async 
+  {
+    print("GET ALL IMAGES IMGVOTES LENGTIH: " + ImageVotes.instance.votes.length.toString());
+    while(imageIndex < ImageVotes.instance.votes.length){
+      print("I do not like it. Next image index: " + (imageIndex).toString());
+
+      final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
+
+      var url = await ref.getDownloadURL();
+
+      Image newImage = Image.network(url);
+      allImages.add(newImage);
+      print(Image.network(url));
+
+      imageIndex++;
+      setState(() {
+        errorMessage = url;
+        nextImage = newImage;
+      });
+    }
+    ShowList();
+  }
+
+  void ShowList()
+  {
+    imagesWidget.clear();
+    if(ImageVotes.instance.votes.length <= 0)
+    {
+      imagesWidget.add(Text("Ei äänestystä meneillään."));
+    }
+    else
+    {
+      List<Widget> listOfImages = new List<Widget>();
+      for(int i = 0; i < ImageVotes.instance.votes.length; i++)
+      {
+        listOfImages.add(
+          ListTile(
+            title: Row(
+              children: <Widget>[
+                allImages[i],
+              ],
+            ),
+          )
+          );
+          listOfImages.add(Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -103,33 +185,14 @@ class PicturesState extends State<Pictures> {
                 
                 
                 
-                ),
-
-                //nextImage != null ? Text("I like it ;)") : Text(""),
-                new Text("Image " +  imageIndex.toString() + " / " + storageSize.toString() + "\n"),
-
-
-                new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: 100,
-                      height: 50,
-                      color: Global.buttonColors,
-                      onPressed: () {
-                        getTheWinner();
-                      },
-                      child: new Text("Laske äänet",
-                        style: new TextStyle(
-                            fontSize: 100 / 7,
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-
-              ],
-            ),
-          )
-        )
-    );
+                ),);
+      }
+      imagesWidget = listOfImages;
+      print("LENGTH OF IMAGESWIDGET!!: " + imagesWidget.length.toString());
+      setState(() {
+        
+      });
+    }
   }
 
   void like() async{
@@ -137,9 +200,10 @@ class PicturesState extends State<Pictures> {
     print("I like it");
 
     var docRef = Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+    ImageVotes.instance.votes[imageIndex] += 1;
 
      await docRef.updateData({
-       'votes': [imageIndex, 0, 2, 1, 5]
+       'votes': ImageVotes.instance.votes
      });
 
     
@@ -150,8 +214,8 @@ class PicturesState extends State<Pictures> {
   }
 
   Future notLike() async{
-    if(imageIndex <= storageSize){
-      print("I do not like it. Next image index: " + imageIndex.toString());
+    if(imageIndex <= ImageVotes.instance.votes.length){
+      print("I do not like it. Next image index: " + (imageIndex).toString());
 
       final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
 
@@ -171,7 +235,7 @@ class PicturesState extends State<Pictures> {
     else{
       setState(() {
         print("Yli meni");
-        imageIndex = 1;
+        imageIndex = 0;
       });
     }
   }
@@ -180,19 +244,29 @@ class PicturesState extends State<Pictures> {
       newVotes = [1,2,2,3,4,5,2];
       int numberOfbestImages = 0;
       int winnersID = 2;
-      var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+      //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
 
+      DocumentReference docRef =
+        await Firestore.instance.collection('variables').document("7nqCGxfYuNlmfhAwMoAp");
+
+      var jsonList;
       docRef.get().then((DocumentSnapshot ds){
         //votes = ds['votes'];
 
-        print(votes);
+        jsonList = ImageVotes.fromJson(ds.data);
+        ImageVotes.instance.votes = jsonList;
+        print("imgVotes: " + ImageVotes.instance.votes.toString());
 
         
         print("Winner is number " + winnersID.toString() + " votes: " + numberOfbestImages.toString());
         //print(countArray(votes, 6));
         //print(newVotes.toString() + " " + countArray(newVotes, 2).toString());
-
     });
+
+    for(int i = 0; i < ImageVotes.instance.votes.length; i++)
+    {
+      //print("JEE: " + ImageVotes.instance.votes[i]);
+    }
   }
 
   //int countArray(List<dynamic> arr, int value){
