@@ -76,8 +76,6 @@ class MainMenuState extends State<MainMenu>  {
       Global.intializeValues(screenWidth, screenHeight);
       Timer.periodic(Duration(seconds: 1), (Timer t) => nextGameCountdown(Global.nextGameDate));
       firstRun = false;
-      ImageVotes imgVotes = ImageVotes.instance;
-      ImageVotes.instance.votes = new List<int>();
     }
     // TODO: implement build
     return Scaffold(

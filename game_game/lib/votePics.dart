@@ -33,12 +33,16 @@ class VoteState extends State<_VotePics>{
 
   String infoText = "No image selected";
   bool imageReady = false;
+  bool firstRun = true;
 
   @override
   Widget build(BuildContext context) {
-
-    //uploadPhoto();
-    loadStorageFiles();
+    if(firstRun)
+    {
+      ImageVotes imgVotes = ImageVotes.instance;
+      ImageVotes.instance.votes = new List<int>();
+      loadStorageFiles();
+    }
 
     return Scaffold(
       appBar: new AppBar(
@@ -199,7 +203,7 @@ class VoteState extends State<_VotePics>{
       'votes': ImageVotes.instance.votes
     });
 
-    String fileName = storageSize.toString();
+    String fileName = (ImageVotes.instance.votes.length-1).toString(); // storageSize.toString();
 
     StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
     //_image.rename(fileName);
@@ -236,7 +240,6 @@ class VoteState extends State<_VotePics>{
     var jsonList;
     docRef.get().then((DocumentSnapshot ds){
         jsonList = ImageVotes.fromJson(ds.data);
-        
         print("imgVotes: " + jsonList.toString());
     });
   }

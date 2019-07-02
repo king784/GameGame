@@ -59,13 +59,17 @@ class ImageVotes{
   static ImageVotes get instance{return _instance;}
 
   int imgIndex;
-  List<int> votes;
+  List<int> votes = new List<int>();
 
   ImageVotes.fromJson(Map<String, dynamic> json)
   {
     var votesFromJson = json['votes'];
     List<int> votesList = votesFromJson.cast<int>();
-    votes = votesList;
+    instance.votes.clear();
+    for(int i = 0; i < votesList.length; i++)
+    {
+      instance.votes.add(votesList[i]);
+    }
   }
 
   Map<String, dynamic> toJson() =>
