@@ -4,11 +4,12 @@ class MasterTheme {
   static Brightness brightness = Brightness.dark;
   static Color primaryColour = Colors.white;
   static Color accentColour = Color.fromARGB(255, 0, 127, 0);
+  static Color bgBoxColour = Color.fromARGB(150, 65, 68, 68);
 
   static String bestFont = 'Fredericka';
 
   static double headlineSize = 70;
-  static double titleSize = 35;
+  static double titleSize = 30;
   static double subTitleSize = 22;
   static double body1Size = 15;
   static double body2Size = 15;

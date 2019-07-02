@@ -12,6 +12,7 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   double screenWidth = Global.SCREENWIDTH * .9;
+  int watchedGames = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +42,31 @@ class _UserPageState extends State<UserPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Käydyt kotipelit',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.body1,
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: screenWidth * .8,
+                  color: MasterTheme.bgBoxColour,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'Katsotut kotiottelut:',
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.body1,
+                        ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          this.watchedGames.toString(),
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -60,5 +74,9 @@ class _UserPageState extends State<UserPage> {
         ),
       ),
     );
+  }
+
+  void getSeenGames(){
+    this.watchedGames = 0;
   }
 }

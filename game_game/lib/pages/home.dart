@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getTeamLogosAndNames();
-    _logoSize = Global.SCREENWIDTH * .2;
+    _logoSize = Global.SCREENWIDTH * .35;
   }
 
   @override
