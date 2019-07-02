@@ -67,20 +67,24 @@ class RadialAnimation extends StatelessWidget {
         animation: controller,
         builder: (context, builder) {
           return Container(
-            height: 150,
+            height: 200,
             width: 170,
-            margin: EdgeInsets.fromLTRB(20, 45,0,0),
-            child: Stack(alignment: Alignment.topLeft, children: [
-              _buildButton(5,
+            margin: EdgeInsets.fromLTRB(20, 5, 0, 10),
+            child: Stack(alignment: Alignment.centerLeft, children: [
+              _buildButton(335,
                   color: MasterTheme.btnColours[0],
+                  icon: FontAwesomeIcons.user,
+                  function: () => openUserPage(context)),
+              _buildButton(15,
+                  color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.basketballBall,
                   function: () => openMainPage(context)),
-              _buildButton(45,
-                  color: MasterTheme.btnColours[1],
+              _buildButton(55,
+                  color: MasterTheme.btnColours[2],
                   icon: FontAwesomeIcons.gamepad,
                   function: () => openGames(context)),
-              _buildButton(90,
-                  color: MasterTheme.btnColours[2],
+              _buildButton(95,
+                  color: MasterTheme.btnColours[3],
                   icon: FontAwesomeIcons.question,
                   function: () => openHelp(context)),
               Transform.scale(
@@ -127,6 +131,10 @@ class RadialAnimation extends StatelessWidget {
 
   openGames(BuildContext context) {
     Navigator.of(context).pushNamed('/activities', arguments: 'activities');
+  }
+
+  openUserPage(BuildContext context) {
+    Navigator.of(context).pushNamed('/userPage', arguments: 'userPage');
   }
 
   _buildButton(double angle,

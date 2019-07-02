@@ -76,6 +76,7 @@ flutter:
     - assets/vuvuzela.wav
     - assets/jee.mp3
     - assets/horn.mp3
+    - assets/images/middleLine.png
   #  - images/a_dot_ham.jpeg
     - images/pepe.jpg
     - images/pepe2.jpg

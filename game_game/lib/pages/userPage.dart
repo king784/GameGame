@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../Globals.dart';
 import '../radialMenu.dart';
+import 'package:flutter_testuu/Globals.dart';
 
-class Activities extends StatefulWidget {
+class UserPage extends StatefulWidget {
   @override
-  _ActivitiesState createState() => _ActivitiesState();
+  _UserPageState createState() => _UserPageState();
 }
 
-class _ActivitiesState extends State<Activities> {
+class _UserPageState extends State<UserPage> {
   double screenWidth = Global.SCREENWIDTH * .9;
+  int watchedGames = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _ActivitiesState extends State<Activities> {
                       child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          'Aktiviteetit',
+                          'Käyttäjä',
                           textAlign: TextAlign.right,
                           style: Theme.of(context).textTheme.title,
                         ),
@@ -44,7 +45,6 @@ class _ActivitiesState extends State<Activities> {
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                   width: screenWidth * .8,
                   color: MasterTheme.bgBoxColour,
                   child: Column(
@@ -52,35 +52,17 @@ class _ActivitiesState extends State<Activities> {
                       Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          'Pelaaja äänestys',
+                          'Katsotut kotiottelut:',
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.body1,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: FloatingActionButton(
-                          heroTag: 'toPlayerVoteBtn',
-                          child: Icon(FontAwesomeIcons.userNinja),
-                          onPressed: () {},
-                          backgroundColor: MasterTheme.accentColour,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          'Pelin paras kuva',
+                          this.watchedGames.toString(),
                           textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.body1,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: FloatingActionButton(
-                          heroTag: 'toImageVoteBtn',
-                          child: Icon(FontAwesomeIcons.image),
-                          onPressed: () {},
-                          backgroundColor: MasterTheme.accentColour,
+                          style: Theme.of(context).textTheme.title,
                         ),
                       ),
                     ],
@@ -92,5 +74,9 @@ class _ActivitiesState extends State<Activities> {
         ),
       ),
     );
+  }
+
+  void getSeenGames(){
+    this.watchedGames = 0;
   }
 }
