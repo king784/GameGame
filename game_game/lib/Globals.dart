@@ -18,7 +18,7 @@ class Global{
   static Color buttonColors = new Color.fromRGBO(0, mainColorValue, 0, 1);
 
   //Next game date                          
-  static DateTime nextGameDate = new DateTime(2019, 06, 28, 00, 00, 00); //Year, month, day, hours, minutes, seconds
+  static DateTime nextGameDate = new DateTime(2019, 07, 26, 00, 00, 00); //Year, month, day, hours, minutes, seconds
   static Color dateTimeColor = new Color.fromRGBO(0, mainColorValue, 0, 1);
 
   static void intializeValues(double height, double width) {

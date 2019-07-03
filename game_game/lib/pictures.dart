@@ -9,16 +9,16 @@ import 'package:flutter_testuu/votePics.dart';
 import 'Globals.dart';
 import 'votePics.dart';
 
-class Pictures extends StatefulWidget{
+class Pictures extends StatefulWidget {
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return new PicturesState();
   }
 }
 
 Image nextImage;
 String errorMessage = "Image not found";
-int imageIndex = 0; 
+int imageIndex = 0;
 var votes = new List<dynamic>();
 var newVotes = new List<dynamic>();
 List<Image> allImages = new List<Image>();
@@ -27,11 +27,9 @@ bool firstTime = true;
 bool voteButtonsEnabled = true;
 
 class PicturesState extends State<Pictures> {
-
   @override
   Widget build(BuildContext context) {
-    if(firstTime)
-    {
+    if (firstTime) {
       GetAllImages();
       firstTime = false;
     }
@@ -39,53 +37,46 @@ class PicturesState extends State<Pictures> {
     // TODO: implement build
     return new WillPopScope(
         child: Scaffold(
-          body: new Container(
-            alignment: Alignment.center,
-            child: new Column(
-              children: <Widget>[
+            body: new Container(
+      alignment: Alignment.center,
+      child: new Column(
+        children: <Widget>[
+          new ListView(
+            shrinkWrap: true,
+            children:
+                //nextImage == null ? Text(errorMessage) : (nextImage),
+                imagesWidget,
+          ),
 
-                SingleChildScrollView(
-                  child: new Column(
-                  children:
-                    //nextImage == null ? Text(errorMessage) : (nextImage),
-                    imagesWidget,
-                ),
-                ),
+          //nextImage != null ? Text("I like it ;)") : Text(""),
+          new Text("Image " +
+              imageIndex.toString() +
+              " / " +
+              storageSize.toString() +
+              "\n"),
 
-
-                
-
-                //nextImage != null ? Text("I like it ;)") : Text(""),
-                new Text("Image " +  imageIndex.toString() + " / " + storageSize.toString() + "\n"),
-
-
-                new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: 100,
-                      height: 50,
-                      color: Global.buttonColors,
-                      onPressed: () {
-                        getTheWinner();
-                      },
-                      child: new Text("Laske äänet",
-                        style: new TextStyle(
-                            fontSize: 100 / 7,
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-
-              ],
+          new MaterialButton(
+            padding: EdgeInsets.all(10),
+            minWidth: 100,
+            height: 50,
+            color: Global.buttonColors,
+            onPressed: () {
+              getTheWinner();
+            },
+            child: new Text(
+              "Laske äänet",
+              style: new TextStyle(fontSize: 100 / 7, color: Colors.white),
             ),
-          )
-        )
-    );
+          ),
+        ],
+      ),
+    )));
   }
 
-  void GetAllImages() async 
-  {
-    print("GET ALL IMAGES IMGVOTES LENGTIH: " + ImageVotes.instance.votes.length.toString());
-    while(imageIndex < ImageVotes.instance.votes.length){
+  void GetAllImages() async {
+    print("GET ALL IMAGES IMGVOTES LENGTIH: " +
+        ImageVotes.instance.votes.length.toString());
+    while (imageIndex < ImageVotes.instance.votes.length) {
       print("I do not like it. Next image index: " + (imageIndex).toString());
 
       final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
@@ -105,116 +96,83 @@ class PicturesState extends State<Pictures> {
     ShowList();
   }
 
-  void ShowList()
-  {
+  void ShowList() {
     imagesWidget.clear();
-    if(ImageVotes.instance.votes.length <= 0)
-    {
+    if (ImageVotes.instance.votes.length <= 0) {
       imagesWidget.add(Text("Ei äänestystä meneillään."));
-    }
-    else
-    {
+    } else {
       List<Widget> listOfImages = new List<Widget>();
-      for(int i = 0; i < ImageVotes.instance.votes.length; i++)
-      {
+      for (int i = 0; i < ImageVotes.instance.votes.length; i++) {
+        listOfImages.add(ListTile(
+          title: SizedBox(
+            width: Global.SCREENWIDTH * 0.9,
+            child: allImages[i],
+          ),
+        ));
         listOfImages.add(
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                allImages[i],
-              ],
-            ),
-          )
-          );
-          listOfImages.add(Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              voteButtonsEnabled == true
+                  ? new IconButton(
+                      icon: Icon(Icons.mood),
+                      iconSize: 70.0,
+                      color: Colors.green,
+                      highlightColor: Colors.green,
+                      splashColor: Colors.green,
+                      onPressed: () {
+                        like();
+                      },
+                    )
+                  : new IconButton(
+                      icon: Icon(Icons.mood),
+                      iconSize: 70.0,
+                      color: Colors.black26),
 
-                
-              voteButtonsEnabled == true ?
-                new IconButton(
-                  icon: Icon(Icons.mood),
-                  iconSize: 70.0,
-
-                  color: Colors.green,
-                  highlightColor: Colors.green,
-                  splashColor: Colors.green,
-
-                  onPressed: () {like();
-                  },
-
-                )
-
-                 : new IconButton(
-                    icon: Icon(Icons.mood),
-                    iconSize: 70.0,
-
-                    color: Colors.black26
-
-                 ),
-
-
-                //SizedBox(width: Global.SCREENWIDTH),
-              voteButtonsEnabled == true ?
-                new IconButton(
-                  icon: Icon(Icons.mood_bad),
-                  iconSize: 70.0,
-
-                  color: Colors.red,
-                  highlightColor: Colors.red,
-                  splashColor: Colors.red,
-
-                  onPressed: () {notLike();},
-
-                )
-
-                 : new IconButton(
-                    icon: Icon(Icons.mood_bad),
-                    iconSize: 70.0,
-
-                  color: Colors.black26,
-
-                 ),
-
-
-
-                
-                ],
-
-                
-                
-                
-                ),);
+              //SizedBox(width: Global.SCREENWIDTH),
+              voteButtonsEnabled == true
+                  ? new IconButton(
+                      icon: Icon(Icons.mood_bad),
+                      iconSize: 70.0,
+                      color: Colors.red,
+                      highlightColor: Colors.red,
+                      splashColor: Colors.red,
+                      onPressed: () {
+                        notLike();
+                      },
+                    )
+                  : new IconButton(
+                      icon: Icon(Icons.mood_bad),
+                      iconSize: 70.0,
+                      color: Colors.black26,
+                    ),
+            ],
+          ),
+        );
       }
       imagesWidget = listOfImages;
       print("LENGTH OF IMAGESWIDGET!!: " + imagesWidget.length.toString());
-      setState(() {
-        
-      });
+      setState(() {});
     }
   }
 
-  void like() async{
+  void like() async {
     voteButtonsEnabled = false;
     print("I like it");
 
-    var docRef = Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+    var docRef = Firestore.instance
+        .collection("variables")
+        .document("7nqCGxfYuNlmfhAwMoAp");
     ImageVotes.instance.votes[imageIndex] += 1;
 
-     await docRef.updateData({
-       'votes': ImageVotes.instance.votes
-     });
+    await docRef.updateData({'votes': ImageVotes.instance.votes});
 
-    
-
-    setState(() {  
-
-    });
+    setState(() {});
   }
 
-  Future notLike() async{
-    if(imageIndex <= ImageVotes.instance.votes.length){
+  Future notLike() async {
+    if (imageIndex <= ImageVotes.instance.votes.length) {
       print("I do not like it. Next image index: " + (imageIndex).toString());
 
       final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
@@ -230,9 +188,7 @@ class PicturesState extends State<Pictures> {
         errorMessage = url;
         nextImage = newImage;
       });
-    }
-
-    else{
+    } else {
       setState(() {
         print("Yli meni");
         imageIndex = 0;
@@ -240,31 +196,33 @@ class PicturesState extends State<Pictures> {
     }
   }
 
-    void getTheWinner() async{
-      newVotes = [1,2,2,3,4,5,2];
-      int numberOfbestImages = 0;
-      int winnersID = 2;
-      //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+  void getTheWinner() async {
+    newVotes = [1, 2, 2, 3, 4, 5, 2];
+    int numberOfbestImages = 0;
+    int winnersID = 2;
+    //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
 
-      DocumentReference docRef =
-        await Firestore.instance.collection('variables').document("7nqCGxfYuNlmfhAwMoAp");
+    DocumentReference docRef = await Firestore.instance
+        .collection('variables')
+        .document("7nqCGxfYuNlmfhAwMoAp");
 
-      var jsonList;
-      docRef.get().then((DocumentSnapshot ds){
-        //votes = ds['votes'];
+    var jsonList;
+    docRef.get().then((DocumentSnapshot ds) {
+      //votes = ds['votes'];
 
-        jsonList = ImageVotes.fromJson(ds.data);
-        ImageVotes.instance.votes = jsonList;
-        print("imgVotes: " + ImageVotes.instance.votes.toString());
+      jsonList = ImageVotes.fromJson(ds.data);
+      ImageVotes.instance.votes = jsonList;
+      print("imgVotes: " + ImageVotes.instance.votes.toString());
 
-        
-        print("Winner is number " + winnersID.toString() + " votes: " + numberOfbestImages.toString());
-        //print(countArray(votes, 6));
-        //print(newVotes.toString() + " " + countArray(newVotes, 2).toString());
+      print("Winner is number " +
+          winnersID.toString() +
+          " votes: " +
+          numberOfbestImages.toString());
+      //print(countArray(votes, 6));
+      //print(newVotes.toString() + " " + countArray(newVotes, 2).toString());
     });
 
-    for(int i = 0; i < ImageVotes.instance.votes.length; i++)
-    {
+    for (int i = 0; i < ImageVotes.instance.votes.length; i++) {
       //print("JEE: " + ImageVotes.instance.votes[i]);
     }
   }
@@ -281,23 +239,20 @@ class PicturesState extends State<Pictures> {
   //  }
   //}
 
-  int countArray(List<dynamic> arr){
+  int countArray(List<dynamic> arr) {
     int x = 0;
     int n = 0;
     int first;
     first = arr.first;
 
-    for(int i = 0; i < arr.length; i++){
-      if(arr[0] == first)
-        x++;
+    for (int i = 0; i < arr.length; i++) {
+      if (arr[0] == first) x++;
 
       arr.removeAt(0);
-        
-      if(x > n)
-        n = x;
+
+      if (x > n) n = x;
     }
 
     return n;
   }
-
 }

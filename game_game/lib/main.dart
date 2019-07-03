@@ -91,11 +91,10 @@ class MainMenuState extends State<MainMenu>  {
          Column(
            children: <Widget>[
 
-             new Text("Mario Maker 2 julkasu: ${fullFormat.format(Global.nextGameDate)}",
+             new Text("Fire Emblem: Three Houses julkasu: ${fullFormat.format(Global.nextGameDate)}",
              style: new TextStyle(
                fontSize: 20,
-                color: Global.dateTimeColor.withGreen(Global.mainColorValue - 10),
-                
+                color: Global.dateTimeColor.withGreen(Global.mainColorValue - 10),  
              ),
              ),
 
@@ -105,6 +104,11 @@ class MainMenuState extends State<MainMenu>  {
                color: Global.dateTimeColor.withGreen(Global.mainColorValue + 50),
              ),
              ),
+
+             Image.network(
+               "https://vignette.wikia.nocookie.net/fireemblem/images/a/ad/Three_House_Boxart_NA.jpg/revision/latest?cb=20190308212747",
+               height: 200,
+               )
 
             ],
 
