@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
+import 'package:flutter_testuu/pages/startPage.dart';
 import './pages/home.dart';
 import './pages/userPage.dart';
 
@@ -11,8 +12,16 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case '/startPage':
+        return MaterialPageRoute(builder: (_) => Start());
+
       case '/home':
-        return MaterialPageRoute(builder: (_) => Home());
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => Home(),
+          );
+        }
+        return _errorRoute();
 
       case '/activities':
         if (args is String) {
@@ -29,7 +38,7 @@ class RouteGenerator {
         }
         return _errorRoute();
 
-        case '/userPage':
+      case '/userPage':
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => UserPage(),

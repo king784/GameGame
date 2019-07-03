@@ -17,17 +17,9 @@ class _StartState extends State<Start> {
   bool positionDataOk = false;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
-    if (geolocationStatus.value != 2) {
-      //check if location status is anything but granted
-      positionDataOk = false;
-    } else {
-      //geolocation status is ok
-      updateCurrentLocation();
-      positionDataOk = true;
-    }
+    checkGeolocationStatus();
   }
 
   @override
@@ -74,5 +66,19 @@ class _StartState extends State<Start> {
     //update the current location
     currentPos = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  void checkGeolocationStatus() async {
+    geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
+    print('Geolocation status: '+geolocationStatus.value.toString());
+    if (geolocationStatus.value != 2) {
+      //check if location status is anything but granted
+      positionDataOk = false;
+    } else {
+      //geolocation status is ok
+      updateCurrentLocation();
+      positionDataOk = true;
+    }
+    setState(() {});
   }
 }
