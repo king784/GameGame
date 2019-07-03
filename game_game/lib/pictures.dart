@@ -37,39 +37,37 @@ class PicturesState extends State<Pictures> {
     // TODO: implement build
     return new WillPopScope(
         child: Scaffold(
-            body: new Container(
-      alignment: Alignment.center,
-      child: new Column(
+            body: new ListView(
         children: <Widget>[
-          new ListView(
-            shrinkWrap: true,
-            children:
-                //nextImage == null ? Text(errorMessage) : (nextImage),
-                imagesWidget,
-          ),
-
-          //nextImage != null ? Text("I like it ;)") : Text(""),
-          new Text("Image " +
-              imageIndex.toString() +
-              " / " +
-              storageSize.toString() +
-              "\n"),
-
-          new MaterialButton(
-            padding: EdgeInsets.all(10),
-            minWidth: 100,
-            height: 50,
-            color: Global.buttonColors,
-            onPressed: () {
-              getTheWinner();
-            },
-            child: new Text(
-              "Laske äänet",
-              style: new TextStyle(fontSize: 100 / 7, color: Colors.white),
+        new Column(
+          children: <Widget>[
+                  //nextImage == null ? Text(errorMessage) : (nextImage),
+            Column(
+              children: imagesWidget,
             ),
-          ),
-        ],
-      ),
+            //nextImage != null ? Text("I like it ;)") : Text(""),
+            new Text("Image " +
+                imageIndex.toString() +
+                " / " +
+                storageSize.toString() +
+                "\n"),
+
+            new MaterialButton(
+              padding: EdgeInsets.all(10),
+              minWidth: 100,
+              height: 50,
+              color: Global.buttonColors,
+              onPressed: () {
+                getTheWinner();
+              },
+              child: new Text(
+                "Laske äänet",
+                style: new TextStyle(fontSize: 100 / 7, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ],
     )));
   }
 
@@ -103,14 +101,17 @@ class PicturesState extends State<Pictures> {
     } else {
       List<Widget> listOfImages = new List<Widget>();
       for (int i = 0; i < ImageVotes.instance.votes.length; i++) {
-        listOfImages.add(ListTile(
-          title: SizedBox(
-            width: Global.SCREENWIDTH * 0.9,
-            child: allImages[i],
-          ),
-        ));
         listOfImages.add(
-          Row(
+          Card(
+              child: Column(
+            children: <Widget>[
+              ListTile(
+                title: SizedBox(
+                  width: Global.SCREENWIDTH * 0.9,
+                  child: allImages[i],
+                ),
+              ),
+              Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -149,6 +150,8 @@ class PicturesState extends State<Pictures> {
                     ),
             ],
           ),
+            ],
+          )),
         );
       }
       imagesWidget = listOfImages;
