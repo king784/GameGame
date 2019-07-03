@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../route_generator.dart';
 import 'home.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: MasterTheme.mainTheme,
       title: 'Game Game Messis',
       home: Home(),
-      initialRoute: '/home',
+      initialRoute: '/startPage',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

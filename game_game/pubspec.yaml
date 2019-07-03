@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  geolocator: '^5.0.0'
   
   font_awesome_flutter: ^8.4.0
 
