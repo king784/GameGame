@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import '../Globals.dart';
+import '../Navigation.dart';
 import '../radialMenu.dart';
 
 class Start extends StatefulWidget {
@@ -90,7 +91,8 @@ class _StartState extends State<Start> {
                 Padding(
                   padding: EdgeInsets.all(40),
                   child: MaterialButton(
-                    onPressed: () {},
+                    onPressed: () =>
+                        Navigation.openUserPageWithoutMenu(context),
                     color: MasterTheme.bgBoxColour,
                     padding: EdgeInsets.all(2),
                     child: Row(
@@ -117,7 +119,46 @@ class _StartState extends State<Start> {
           child: Scaffold(
             body: ListView(
               children: <Widget>[
-                Text('Location services are disabled'),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 100, 30, 5),
+                        child: Text(
+                            'Sijainti ei ole käytössä. Pystyt silti katsomaan omat tietosi',
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 5, 30, 5),
+                    child: MaterialButton(
+                      onPressed: () =>
+                          Navigation.openUserPageWithoutMenu(context),
+                      color: MasterTheme.bgBoxColour,
+                      padding: EdgeInsets.all(2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Tarkista omat tiedot",
+                              style: Theme.of(context).textTheme.body1),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: Icon(
+                              FontAwesomeIcons.arrowRight,
+                              size: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

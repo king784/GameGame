@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
+import 'package:flutter_testuu/pages/userPageNoMenu.dart';
 import './pages/home.dart';
 import './pages/userPage.dart';
 
@@ -42,6 +43,14 @@ class RouteGenerator {
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => UserPage(),
+          );
+        }
+        return _errorRoute();
+
+        case '/userPageWithoutMenu':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => UserPageWithoutMenu(),
           );
         }
         return _errorRoute();
