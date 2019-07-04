@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: MasterTheme.mainTheme,
       title: 'Game Game Messis',
       home: Home(),
-      initialRoute: '/home',
+      initialRoute: '/startPage',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

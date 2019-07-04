@@ -5,6 +5,8 @@ import 'package:vector_math/vector_math.dart' show radians;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'Navigation.dart';
+
 class RadialMenu extends StatefulWidget {
   createState() => _RadialMenuState();
 }
@@ -74,19 +76,19 @@ class RadialAnimation extends StatelessWidget {
               _buildButton(335,
                   color: MasterTheme.btnColours[0],
                   icon: FontAwesomeIcons.user,
-                  function: () => openUserPage(context)),
+                  function: () => Navigation.openUserPage(context)),
               _buildButton(15,
                   color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.basketballBall,
-                  function: () => openMainPage(context)),
+                  function: () => Navigation.openMainPage(context)),
               _buildButton(55,
                   color: MasterTheme.btnColours[2],
                   icon: FontAwesomeIcons.gamepad,
-                  function: () => openGames(context)),
+                  function: () => Navigation.openGames(context)),
               _buildButton(95,
                   color: MasterTheme.btnColours[3],
                   icon: FontAwesomeIcons.question,
-                  function: () => openHelp(context)),
+                  function: () => Navigation.openHelp(context)),
               Transform.scale(
                 scale: scale.value -
                     1.5, // subtract the beginning value to run the opposite animation
@@ -119,22 +121,6 @@ class RadialAnimation extends StatelessWidget {
 
   void _close() {
     controller.reverse();
-  }
-
-  openMainPage(BuildContext context) {
-    Navigator.of(context).pushNamed('/home', arguments: 'home');
-  }
-
-  openHelp(BuildContext context) {
-    Navigator.of(context).pushNamed('/help', arguments: 'help');
-  }
-
-  openGames(BuildContext context) {
-    Navigator.of(context).pushNamed('/activities', arguments: 'activities');
-  }
-
-  openUserPage(BuildContext context) {
-    Navigator.of(context).pushNamed('/userPage', arguments: 'userPage');
   }
 
   _buildButton(double angle,

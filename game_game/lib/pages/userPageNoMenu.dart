@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Navigation.dart';
+
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/Globals.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../radialMenu.dart';
-import 'package:flutter_testuu/Globals.dart';
-
-class UserPage extends StatefulWidget {
+class UserPageWithoutMenu extends StatefulWidget {
   @override
-  _UserPageState createState() => _UserPageState();
+  _UserPageWithoutMenuState createState() => _UserPageWithoutMenuState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _UserPageWithoutMenuState extends State<UserPageWithoutMenu> {
   double screenWidth = Global.SCREENWIDTH * .9;
   int watchedGames = 0;
 
@@ -28,7 +28,19 @@ class _UserPageState extends State<UserPage> {
                 alignment: Alignment.topCenter,
                 child: Row(
                   children: <Widget>[
-                    RadialMenu(),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openStartPage(context),
+                          elevation: 0),
+                    ),
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.all(20),
