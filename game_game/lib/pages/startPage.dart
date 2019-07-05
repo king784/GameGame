@@ -16,7 +16,15 @@ class _StartState extends State<Start> {
   GeolocationStatus geolocationStatus;
   Position currentPos;
 
+  List<Placemark> placemarkEventAddress;
+  List<Placemark> placemarkUserLocation;
+
   bool positionDataOk = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +136,11 @@ class _StartState extends State<Start> {
     //update the current location
     currentPos = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  void getEventAddressIntoPlacemark() async {
+    placemarkEventAddress =
+        await Geolocator().placemarkFromAddress("Heikinkatu 7, Kotka");
   }
 
   void checkGeolocationStatus() async {
