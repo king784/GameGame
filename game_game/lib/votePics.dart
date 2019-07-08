@@ -64,22 +64,6 @@ class VoteState extends State<_VotePics>{
             child: new Column(
               children: <Widget>[
 
-                  new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: 100,
-                      height: 50,
-                      color: Global.buttonColors,
-                      onPressed: () {
-                        choosePhoto();
-                      },
-                      child: new Text("Lisää kuva",
-                        style: new TextStyle(
-                            fontSize: 100 / 7,
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-
                     SizedBox(height: 50),
               
                 _image == null ? Text("") : Image.file(_image,
