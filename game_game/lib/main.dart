@@ -13,6 +13,7 @@ import 'PassTheBall.dart';
 import 'mainTrivia.dart';
 import 'Trivia.dart';
 import 'votePics.dart';
+import "pictures.dart";
 
 void main() => runApp(MyApp());
 
@@ -191,7 +192,7 @@ class MainMenuState extends State<MainMenu>  {
           Center(
             child: RaisedButton(
             color: Global.buttonColors.withGreen((Global.mainColorValue * 1).toInt()),
-              child: Text('Vote photos',
+              child: Text('Kuvaäänestys',
               style: new TextStyle(
                 fontSize: 25
               ),
@@ -200,7 +201,7 @@ class MainMenuState extends State<MainMenu>  {
                 menuIsActive = false;
                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VotePics()),
+                  MaterialPageRoute(builder: (context) => Pictures()),
                 );
               },
             ),
