@@ -3,8 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:async';
 import 'Globals.dart';
+import 'Themes/MasterTheme.dart';
 
 void main() => runApp(PlayerVotingMain());
 
@@ -83,6 +85,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
             ),
+
             getPlayers(),
             // StreamBuilder(
             // stream: Firestore.instance.collection('players').snapshots(),
@@ -104,7 +107,9 @@ class PlayerVotingState extends State<PlayerVoting> {
             //   }
             // }),
           ],
-        )));
+        )
+        )
+        );
     }
     else
     {
@@ -114,10 +119,12 @@ class PlayerVotingState extends State<PlayerVoting> {
           backgroundColor: Global.titleBarColor,
         ),
         body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            
             Padding(
               padding: EdgeInsets.all(30.0),
               child: Text(
@@ -167,7 +174,9 @@ class PlayerVotingState extends State<PlayerVoting> {
             //   }
             // }),
           ],
-        )));
+        )
+        )
+        );
     }
   }
 
@@ -304,12 +313,14 @@ class PlayerVotingState extends State<PlayerVoting> {
         ));
         for (int i = 0; i < allPlayers.length; i++) {
           list.add(ListTile(
+            onTap: (){giveVote(i);}, 
             title: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  ),
+                child: Text(
+                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                  style: setTeamColors(i),
+                ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10.0),
@@ -329,9 +340,9 @@ class PlayerVotingState extends State<PlayerVoting> {
       }
 
       return Expanded(
-              child: SingleChildScrollView(
-            child:
-                ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+        child: SingleChildScrollView(
+          child:
+            ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
     }
   }
 
@@ -359,12 +370,16 @@ class PlayerVotingState extends State<PlayerVoting> {
     ));
     if (searchText.isEmpty) {
       for (int i = 0; i < allPlayers.length; i++) {
+        print(setTeamColors(i));
         list.add(ListTile(
+          //dense: true,
+          onTap: (){giveVote(i);}, 
           title: Row(
-            children: <Widget>[
+            children: <Widget>[            
               Expanded(
                 child: Text(
                   allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                  style: setTeamColors(i),
                 ),
               ),
               Container(
@@ -372,6 +387,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                 child: Text(allPlayers[i].currentVotes.toString()),
               ),
             ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ));
       }
@@ -390,13 +406,15 @@ class PlayerVotingState extends State<PlayerVoting> {
                 .lastName
                 .toLowerCase()
                 .contains(searchText.toLowerCase()))) {
-          list.add(ListTile(
+          list.add(ListTile(       
+            onTap: (){giveVote(i);}, 
             title: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  ),
+                child: Text(
+                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                  style: setTeamColors(i),
+                ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10.0),
@@ -412,12 +430,12 @@ class PlayerVotingState extends State<PlayerVoting> {
       }
     }
 
-    return Expanded(
-              child: SingleChildScrollView(
-            child:
-                ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
-
-  }
+return Expanded(
+  //child: SingleChildScrollView(
+      child:
+        ListView(shrinkWrap: true, children: filteredPlayerWidgets));
+  //)
+}
 
   Widget buildListItem(BuildContext context, DocumentSnapshot document) {
     return ListTile(
@@ -449,4 +467,38 @@ class PlayerVotingState extends State<PlayerVoting> {
       },
     );
   }
+
+  TextStyle setTeamColors(int i){
+    if(allPlayers[i].team == "KTP"){
+      return TextStyle(
+        color: MasterTheme.accentColour,
+        //background: Paint()..color = Colors.white,
+      );
+    }
+    else {
+      return TextStyle(
+        color: Colors.red,
+      );
+    }
+  }
+
+  void giveVote(int i) async{
+    allPlayers[i].currentVotes++;
+    DocumentReference gamesRef = await Firestore.instance
+        .collection('players')
+        .document('-LhAU5GSvy91YLuAHU7S');
+
+    print("Jee");
+
+    setState(() {
+      Firestore.instance.runTransaction((transaction) async {
+          DocumentSnapshot freshSnap =
+              await transaction.get(gamesRef);
+          await transaction.update(freshSnap.reference, {
+            'currentVotes': freshSnap['currentVotes'] + 1,
+          });
+        });
+    });
+  }
+
 }
