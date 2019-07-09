@@ -145,7 +145,7 @@ class _StartState extends State<Start> {
 
   void checkGeolocationStatus() async {
     geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
-    print('Geolocation status: ' + geolocationStatus.value.toString());
+    //print('Geolocation status: ' + geolocationStatus.value.toString());
     if (geolocationStatus.value != 2) {
       //check if location status is anything but granted
       positionDataOk = false;

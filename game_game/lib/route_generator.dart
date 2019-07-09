@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Trivia.dart';
+import 'package:flutter_testuu/Voting.dart';
 //import 'package:routing_prep/main.dart';
 
 import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
 import 'package:flutter_testuu/pages/userPageNoMenu.dart';
+import 'package:flutter_testuu/pictures.dart';
 import './pages/home.dart';
 import './pages/userPage.dart';
 
@@ -51,6 +54,30 @@ class RouteGenerator {
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => UserPageWithoutMenu(),
+          );
+        }
+        return _errorRoute();
+
+        case '/imageVoting':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => Pictures(),
+          );
+        }
+        return _errorRoute();
+
+        case '/playerVoting':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => PlayerVoting(),
+          );
+        }
+        return _errorRoute();
+
+        case '/trivia':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => Trivia(),
           );
         }
         return _errorRoute();
