@@ -71,7 +71,7 @@ class AdminState extends State<Admin> {
             RaisedButton(
               child: const Text("Lisää pelaaja"),
               onPressed: (){
-                Player pelaaja = new Player(12, 'Testuu', 'Jäbä', 'BC Nokia');
+                Player pelaaja = new Player(9, 12, 'Testuu', 'Jäbä', 'BC Nokia');
                 CollectionReference dbCollectionRef = Firestore.instance.collection('players');
                 Firestore.instance.runTransaction((Transaction tx) async {
                   var result = await dbCollectionRef.add(pelaaja.toJson());

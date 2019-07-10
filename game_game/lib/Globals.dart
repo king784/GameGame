@@ -28,21 +28,24 @@ class Global{
 }
 
 class Player{
+  int id;
   int currentVotes;
   final String firstName;
   final String lastName;
   final String team;
 
-  Player(this.currentVotes, this.firstName, this.lastName, this.team){}
+  Player(this.id, this.currentVotes, this.firstName, this.lastName, this.team){}
 
   Player.fromJson(Map<String, dynamic> json)
-  : firstName = json['firstName'],
+  : id = json['ID'],
+    firstName = json['firstName'],
     lastName = json['lastName'],
     team = json['team'],
     currentVotes = json['currentVotes'];
 
   Map<String, dynamic> toJson() =>
   {
+    'ID': id,
     'firstName': firstName,
     'lastName': lastName,
     'team': team,

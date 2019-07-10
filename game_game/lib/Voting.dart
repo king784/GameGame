@@ -199,6 +199,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     playerSnapshot.forEach((player) {
       //playerMap = jsonDecode(player.data.toString());
       thePlayer = new Player.fromJson(player.data);
+      print(thePlayer.id);
       allPlayers.add(thePlayer);
     });
 
@@ -483,21 +484,50 @@ return Expanded(
   }
 
   void giveVote(int i) async{
-    allPlayers[i].currentVotes++;
-    DocumentReference gamesRef = await Firestore.instance
-        .collection('players')
-        .document('-LhAU5GSvy91YLuAHU7S');
+    // allPlayers[i].currentVotes++;
+    // DocumentReference gamesRef = await Firestore.instance
+    //     .collection('players')
+    //     .document('-LhAU5GSvy91YLuAHU7S');
 
-    print("Jee");
+    // print("Jee");
 
-    setState(() {
+    // setState(() {
+    //   Firestore.instance.runTransaction((transaction) async {
+    //       DocumentSnapshot freshSnap =
+    //           await transaction.get(gamesRef);
+    //       await transaction.update(freshSnap.reference, {
+    //         'currentVotes': freshSnap['currentVotes'] + 1,
+    //       });
+    //     });
+    // });
+    
+    // works!
+    // Firestore.instance.collection('players').where('ID', isEqualTo: i).snapshots().listen(
+    //   (data) => print(data.documents[0]['firstName'])
+    // );
+
+    // var streamRef = Firestore.instance.collection('players').where('ID', isEqualTo: i).snapshots().listen(
+    //   (data) => {  
+    //     Firestore.instance.runTransaction((transaction) async {
+    //         DocumentSnapshot freshSnap = await transaction.get(data.documents[0].reference);
+    //         await transaction.update(freshSnap.reference, {
+    //           'currentVotes': freshSnap['currentVotes'] + 1,
+    //         });
+    //       })
+    //   }//print(data.documents[0]['firstName'])
+    // );
+
+    QuerySnapshot playersQuery = await Firestore.instance.collection('players').where('ID', isEqualTo: i).getDocuments();
+    final DocumentReference playerRef = Firestore.instance.collection('players').document(playersQuery.documents[0].documentID);
       Firestore.instance.runTransaction((transaction) async {
-          DocumentSnapshot freshSnap =
-              await transaction.get(gamesRef);
+          DocumentSnapshot freshSnap = await transaction.get(playerRef);
           await transaction.update(freshSnap.reference, {
             'currentVotes': freshSnap['currentVotes'] + 1,
           });
         });
+    allPlayers[i].currentVotes++;
+    setState(() {
+
     });
   }
 
