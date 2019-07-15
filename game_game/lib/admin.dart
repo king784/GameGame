@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'Globals.dart';
@@ -71,11 +72,20 @@ class AdminState extends State<Admin> {
             RaisedButton(
               child: const Text("Lisää pelaaja"),
               onPressed: (){
-                Player pelaaja = new Player(9, 12, 'Testuu', 'Jäbä', 'BC Nokia');
+                Player pelaaja = new Player(9, 12, 'Testuu', 'Jäbä', 'BC Nokia', 4);
                 CollectionReference dbCollectionRef = Firestore.instance.collection('players');
                 Firestore.instance.runTransaction((Transaction tx) async {
                   var result = await dbCollectionRef.add(pelaaja.toJson());
                 });
+                setState(() {
+                  
+                });
+              },
+            ),
+            RaisedButton(
+              child: const Text("Lisää pelinumerot"),
+              onPressed: (){
+                AddPlayerNumbers();
                 setState(() {
                   
                 });
@@ -105,6 +115,22 @@ class AdminState extends State<Admin> {
           ],
         )
       );
+    }
+
+    void AddPlayerNumbers() async
+    {
+      Random rnd = new Random();
+      QuerySnapshot playersQuery = await Firestore.instance.collection('players').getDocuments();
+      for(int i = 0; i < playersQuery.documents.length; i++)
+      {
+      final DocumentReference playerRef = Firestore.instance.collection('players').document(playersQuery.documents[i].documentID);
+        Firestore.instance.runTransaction((transaction) async {
+            DocumentSnapshot freshSnap = await transaction.get(playerRef);
+            await transaction.update(freshSnap.reference, {
+              'playerNumber': (1+rnd.nextInt(99-1)),
+            });
+          });
+      }
     }
 
     void getVotingStartTime() async {

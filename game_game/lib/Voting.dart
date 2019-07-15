@@ -223,6 +223,7 @@ class PlayerVotingState extends State<PlayerVoting> {
       customTimer =
           Timer.periodic(Duration(seconds: 1), (Timer t) => updateTimeLeft());
     });
+    playersGot = true;
   }
 
   // Updates the visible timer.
@@ -293,6 +294,8 @@ class PlayerVotingState extends State<PlayerVoting> {
     } else {
       if (firstRun) {
         firstRun = false;
+
+        allPlayers.sort((a, b) => a.playerNumber.compareTo(b.playerNumber));
         List<Widget> list = new List<Widget>();
         list.add(Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -335,8 +338,6 @@ class PlayerVotingState extends State<PlayerVoting> {
           playerWidgets = list;
           filteredPlayerWidgets = playerWidgets;
         });
-        
-        playersGot = true;
         addFilterListener();
       }
 
@@ -349,6 +350,7 @@ class PlayerVotingState extends State<PlayerVoting> {
 
   Widget buildFilteredPlayers() {
     filteredPlayerWidgets.clear();
+    allPlayers.sort((a, b) => a.playerNumber.compareTo(b.playerNumber));
     List<Widget> list = new List<Widget>();
     list.clear();
     list.add(Row(
@@ -425,10 +427,10 @@ class PlayerVotingState extends State<PlayerVoting> {
             ),
           ));
         }
-        setState(() {
-          filteredPlayerWidgets = list;
-        });
       }
+      setState(() {
+          filteredPlayerWidgets = list;
+      });
     }
 
 return Expanded(
@@ -530,5 +532,7 @@ return Expanded(
 
     });
   }
+
+  
 
 }
