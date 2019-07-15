@@ -5,6 +5,7 @@ class MasterTheme {
   static Color primaryColour = Colors.white;
   static Color accentColour = Color.fromARGB(255, 0, 127, 0);
   static Color bgBoxColour = Color.fromARGB(150, 65, 68, 68);
+  static Color awayTeamColour = Colors.red;
 
   static String bestFont = 'Fredericka';
 

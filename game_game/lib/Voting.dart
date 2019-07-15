@@ -43,6 +43,10 @@ class PlayerVotingState extends State<PlayerVoting> {
   Icon searchIcon = new Icon(Icons.search);
   String textBarHint = 'Etsi Pelaajaa';
 
+  // Dropdown variables
+  String sortValue = "Pelaajanumero";
+  final List<String> sortValues = ['Pelaajanumero', 'Etunimi', 'Sukunimi'];
+
   // Voting timer variables
   String timeText = "";
   DateTime votingEndTime;
@@ -58,125 +62,165 @@ class PlayerVotingState extends State<PlayerVoting> {
 
   @override
   Widget build(BuildContext context) {
-    if(valuesOnce)
-    {
+    if (valuesOnce) {
       getGameValues();
       valuesOnce = false;
     }
 
-    if(!playersGot)
-    {
-    return Scaffold(
-        appBar: AppBar(
-          title: (Text('Pelaajaäänestys')),
-          backgroundColor: Global.titleBarColor,
-        ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child: Text(
-                timeText,
-                style: TextStyle(
-                  fontSize: 30,
-                ),
+    if (!playersGot) {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
+          child: Scaffold(
+              appBar: AppBar(
+                title: (Text('Pelaajaäänestys')),
+                backgroundColor: Global.titleBarColor,
               ),
-            ),
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(30.0),
+                    child: Text(
+                      timeText,
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
 
-            getPlayers(),
-            // StreamBuilder(
-            // stream: Firestore.instance.collection('players').snapshots(),
-            // builder: (context, snapshot){
-            //   if(!snapshot.hasData)
-            //   {
-            //     return new CircularProgressIndicator();
-            //   }
-            //   else
-            //   {
-            //     print(snapshot.data);
-            //     return new ListView.builder(
-            //       shrinkWrap: true,
-            //       itemExtent: 80.0,
-            //       itemCount: snapshot.data.documents.length,
-            //       itemBuilder: (context, index) =>
-            //         buildListItem(context, snapshot.data.documents[index]),
-            //     );
-            //   }
-            // }),
-          ],
-        )
-        )
-        );
-    }
-    else
-    {
-      return Scaffold(
-        appBar: AppBar(
-          title: (Text('Pelaajaäänestys')),
-          backgroundColor: Global.titleBarColor,
+                  getPlayers(),
+                  // StreamBuilder(
+                  // stream: Firestore.instance.collection('players').snapshots(),
+                  // builder: (context, snapshot){
+                  //   if(!snapshot.hasData)
+                  //   {
+                  //     return new CircularProgressIndicator();
+                  //   }
+                  //   else
+                  //   {
+                  //     print(snapshot.data);
+                  //     return new ListView.builder(
+                  //       shrinkWrap: true,
+                  //       itemExtent: 80.0,
+                  //       itemCount: snapshot.data.documents.length,
+                  //       itemBuilder: (context, index) =>
+                  //         buildListItem(context, snapshot.data.documents[index]),
+                  //     );
+                  //   }
+                  // }),
+                ],
+              ))),
         ),
-        body: Center(
+      );
+    } else {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
+          child: Scaffold(
+              appBar: AppBar(
+                title: (Text('Pelaajaäänestys')),
+                backgroundColor: Global.titleBarColor,
+              ),
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(30.0),
+                    child: Text(
+                      timeText,
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                  ),
 
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child: Text(
-                timeText,
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-            ),
-            Center(
-              child: Text(
-                "Ääniä jäljellä: " + votes.toString(),
-                textAlign: TextAlign.center,
-                style: new TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ),
-            Center(
-              child: Text(
-                "Etsi pelaaja",
-                textAlign: TextAlign.center,
-                style: new TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ),
-          
-            buildFilteredPlayers(),
-            // StreamBuilder(
-            // stream: Firestore.instance.collection('players').snapshots(),
-            // builder: (context, snapshot){
-            //   if(!snapshot.hasData)
-            //   {
-            //     return new CircularProgressIndicator();
-            //   }
-            //   else
-            //   {
-            //     print(snapshot.data);
-            //     return new ListView.builder(
-            //       shrinkWrap: true,
-            //       itemExtent: 80.0,
-            //       itemCount: snapshot.data.documents.length,
-            //       itemBuilder: (context, index) =>
-            //         buildListItem(context, snapshot.data.documents[index]),
-            //     );
-            //   }
-            // }),
-          ],
-        )
-        )
-        );
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Text(
+                      "Ääniä jäljellä: " + votes.toString(),
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Järjestys: ",
+                              style: new TextStyle(
+                                fontSize: 20.0,
+                              )),
+                          Center(
+                            child: DropdownButton<String>(
+                              value: sortValue,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  sortValue = newValue;
+                                  sortPlayers(sortValue);
+                                });
+                              },
+                              items: sortValues.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Text(
+                      "Etsi pelaaja",
+                      textAlign: TextAlign.center,
+                      style: new TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+
+                  buildFilteredPlayers(),
+                  // StreamBuilder(
+                  // stream: Firestore.instance.collection('players').snapshots(),
+                  // builder: (context, snapshot){
+                  //   if(!snapshot.hasData)
+                  //   {
+                  //     return new CircularProgressIndicator();
+                  //   }
+                  //   else
+                  //   {
+                  //     print(snapshot.data);
+                  //     return new ListView.builder(
+                  //       shrinkWrap: true,
+                  //       itemExtent: 80.0,
+                  //       itemCount: snapshot.data.documents.length,
+                  //       itemBuilder: (context, index) =>
+                  //         buildListItem(context, snapshot.data.documents[index]),
+                  //     );
+                  //   }
+                  // }),
+                ],
+              ))),
+        ),
+      );
     }
   }
 
@@ -252,15 +296,13 @@ class PlayerVotingState extends State<PlayerVoting> {
         setState(() {
           searchText = "";
           filteredPlayers = allPlayers;
-          if(searchIcon.icon == Icons.close)
-          {
+          if (searchIcon.icon == Icons.close) {
             searchIcon = new Icon(Icons.search);
           }
         });
       } else {
         setState(() {
-          if(searchIcon.icon == Icons.search)
-          {
+          if (searchIcon.icon == Icons.search) {
             searchIcon = new Icon(Icons.close);
           }
           searchText = filter.text;
@@ -269,28 +311,22 @@ class PlayerVotingState extends State<PlayerVoting> {
     });
   }
 
-  void searchPressed()
-  {
+  void searchPressed() {
     setState(() {
-     if(searchIcon.icon == Icons.search)
-     {
-       searchIcon = new Icon(Icons.close);
-     }
-     else
-     {
-       searchIcon = new Icon(Icons.search);
-       filteredPlayers = allPlayers;
-       filter.clear();
-     } 
+      if (searchIcon.icon == Icons.search) {
+        searchIcon = new Icon(Icons.close);
+      } else {
+        searchIcon = new Icon(Icons.search);
+        filteredPlayers = allPlayers;
+        filter.clear();
+      }
     });
   }
 
   Widget getPlayers() {
     playerWidgets.clear();
     if (allPlayers.length <= 0) {
-      return Center(
-        child: CircularProgressIndicator()
-        );
+      return Center(child: CircularProgressIndicator());
     } else {
       if (firstRun) {
         firstRun = false;
@@ -299,7 +335,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         List<Widget> list = new List<Widget>();
         list.add(Row(
           mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               width: 250,
@@ -317,14 +353,16 @@ class PlayerVotingState extends State<PlayerVoting> {
         ));
         for (int i = 0; i < allPlayers.length; i++) {
           list.add(ListTile(
-            onTap: (){giveVote(i);}, 
+            onTap: () {
+              giveVote(i);
+            },
             title: Row(
               children: <Widget>[
                 Expanded(
-                child: Text(
-                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: setTeamColors(i),
-                ),
+                  child: Text(
+                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                    style: setTeamColors(i),
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10.0),
@@ -342,15 +380,34 @@ class PlayerVotingState extends State<PlayerVoting> {
       }
 
       return Expanded(
-        child: SingleChildScrollView(
-          child:
-            ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+          child: SingleChildScrollView(
+              child:
+                  ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+    }
+  }
+
+  void sortPlayers(String newSortValue) {
+    switch (newSortValue) {
+      case "Pelaajanumero":
+        allPlayers.sort((a, b) => a.playerNumber.compareTo(b.playerNumber));
+        break;
+      case "Etunimi":
+        allPlayers.sort((a, b) => a.firstName.compareTo(b.firstName));
+        break;
+      case "Sukunimi":
+        allPlayers.sort((a, b) => a.lastName.compareTo(b.lastName));
+        break;
+
+      default:
+        allPlayers.sort((a, b) => a.playerNumber.compareTo(b.playerNumber));
+        print(
+            "Code should never go here. If it did, something is wrong, learn to code you dumbo.");
+        break;
     }
   }
 
   Widget buildFilteredPlayers() {
     filteredPlayerWidgets.clear();
-    allPlayers.sort((a, b) => a.playerNumber.compareTo(b.playerNumber));
     List<Widget> list = new List<Widget>();
     list.clear();
     list.add(Row(
@@ -376,9 +433,11 @@ class PlayerVotingState extends State<PlayerVoting> {
         print(setTeamColors(i));
         list.add(ListTile(
           //dense: true,
-          onTap: (){giveVote(i);}, 
+          onTap: () {
+            giveVote(i);
+          },
           title: Row(
-            children: <Widget>[            
+            children: <Widget>[
               Expanded(
                 child: Text(
                   allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
@@ -395,9 +454,9 @@ class PlayerVotingState extends State<PlayerVoting> {
         ));
       }
       setState(() {
-          playerWidgets = list;
-          filteredPlayerWidgets = playerWidgets;
-        });
+        playerWidgets = list;
+        filteredPlayerWidgets = playerWidgets;
+      });
     } else {
       for (int i = 0; i < allPlayers.length; i++) {
         // Check if search text matches first or last name
@@ -409,15 +468,17 @@ class PlayerVotingState extends State<PlayerVoting> {
                 .lastName
                 .toLowerCase()
                 .contains(searchText.toLowerCase()))) {
-          list.add(ListTile(       
-            onTap: (){giveVote(i);}, 
+          list.add(ListTile(
+            onTap: () {
+              giveVote(i);
+            },
             title: Row(
               children: <Widget>[
                 Expanded(
-                child: Text(
-                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: setTeamColors(i),
-                ),
+                  child: Text(
+                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                    style: setTeamColors(i),
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10.0),
@@ -429,16 +490,15 @@ class PlayerVotingState extends State<PlayerVoting> {
         }
       }
       setState(() {
-          filteredPlayerWidgets = list;
+        filteredPlayerWidgets = list;
       });
     }
 
-return Expanded(
-  //child: SingleChildScrollView(
-      child:
-        ListView(shrinkWrap: true, children: filteredPlayerWidgets));
-  //)
-}
+    return Expanded(
+        //child: SingleChildScrollView(
+        child: ListView(shrinkWrap: true, children: filteredPlayerWidgets));
+    //)
+  }
 
   Widget buildListItem(BuildContext context, DocumentSnapshot document) {
     return ListTile(
@@ -471,21 +531,20 @@ return Expanded(
     );
   }
 
-  TextStyle setTeamColors(int i){
-    if(allPlayers[i].team == "KTP"){
+  TextStyle setTeamColors(int i) {
+    if (allPlayers[i].team == "KTP") {
       return TextStyle(
         color: MasterTheme.accentColour,
         //background: Paint()..color = Colors.white,
       );
-    }
-    else {
+    } else {
       return TextStyle(
-        color: Colors.red,
+        color: MasterTheme.awayTeamColour,
       );
     }
   }
 
-  void giveVote(int i) async{
+  void giveVote(int i) async {
     // allPlayers[i].currentVotes++;
     // DocumentReference gamesRef = await Firestore.instance
     //     .collection('players')
@@ -502,14 +561,14 @@ return Expanded(
     //       });
     //     });
     // });
-    
+
     // works!
     // Firestore.instance.collection('players').where('ID', isEqualTo: i).snapshots().listen(
     //   (data) => print(data.documents[0]['firstName'])
     // );
 
     // var streamRef = Firestore.instance.collection('players').where('ID', isEqualTo: i).snapshots().listen(
-    //   (data) => {  
+    //   (data) => {
     //     Firestore.instance.runTransaction((transaction) async {
     //         DocumentSnapshot freshSnap = await transaction.get(data.documents[0].reference);
     //         await transaction.update(freshSnap.reference, {
@@ -518,21 +577,25 @@ return Expanded(
     //       })
     //   }//print(data.documents[0]['firstName'])
     // );
+    
+    //print(allPlayers[i].firstName + " " + allPlayers[i].lastName + " " + allPlayers[i].id.toString());
 
-    QuerySnapshot playersQuery = await Firestore.instance.collection('players').where('ID', isEqualTo: i).getDocuments();
-    final DocumentReference playerRef = Firestore.instance.collection('players').document(playersQuery.documents[0].documentID);
-      Firestore.instance.runTransaction((transaction) async {
-          DocumentSnapshot freshSnap = await transaction.get(playerRef);
-          await transaction.update(freshSnap.reference, {
-            'currentVotes': freshSnap['currentVotes'] + 1,
-          });
-        });
-    allPlayers[i].currentVotes++;
-    setState(() {
-
+    QuerySnapshot playersQuery = await Firestore.instance
+        .collection('players')
+        .where('ID', isEqualTo: allPlayers[i].id)
+        .getDocuments();
+    final DocumentReference playerRef = Firestore.instance
+        .collection('players')
+        .document(playersQuery.documents[0].documentID);
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot freshSnap = await transaction.get(playerRef);
+      await transaction.update(freshSnap.reference, {
+        'currentVotes': freshSnap['currentVotes'] + 1,
+      }).then((data){
+        allPlayers[i].currentVotes++;
+      });
     });
+    
+    setState(() {});
   }
-
-  
-
 }
