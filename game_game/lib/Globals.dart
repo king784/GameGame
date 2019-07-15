@@ -33,15 +33,17 @@ class Player{
   final String firstName;
   final String lastName;
   final String team;
+  int playerNumber;
 
-  Player(this.id, this.currentVotes, this.firstName, this.lastName, this.team){}
+  Player(this.id, this.currentVotes, this.firstName, this.lastName, this.team, this.playerNumber){}
 
   Player.fromJson(Map<String, dynamic> json)
   : id = json['ID'],
     firstName = json['firstName'],
     lastName = json['lastName'],
     team = json['team'],
-    currentVotes = json['currentVotes'];
+    currentVotes = json['currentVotes'],
+    playerNumber = json['playerNumber'];
 
   Map<String, dynamic> toJson() =>
   {
@@ -50,6 +52,7 @@ class Player{
     'lastName': lastName,
     'team': team,
     'currentVotes': 0,
+    'playerNumber': playerNumber
   };
 }
 
