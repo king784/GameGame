@@ -24,4 +24,16 @@ class Navigation {
   static void openStartPage(BuildContext context) {
     Navigator.of(context).pushNamed('/startPage', arguments: 'startPage');
   }
+
+  static void openImageVoting(BuildContext context) {
+    Navigator.of(context).pushNamed('/imageVoting', arguments: 'imageVoting');
+  }
+
+  static void openPlayervoting(BuildContext context) {
+    Navigator.of(context).pushNamed('/playerVoting', arguments: 'playerVoting');
+  }
+
+  static void openTrivia(BuildContext context) {
+    Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
+  }
 }

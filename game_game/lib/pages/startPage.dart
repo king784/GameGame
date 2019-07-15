@@ -16,7 +16,15 @@ class _StartState extends State<Start> {
   GeolocationStatus geolocationStatus;
   Position currentPos;
 
+  List<Placemark> placemarkEventAddress;
+  List<Placemark> placemarkUserLocation;
+
   bool positionDataOk = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,9 +138,14 @@ class _StartState extends State<Start> {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 
+  void getEventAddressIntoPlacemark() async {
+    placemarkEventAddress =
+        await Geolocator().placemarkFromAddress("Heikinkatu 7, Kotka");
+  }
+
   void checkGeolocationStatus() async {
     geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
-    print('Geolocation status: ' + geolocationStatus.value.toString());
+    //print('Geolocation status: ' + geolocationStatus.value.toString());
     if (geolocationStatus.value != 2) {
       //check if location status is anything but granted
       positionDataOk = false;

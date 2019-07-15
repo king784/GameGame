@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
+import '../Navigation.dart';
 import '../radialMenu.dart';
 
 class Activities extends StatefulWidget {
@@ -41,52 +43,99 @@ class _ActivitiesState extends State<Activities> {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  width: screenWidth * .8,
-                  color: MasterTheme.bgBoxColour,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Pelaaja äänestys',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.body1,
+              Center(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
+                      child: SizedBox(
+                        width: Global.SCREENWIDTH * .7,
+                        child: RaisedButton(
+                          color: MasterTheme.accentColour,
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Testaa tietosi',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.body1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Icon(
+                                  FontAwesomeIcons.hatWizard,
+                                  size: 100,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => Navigation.openTrivia(context),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: FloatingActionButton(
-                          heroTag: 'toPlayerVoteBtn',
-                          child: Icon(FontAwesomeIcons.userNinja),
-                          onPressed: () {},
-                          backgroundColor: MasterTheme.accentColour,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: SizedBox(
+                        width: Global.SCREENWIDTH * .7,
+                        child: RaisedButton(
+                          color: MasterTheme.accentColour,
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Päivän paras pelaaja',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.body1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Icon(
+                                  FontAwesomeIcons.userNinja,
+                                  size: 100,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => Navigation.openPlayervoting(context),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Pelin paras kuva',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.body1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: SizedBox(
+                        width: Global.SCREENWIDTH * .7,
+                        child: RaisedButton(
+                          color: MasterTheme.accentColour,
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Pelin paras kuva',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.body1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Icon(
+                                  FontAwesomeIcons.image,
+                                  size: 100,
+                                ),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => Navigation.openImageVoting(context),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: FloatingActionButton(
-                          heroTag: 'toImageVoteBtn',
-                          child: Icon(FontAwesomeIcons.image),
-                          onPressed: () {},
-                          backgroundColor: MasterTheme.accentColour,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),

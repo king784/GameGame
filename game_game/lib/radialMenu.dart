@@ -94,12 +94,12 @@ class RadialAnimation extends StatelessWidget {
                     1.5, // subtract the beginning value to run the opposite animation
                 child: FloatingActionButton(
                   child: Icon(
-                    FontAwesomeIcons.poo,
+                    FontAwesomeIcons.times,
                     color: iconColour,
                   ),
                   heroTag: "CloseMenuBtn",
                   onPressed: _close,
-                  backgroundColor: MasterTheme.accentColour,
+                  backgroundColor: Color.fromARGB(100, 255, 255, 255),
                 ),
               ),
               Transform.scale(
