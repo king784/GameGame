@@ -4,9 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'Globals.dart';
 import 'Themes/MasterTheme.dart';
+import 'user.dart';
 
 void main() => runApp(PlayerVotingMain());
 
@@ -59,6 +62,9 @@ class PlayerVotingState extends State<PlayerVoting> {
   bool firstRun = true;
   bool playersGot = false;
   bool valuesOnce = true;
+
+  // DEBUG USER
+  User fakeUser = new User("Sportacus", false);
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +150,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: Text(
-                      "Ääniä jäljellä: " + votes.toString(),
+                      "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
                       textAlign: TextAlign.left,
                       style: new TextStyle(
                         fontSize: 20.0,
@@ -434,7 +440,8 @@ class PlayerVotingState extends State<PlayerVoting> {
         list.add(ListTile(
           //dense: true,
           onTap: () {
-            giveVote(i);
+            //giveVote(i);
+            showVotePopup(i);
           },
           title: Row(
             children: <Widget>[
@@ -470,7 +477,8 @@ class PlayerVotingState extends State<PlayerVoting> {
                 .contains(searchText.toLowerCase()))) {
           list.add(ListTile(
             onTap: () {
-              giveVote(i);
+              //giveVote(i);
+              showVotePopup(i);
             },
             title: Row(
               children: <Widget>[
@@ -544,6 +552,78 @@ class PlayerVotingState extends State<PlayerVoting> {
     }
   }
 
+  void showVotePopup(int i) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          if (fakeUser.playerVotes > 0) {
+            return Theme(
+              data: MasterTheme.mainTheme,
+              child: AlertDialog(
+                title: new Text("Annatko äänen pelaajalle " +
+                    allPlayers[i].firstName +
+                    " " +
+                    allPlayers[i].lastName),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text("Kyllä"),
+                    onPressed: () {
+                      giveVote(i);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      "En",
+                      style: TextStyle(
+                        color: MasterTheme.awayTeamColour,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Theme(
+              data: MasterTheme.mainTheme,
+              child: AlertDialog(
+                title: new Text("Ei ääniä jäljellä."),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: new Text(
+                            "Nyyh",
+                            style: TextStyle(
+                              color: MasterTheme.awayTeamColour,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: new Icon(
+                            FontAwesomeIcons.sadTear,
+                            color: MasterTheme.awayTeamColour,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+        });
+  }
+
   void giveVote(int i) async {
     // allPlayers[i].currentVotes++;
     // DocumentReference gamesRef = await Firestore.instance
@@ -577,7 +657,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     //       })
     //   }//print(data.documents[0]['firstName'])
     // );
-    
+
     //print(allPlayers[i].firstName + " " + allPlayers[i].lastName + " " + allPlayers[i].id.toString());
 
     QuerySnapshot playersQuery = await Firestore.instance
@@ -591,11 +671,12 @@ class PlayerVotingState extends State<PlayerVoting> {
       DocumentSnapshot freshSnap = await transaction.get(playerRef);
       await transaction.update(freshSnap.reference, {
         'currentVotes': freshSnap['currentVotes'] + 1,
-      }).then((data){
-        allPlayers[i].currentVotes++;
+      }).then((data) {
+        setState(() {
+          allPlayers[i].currentVotes++;
+          fakeUser.playerVotes--;
+        });
       });
     });
-    
-    setState(() {});
   }
 }
