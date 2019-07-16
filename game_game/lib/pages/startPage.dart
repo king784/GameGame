@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/StartPageForm.dart';
+import 'package:flutter_testuu/UserAndLocation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import '../Globals.dart';
@@ -13,14 +13,6 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  GeolocationStatus geolocationStatus;
-  Position currentPos;
-
-  List<Placemark> placemarkEventAddress;
-  List<Placemark> placemarkUserLocation;
-
-  bool positionDataOk = false;
-
   @override
   void initState() {
     super.initState();
@@ -34,11 +26,14 @@ class _StartState extends State<Start> {
             .size
             .width); //update the screensizes for the global values class
 
-    //ask for location permission and check the state of permission after
-    updateCurrentLocation();
-    checkGeolocationStatus();
+    //check for location data
+    UserLocation().checkGeolocationPermissionStatus();
 
-    if (positionDataOk) {
+//follow user position and distance between it and event
+    UserLocation().updateUserDistanceFromEvent();
+
+//if location data is enabled and userlocation is close enough to event location
+    if (UserLocation.positionDataEnabled && UserLocation.userLocationOk) {
       return WillPopScope(
         //onwill popscope disables the use of the android back button
         onWillPop: () async => false,
@@ -70,6 +65,14 @@ class _StartState extends State<Start> {
                     ),
                   ),
                 ),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      Text(UserLocation.userPos.toString()),
+                      Text(UserLocation().eventAddress[0].position.toString()),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -130,28 +133,5 @@ class _StartState extends State<Start> {
         ),
       );
     }
-  }
-
-  void updateCurrentLocation() async {
-    //update the current location
-    currentPos = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  }
-
-  void getEventAddressIntoPlacemark() async {
-    placemarkEventAddress =
-        await Geolocator().placemarkFromAddress("Heikinkatu 7, Kotka");
-  }
-
-  void checkGeolocationStatus() async {
-    geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
-    //print('Geolocation status: ' + geolocationStatus.value.toString());
-    if (geolocationStatus.value != 2) {
-      //check if location status is anything but granted
-      positionDataOk = false;
-    } else {
-      positionDataOk = true;
-    }
-    setState(() {});
   }
 }
