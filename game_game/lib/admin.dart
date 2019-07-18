@@ -157,6 +157,7 @@ class AdminState extends State<Admin> {
     }
 
     void resetPlayerVotes() async{
+      QuerySnapshot playersQuery = await Firestore.instance.collection('players').getDocuments();
       for(int i = 0; i < playersQuery.documents.length; i++)
       {
       final DocumentReference playerRef = Firestore.instance.collection('players').document(playersQuery.documents[i].documentID);
