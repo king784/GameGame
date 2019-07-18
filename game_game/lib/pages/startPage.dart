@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/StartPageForm.dart';
 import 'package:flutter_testuu/UserAndLocation.dart';
@@ -13,8 +14,15 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
+  UserLocation userLoc = new UserLocation();
+  Timer locationUpdateTimer;
+
   @override
   void initState() {
+    //check for location data
+    userLoc.checkGeolocationPermissionStatus();
+    locationUpdateTimer =
+        Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
     super.initState();
   }
 
@@ -26,14 +34,34 @@ class _StartState extends State<Start> {
             .size
             .width); //update the screensizes for the global values class
 
-    //check for location data
-    UserLocation().checkGeolocationPermissionStatus();
-
-//follow user position and distance between it and event
-    UserLocation().updateUserDistanceFromEvent();
-
+    //if getting user location isn't finished yet
+    if (userLoc.loadingLocation) {
+      return WillPopScope(
+        //onwill popscope disables the use of the android back button
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
+          child: Scaffold(
+            body: ListView(children: <Widget>[
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text('Odota, sijaintiasi päivitetään.',
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.caption),
+                    )
+                  ],
+                ),
+              ),
+            ]),
+          ),
+        ),
+      );
+    }
 //if location data is enabled and userlocation is close enough to event location
-    if (UserLocation.positionDataEnabled && UserLocation.userLocationOk) {
+    else if (userLoc.userLocationOk) {
       return WillPopScope(
         //onwill popscope disables the use of the android back button
         onWillPop: () async => false,
@@ -65,14 +93,6 @@ class _StartState extends State<Start> {
                     ),
                   ),
                 ),
-                Card(
-                  child: Column(
-                    children: <Widget>[
-                      Text(UserLocation.userPos.toString()),
-                      Text(UserLocation().eventAddress[0].position.toString()),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
@@ -93,7 +113,7 @@ class _StartState extends State<Start> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(20, 100, 30, 5),
                         child: Text(
-                            'Sijainti ei ole käytössä. Pystyt silti katsomaan omat tietosi',
+                            'Sijainti ei ole käytössä tai se ei toimi. Pystyt silti katsomaan omat tietosi',
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.caption),
                       ),
@@ -133,5 +153,11 @@ class _StartState extends State<Start> {
         ),
       );
     }
+  }
+
+  void checkUserLocation() {
+    //follow user position and distance between it and event
+    userLoc.updateUserDistanceFromEvent();
+    setState(() {});
   }
 }
