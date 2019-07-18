@@ -147,12 +147,26 @@ class AdminState extends State<Admin> {
     }
 
     void setVotingStartTime() async {
+      resetPlayerVotes();
       DocumentReference gamesRef = await Firestore.instance.collection('games').document('iSFhdMRlPSQWh3879pXL');
       DateTime currentTime = DateTime.now();
       FieldValue.serverTimestamp();
       gamesRef.setData({
         "VotingStartTime":currentTime
       });
+    }
+
+    void resetPlayerVotes() async{
+      for(int i = 0; i < playersQuery.documents.length; i++)
+      {
+      final DocumentReference playerRef = Firestore.instance.collection('players').document(playersQuery.documents[i].documentID);
+        Firestore.instance.runTransaction((transaction) async {
+            DocumentSnapshot freshSnap = await transaction.get(playerRef);
+            await transaction.update(freshSnap.reference, {
+              'currentVotes': 0,
+            });
+          });
+      }
     }
 
     void updateTimeLeft(){

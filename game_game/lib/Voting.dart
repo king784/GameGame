@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
+import 'dart:math';
 import 'Globals.dart';
 import 'Themes/MasterTheme.dart';
 import 'user.dart';
@@ -54,9 +55,7 @@ class PlayerVotingState extends State<PlayerVoting> {
   String timeText = "";
   DateTime votingEndTime;
   Timer customTimer;
-
-  // Debug votes
-  int votes = 1;
+  bool votingDone = false;
 
   // Do initialization stuff if first run
   bool firstRun = true;
@@ -73,6 +72,31 @@ class PlayerVotingState extends State<PlayerVoting> {
       valuesOnce = false;
     }
 
+    if(votingDone)
+    {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
+          child: Scaffold(
+              appBar: AppBar(
+                title: (Text('Pelaajaäänestys')),
+                backgroundColor: Global.titleBarColor,
+              ),
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Äänestys on ohi! Voittajat: "),
+                  Column(children: getWinners(),),
+                ]
+                )
+              )
+          )
+        )
+      );
+    }
     if (!playersGot) {
       return WillPopScope(
         onWillPop: () async => false,
@@ -230,6 +254,35 @@ class PlayerVotingState extends State<PlayerVoting> {
     }
   }
 
+  List<Widget> getWinners()
+  {
+    List<Widget> winnerPlayers = new List<Widget>();
+    allPlayers.sort((a, b) => a.currentVotes.compareTo(b.currentVotes));
+    List<int> winnerVotes = new List<int>();
+    for(int i = 0; i < allPlayers.length; i++)
+    {
+      winnerVotes.add(allPlayers[i].currentVotes);
+    }
+    int winnerVote = winnerVotes.reduce(max);
+    for(int i = 0; i < allPlayers.length; i++)
+    {
+      if(allPlayers[i].currentVotes == winnerVote)
+      {
+        winnerPlayers.add(Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                  style: setTeamColors(i),
+                ),
+              )]
+              )
+          );
+      }
+    }
+    return winnerPlayers;
+  }
+
   // Function to get needed values from database. Gets the start time of voting, so we can start calculating how much time is left.
   // Also retrieves the names of the playing teams.
   void getGameValues() async {
@@ -285,6 +338,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     if (((difference.inMinutes * 60 - difference.inSeconds) * -1) < 0) {
       timeText = "Äänestys on loppunut";
       customTimer.cancel();
+      votingDone = true;
     } else {
       String seconds =
           ((difference.inMinutes * 60 - difference.inSeconds) * -1).toString();
