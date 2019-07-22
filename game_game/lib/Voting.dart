@@ -254,8 +254,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     }
   }
 
-  List<Widget> getWinners()
-  {
+  List<Widget> getWinners() {
     List<Widget> winnerPlayers = new List<Widget>();
     allPlayers.sort((a, b) => a.currentVotes.compareTo(b.currentVotes));
     List<int> winnerVotes = new List<int>();
@@ -293,9 +292,20 @@ class PlayerVotingState extends State<PlayerVoting> {
 
     //   })
     // })
-    QuerySnapshot querySnapshot =
-        await Firestore.instance.collection('players').getDocuments();
+
+    // Set listener
+    var playerSnaps = await Firestore.instance.collection('players').snapshots();
+    playerSnaps.listen((data) {
+      data.documentChanges.forEach((change) {
+        print("JEE");
+      });
+    });
+
+
+    QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+
     List<DocumentSnapshot> playerSnapshot = new List<DocumentSnapshot>();
+
     playerSnapshot = querySnapshot.documents;
     Player thePlayer;
     //Map playerMap = jsonDecode(jsonString);
@@ -345,6 +355,7 @@ class PlayerVotingState extends State<PlayerVoting> {
       timeText =
           "Aikaa jäljellä: " + difference.inMinutes.toString() + ":" + seconds;
     }
+
     //print(timeText);
     setState(() {});
   }
