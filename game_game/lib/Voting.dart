@@ -295,9 +295,20 @@ class PlayerVotingState extends State<PlayerVoting> {
 
     // Set listener
     var playerSnaps = await Firestore.instance.collection('players').snapshots();
+    Player tempPlayer;
     playerSnaps.listen((data) {
       data.documentChanges.forEach((change) {
-        print("JEE");
+        print("JEE: ");
+        print(change.document.data.toString());
+        tempPlayer = new Player.fromJson(change.document.data);
+        for(int i = 0; i < allPlayers.length; i++)
+        {
+          if(allPlayers[i].id == tempPlayer.id)
+          {
+            allPlayers[i].currentVotes++;
+            i = allPlayers.length;
+          }
+        }
       });
     });
 
@@ -738,7 +749,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         'currentVotes': freshSnap['currentVotes'] + 1,
       }).then((data) {
         setState(() {
-          allPlayers[i].currentVotes++;
+          //allPlayers[i].currentVotes++;
           fakeUser.playerVotes--;
         });
       });
