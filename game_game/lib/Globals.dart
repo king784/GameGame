@@ -77,3 +77,23 @@ class ImageVotes{
     'votes': votes,
   };
 }
+
+class DeviceHashCodes{
+  DeviceHashCodes.codesPrivate();
+  static final DeviceHashCodes _instance = DeviceHashCodes.codesPrivate();
+  static DeviceHashCodes get instance{return _instance;}
+  List<int> hCodes = new List<int>();
+
+  DeviceHashCodes.fromJson(Map<String, dynamic> json){
+    var codesFromJson = json["hashCodes"];
+    //List<int> codeList = codesFromJson.cast<int>();
+    instance.hCodes.clear();
+
+    //for(int i = 0; i < codeList.length; i++){
+      //instance.hCodes.add(codeList[i]);
+    //}
+  }
+  Map<String, dynamic> toJson() =>{
+    'hashCodes' : hCodes,
+  };
+}

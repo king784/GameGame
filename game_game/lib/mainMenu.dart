@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_testuu/Trivia.dart';
+import 'package:flutter_testuu/pictures.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -191,7 +192,8 @@ class MainMenuState extends State<MainMenu>  {
                 menuIsActive = false;
                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VotePics()),
+                  //MaterialPageRoute(builder: (context) => VotePics()),
+                  MaterialPageRoute(builder: (context) => Pictures()),
                 );
               },
             ),
