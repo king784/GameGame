@@ -72,7 +72,7 @@ class AdminState extends State<Admin> {
             RaisedButton(
               child: const Text("Lisää pelaaja"),
               onPressed: (){
-                Player pelaaja = new Player(9, 12, 'Testuu', 'Jäbä', 'BC Nokia', 4);
+                Player pelaaja = new Player(22, 0, 'Trenton', 'Thompson', 'Salon Vilpas', 33);
                 CollectionReference dbCollectionRef = Firestore.instance.collection('players');
                 Firestore.instance.runTransaction((Transaction tx) async {
                   var result = await dbCollectionRef.add(pelaaja.toJson());
@@ -91,27 +91,27 @@ class AdminState extends State<Admin> {
                 });
               },
             ),
-            Text("Pelaajat: "),
-            StreamBuilder(
-            stream: Firestore.instance.collection('players').snapshots(),
-            builder: (context, snapshot){
-              if(!snapshot.hasData)
-              {
-                print("joo");
-                return new CircularProgressIndicator();
-              }
-              else
-              {
-                print(snapshot.data);
-                return new ListView.builder(
-                  shrinkWrap: true,
-                  itemExtent: 80.0,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) =>
-                    buildListItem(context, snapshot.data.documents[index]),
-                );
-              }
-            }),
+            // Text("Pelaajat: "),
+            // StreamBuilder(
+            // stream: Firestore.instance.collection('players').snapshots(),
+            // builder: (context, snapshot){
+            //   if(!snapshot.hasData)
+            //   {
+            //     print("joo");
+            //     return new CircularProgressIndicator();
+            //   }
+            //   else
+            //   {
+            //     print(snapshot.data);
+            //     return new ListView.builder(
+            //       shrinkWrap: true,
+            //       itemExtent: 80.0,
+            //       itemCount: snapshot.data.documents.length,
+            //       itemBuilder: (context, index) =>
+            //         buildListItem(context, snapshot.data.documents[index]),
+            //     );
+            //   }
+            // }),
           ],
         )
       );

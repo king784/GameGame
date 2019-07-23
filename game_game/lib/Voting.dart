@@ -72,42 +72,57 @@ class PlayerVotingState extends State<PlayerVoting> {
       valuesOnce = false;
     }
 
-    if(votingDone)
-    {
+    if (votingDone) {
       return WillPopScope(
-        onWillPop: () async => false,
-        child: Theme(
-          data: MasterTheme.mainTheme,
-          child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Äänestys on ohi! Voittajat: "),
-                  Column(children: getWinners(),),
-                ]
-                )
-              )
-          )
-        )
-      );
+          onWillPop: () async => false,
+          child: Theme(
+              data: MasterTheme.mainTheme,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        // back button here
+
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Pelaajaäänestys',
+                              textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                          Text("Äänestys on ohi! Voittajat: ",
+                            textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                          ),
+                          Column(
+                            children: getWinners(),
+                          ),
+                        ])),
+                  ],
+                ),
+              )));
     }
     if (!playersGot) {
       return WillPopScope(
         onWillPop: () async => false,
         child: Theme(
           data: MasterTheme.mainTheme,
-          child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
-              ),
-              body: Center(
+          child: Align(
+                alignment: Alignment.topCenter,
+                child:
+           Center(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,6 +242,25 @@ class PlayerVotingState extends State<PlayerVoting> {
                     ),
                   ),
 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 250,
+                        child: TextField(
+                          controller: filter,
+                        ),
+                      ),
+                      IconButton(
+                        icon: searchIcon,
+                        onPressed: () {
+                          searchPressed();
+                        },
+                      ),
+                    ],
+                  ),
+
                   buildFilteredPlayers(),
                   // StreamBuilder(
                   // stream: Firestore.instance.collection('players').snapshots(),
@@ -258,25 +292,31 @@ class PlayerVotingState extends State<PlayerVoting> {
     List<Widget> winnerPlayers = new List<Widget>();
     allPlayers.sort((a, b) => a.currentVotes.compareTo(b.currentVotes));
     List<int> winnerVotes = new List<int>();
-    for(int i = 0; i < allPlayers.length; i++)
-    {
+    for (int i = 0; i < allPlayers.length; i++) {
       winnerVotes.add(allPlayers[i].currentVotes);
     }
     int winnerVote = winnerVotes.reduce(max);
-    for(int i = 0; i < allPlayers.length; i++)
-    {
-      if(allPlayers[i].currentVotes == winnerVote)
-      {
-        winnerPlayers.add(Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
+    for (int i = 0; i < allPlayers.length; i++) {
+      if (allPlayers[i].currentVotes == winnerVote) {
+        winnerPlayers.add(Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
                   allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: setTeamColors(i),
+                  style: allPlayers[i].team == "KTP"
+                      ? new TextStyle(
+                          color: MasterTheme.accentColour,
+                          fontSize: 30.0,
+                        )
+                      : new TextStyle(
+                          color: MasterTheme.awayTeamColour,
+                          fontSize: 30.0,
+                        ),
                 ),
-              )]
-              )
-          );
+              ]),
+        ));
       }
     }
     return winnerPlayers;
@@ -294,17 +334,16 @@ class PlayerVotingState extends State<PlayerVoting> {
     // })
 
     // Set listener
-    var playerSnaps = await Firestore.instance.collection('players').snapshots();
+    var playerSnaps =
+        await Firestore.instance.collection('players').snapshots();
     Player tempPlayer;
     playerSnaps.listen((data) {
       data.documentChanges.forEach((change) {
-        print("JEE: ");
-        print(change.document.data.toString());
+        // print("JEE: ");
+        // print(change.document.data.toString());
         tempPlayer = new Player.fromJson(change.document.data);
-        for(int i = 0; i < allPlayers.length; i++)
-        {
-          if(allPlayers[i].id == tempPlayer.id)
-          {
+        for (int i = 0; i < allPlayers.length; i++) {
+          if (allPlayers[i].id == tempPlayer.id) {
             allPlayers[i].currentVotes++;
             i = allPlayers.length;
           }
@@ -312,8 +351,8 @@ class PlayerVotingState extends State<PlayerVoting> {
       });
     });
 
-
-    QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+    QuerySnapshot querySnapshot =
+        await Firestore.instance.collection('players').getDocuments();
 
     List<DocumentSnapshot> playerSnapshot = new List<DocumentSnapshot>();
 
@@ -492,24 +531,6 @@ class PlayerVotingState extends State<PlayerVoting> {
     filteredPlayerWidgets.clear();
     List<Widget> list = new List<Widget>();
     list.clear();
-    list.add(Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          width: 250,
-          child: TextField(
-            controller: filter,
-          ),
-        ),
-        IconButton(
-          icon: searchIcon,
-          onPressed: () {
-            searchPressed();
-          },
-        ),
-      ],
-    ));
     if (searchText.isEmpty) {
       for (int i = 0; i < allPlayers.length; i++) {
         print(setTeamColors(i));

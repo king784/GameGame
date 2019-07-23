@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'main.dart';
+import 'pages/main.dart';
 //import 'mainTrivia.dart';
 import 'Globals.dart';
 import 'dart:math';
