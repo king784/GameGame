@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:math';
 import 'Globals.dart';
+import 'Navigation.dart';
 import 'Themes/MasterTheme.dart';
 import 'user.dart';
 
@@ -77,56 +78,99 @@ class PlayerVotingState extends State<PlayerVoting> {
           onWillPop: () async => false,
           child: Theme(
               data: MasterTheme.mainTheme,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: <Widget>[
-                    Row(
+          child: Scaffold(
+              body: ListView(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
                       children: <Widget>[
-                        // back button here
-
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Pelaajaäänestys',
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.title,
-                            ),
+                        Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
                           ),
-                        )
-                      ],
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
                     ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+                      
+                    
                     Center(
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                          Text("Äänestys on ohi! Voittajat: ",
+                          Text(
+                            "Äänestys on ohi! Voittajat: ",
                             textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.title,
+                            style: Theme.of(context).textTheme.title,
                           ),
                           Column(
                             children: getWinners(),
                           ),
-                        ])),
-                  ],
-                ),
-              )));
+                        ]
+                        )),
+                ],
+                )),
+              ),);
     }
     if (!playersGot) {
       return WillPopScope(
         onWillPop: () async => false,
         child: Theme(
           data: MasterTheme.mainTheme,
-          child: Align(
-                alignment: Alignment.topCenter,
-                child:
-           Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Scaffold(
+              body: ListView(
                 children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
                   Padding(
                     padding: EdgeInsets.all(30.0),
                     child: Text(
@@ -158,7 +202,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                   //   }
                   // }),
                 ],
-              ))),
+              )),
         ),
       );
     } else {
@@ -167,15 +211,39 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              body: ListView(
                 children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                          child: FloatingActionButton(
+                              heroTag: 'backBtn1',
+                              child: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: MasterTheme.accentColour,
+                                size: 40,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              onPressed: () =>
+                                  Navigation.openGames(context),
+                              elevation: 0),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Pelaajaäänestys',
+                              textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.all(30.0),
                     child: Text(
@@ -282,7 +350,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                   //   }
                   // }),
                 ],
-              ))),
+              )),
         ),
       );
     }
