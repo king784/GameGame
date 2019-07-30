@@ -75,17 +75,17 @@ class PlayerVotingState extends State<PlayerVoting> {
 
     if (votingDone) {
       return WillPopScope(
-          onWillPop: () async => false,
-          child: Theme(
-              data: MasterTheme.mainTheme,
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: ListView(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
+              body: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
                       padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                       child: FloatingActionButton(
                           heroTag: 'backBtn1',
@@ -111,26 +111,32 @@ class PlayerVotingState extends State<PlayerVoting> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 225.0, 0.0, 0.0),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Column(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                        child: Text(
+                          "Äänestys on ohi! Voittajat: ",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: getWinners(),
+                      ),
+                    ],)
                       
-                    
-                    Center(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                          Text(
-                            "Äänestys on ohi! Voittajat: ",
-                            textAlign: TextAlign.right,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                          Column(
-                            children: getWinners(),
-                          ),
-                        ]
-                        )),
-                ],
-                )),
-              ),);
+                    ),
+              ),
+            ],
+          )),
+        ),
+      );
     }
     if (!playersGot) {
       return WillPopScope(
@@ -138,13 +144,13 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: ListView(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
+              body: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
                       padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                       child: FloatingActionButton(
                           heroTag: 'backBtn1',
@@ -171,38 +177,43 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
 
-                  Padding(
-                    padding: EdgeInsets.all(30.0),
-                    child: Text(
-                      timeText,
-                      style: TextStyle(
-                        fontSize: 30,
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  timeText,
+                  style: TextStyle(
+                    fontSize: 30,
                   ),
+                ),
+              ),
 
+              Column(
+                children: <Widget>[
                   getPlayers(),
-                  // StreamBuilder(
-                  // stream: Firestore.instance.collection('players').snapshots(),
-                  // builder: (context, snapshot){
-                  //   if(!snapshot.hasData)
-                  //   {
-                  //     return new CircularProgressIndicator();
-                  //   }
-                  //   else
-                  //   {
-                  //     print(snapshot.data);
-                  //     return new ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemExtent: 80.0,
-                  //       itemCount: snapshot.data.documents.length,
-                  //       itemBuilder: (context, index) =>
-                  //         buildListItem(context, snapshot.data.documents[index]),
-                  //     );
-                  //   }
-                  // }),
-                ],
-              )),
+
+              ],)
+
+              // StreamBuilder(
+              // stream: Firestore.instance.collection('players').snapshots(),
+              // builder: (context, snapshot){
+              //   if(!snapshot.hasData)
+              //   {
+              //     return new CircularProgressIndicator();
+              //   }
+              //   else
+              //   {
+              //     print(snapshot.data);
+              //     return new ListView.builder(
+              //       shrinkWrap: true,
+              //       itemExtent: 80.0,
+              //       itemCount: snapshot.data.documents.length,
+              //       itemBuilder: (context, index) =>
+              //         buildListItem(context, snapshot.data.documents[index]),
+              //     );
+              //   }
+              // }),
+            ],
+          )),
         ),
       );
     } else {
@@ -211,146 +222,150 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: ListView(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                          child: FloatingActionButton(
-                              heroTag: 'backBtn1',
-                              child: Icon(
-                                FontAwesomeIcons.arrowLeft,
-                                color: MasterTheme.accentColour,
-                                size: 40,
-                              ),
-                              backgroundColor: Colors.transparent,
-                              onPressed: () =>
-                                  Navigation.openGames(context),
-                              elevation: 0),
+              body: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Pelaajaäänestys',
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(30.0),
-                    child: Text(
-                      timeText,
-                      style: TextStyle(
-                        fontSize: 30,
                       ),
-                    ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  timeText,
+                  style: TextStyle(
+                    fontSize: 30,
                   ),
+                ),
+              ),
 
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(
+                  "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
+                  textAlign: TextAlign.left,
+                  style: new TextStyle(
+                    fontSize: 20.0,
                   ),
+                ),
+              ),
 
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Järjestys: ",
-                              style: new TextStyle(
-                                fontSize: 20.0,
-                              )),
-                          Center(
-                            child: DropdownButton<String>(
-                              value: sortValue,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  sortValue = newValue;
-                                  sortPlayers(sortValue);
-                                });
-                              },
-                              items: sortValues.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      "Etsi pelaaja",
-                      textAlign: TextAlign.center,
-                      style: new TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
-                        width: 250,
-                        child: TextField(
-                          controller: filter,
+                      Text("Järjestys: ",
+                          style: new TextStyle(
+                            fontSize: 20.0,
+                          )),
+                      Center(
+                        child: DropdownButton<String>(
+                          value: sortValue,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              sortValue = newValue;
+                              sortPlayers(sortValue);
+                            });
+                          },
+                          items: sortValues
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
                         ),
-                      ),
-                      IconButton(
-                        icon: searchIcon,
-                        onPressed: () {
-                          searchPressed();
-                        },
                       ),
                     ],
                   ),
+                ),
+              ),
 
-                  buildFilteredPlayers(),
-                  // StreamBuilder(
-                  // stream: Firestore.instance.collection('players').snapshots(),
-                  // builder: (context, snapshot){
-                  //   if(!snapshot.hasData)
-                  //   {
-                  //     return new CircularProgressIndicator();
-                  //   }
-                  //   else
-                  //   {
-                  //     print(snapshot.data);
-                  //     return new ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemExtent: 80.0,
-                  //       itemCount: snapshot.data.documents.length,
-                  //       itemBuilder: (context, index) =>
-                  //         buildListItem(context, snapshot.data.documents[index]),
-                  //     );
-                  //   }
-                  // }),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(
+                  "Etsi pelaaja",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      controller: filter,
+                    ),
+                  ),
+                  IconButton(
+                    icon: searchIcon,
+                    onPressed: () {
+                      searchPressed();
+                    },
+                  ),
                 ],
-              )),
+              ),
+
+              Column(
+                children: <Widget>[
+                  buildFilteredPlayers(),
+
+              ],)
+              
+              // StreamBuilder(
+              // stream: Firestore.instance.collection('players').snapshots(),
+              // builder: (context, snapshot){
+              //   if(!snapshot.hasData)
+              //   {
+              //     return new CircularProgressIndicator();
+              //   }
+              //   else
+              //   {
+              //     print(snapshot.data);
+              //     return new ListView.builder(
+              //       shrinkWrap: true,
+              //       itemExtent: 80.0,
+              //       itemCount: snapshot.data.documents.length,
+              //       itemBuilder: (context, index) =>
+              //         buildListItem(context, snapshot.data.documents[index]),
+              //     );
+              //   }
+              // }),
+            ],
+          )),
         ),
       );
     }
@@ -366,25 +381,38 @@ class PlayerVotingState extends State<PlayerVoting> {
     int winnerVote = winnerVotes.reduce(max);
     for (int i = 0; i < allPlayers.length; i++) {
       if (allPlayers[i].currentVotes == winnerVote) {
-        winnerPlayers.add(Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: allPlayers[i].team == "KTP"
-                      ? new TextStyle(
-                          color: MasterTheme.accentColour,
-                          fontSize: 30.0,
-                        )
-                      : new TextStyle(
-                          color: MasterTheme.awayTeamColour,
-                          fontSize: 30.0,
-                        ),
-                ),
-              ]),
-        ));
+        winnerPlayers.add(
+          Card(
+            color: MasterTheme.bgBoxColour,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                    style: allPlayers[i].team == "KTP"
+                        ? new TextStyle(
+                            color: MasterTheme.accentColour,
+                            fontSize: 30.0,
+                          )
+                        : new TextStyle(
+                            color: MasterTheme.awayTeamColour,
+                            fontSize: 30.0,
+                          ),
+                  ),
+                  Text(
+                    "Ääniä: " + allPlayers[i].currentVotes.toString(),
+                    style: new TextStyle(
+                      fontSize: 30.0,
+                    )
+                  )
+                ]),
+            ),
+          ),
+          
+        );
       }
     }
     return winnerPlayers;
@@ -568,10 +596,15 @@ class PlayerVotingState extends State<PlayerVoting> {
         addFilterListener();
       }
 
-      return Expanded(
-          child: SingleChildScrollView(
-              child:
-                  ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+      return Column(
+        children: filteredPlayerWidgets,
+        
+      );
+
+      // return Expanded(
+      //     child: SingleChildScrollView(
+      //         child:
+      //             ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
     }
   }
 
@@ -667,9 +700,14 @@ class PlayerVotingState extends State<PlayerVoting> {
       });
     }
 
-    return Expanded(
-        //child: SingleChildScrollView(
-        child: ListView(shrinkWrap: true, children: filteredPlayerWidgets));
+    return Column(
+        children: filteredPlayerWidgets,
+        
+      );
+
+    // return Expanded(
+    //     //child: SingleChildScrollView(
+    //     child: ListView(shrinkWrap: true, children: filteredPlayerWidgets));
     //)
   }
 

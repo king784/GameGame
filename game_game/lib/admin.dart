@@ -37,7 +37,7 @@ class AdminState extends State<Admin> {
       return Scaffold(
       appBar: AppBar(
         title: (
-          Text('Add players')),
+          Text('Admin')),
           backgroundColor: Global.titleBarColor,
       ),
       body:
@@ -69,28 +69,31 @@ class AdminState extends State<Admin> {
             Text(
               timeText
             ),
-            RaisedButton(
-              child: const Text("Lisää pelaaja"),
-              onPressed: (){
-                Player pelaaja = new Player(22, 0, 'Trenton', 'Thompson', 'Salon Vilpas', 33);
-                CollectionReference dbCollectionRef = Firestore.instance.collection('players');
-                Firestore.instance.runTransaction((Transaction tx) async {
-                  var result = await dbCollectionRef.add(pelaaja.toJson());
-                });
-                setState(() {
+            // ADDING PLAYERS
+            // RaisedButton(
+            //   child: const Text("Lisää pelaaja"),
+            //   onPressed: (){
+            //     Player pelaaja = new Player(22, 0, 'Trenton', 'Thompson', 'Salon Vilpas', 33);
+            //     CollectionReference dbCollectionRef = Firestore.instance.collection('players');
+            //     Firestore.instance.runTransaction((Transaction tx) async {
+            //       var result = await dbCollectionRef.add(pelaaja.toJson());
+            //     });
+            //     setState(() {
                   
-                });
-              },
-            ),
-            RaisedButton(
-              child: const Text("Lisää pelinumerot"),
-              onPressed: (){
-                AddPlayerNumbers();
-                setState(() {
+            //     });
+            //   },
+            // ),
+
+            // RaisedButton(
+            //   child: const Text("Lisää pelinumerot"),
+            //   onPressed: (){
+            //     AddPlayerNumbers();
+            //     setState(() {
                   
-                });
-              },
-            ),
+            //     });
+            //   },
+            // ),
+
             // Text("Pelaajat: "),
             // StreamBuilder(
             // stream: Firestore.instance.collection('players').snapshots(),
