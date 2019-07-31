@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'main.dart';
 //import 'mainTrivia.dart';
 import 'Globals.dart';
@@ -102,43 +104,37 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     quizContents.add(Global.contents.split(";"));
     // TODO: implement build
     return new WillPopScope(
-        child: Scaffold(
-          body: new Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                  image: new AssetImage("images/backGround.jpg"),
-                  fit: BoxFit.fill,
-                  colorFilter: new ColorFilter.mode(
-                      Colors.white.withOpacity(0.15), BlendMode.dstATop)
-                //fit: BoxFit.cover,
-              ),
-            ),
-            //margin: const EdgeInsets.all(10.0),
-            alignment: Alignment.topCenter,
-            child: new Column(
-              children: <Widget>[
+      
+      child: Scaffold(
 
-                //new Text(readFromFile,
-                new Text(quizContents[0][questionNumber],
-                //new Text(quiz.questions[questionNumber],
+      body: new Container(
+        child: Column(
+          children: <Widget>[
+
+                new Text("\nAika: ${timeLeft}\n",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                    fontSize: screenHeight / 25,
+                    fontSize: screenHeight / 30,
                   ),
                 ),
 
-                new Text("Aika: ${timeLeft}",
+                //new Text(readFromFile,
+                //new Text(quizContents[0][questionNumber],
+                new Text("MITTEE?",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                    fontSize: screenHeight / 25,
+                    fontSize: screenHeight / 30,
                   ),
                 ),
 
                 new Image.asset("images/${quiz.images[questionNumber]}.jpg",
                   height: screenHeight / 2.5, width: screenWidth,),
+        
 
                 new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: <Widget>[
 
                     //
@@ -147,10 +143,10 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
                     //Button1
                     new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: buttonsWidth,
-                      height: buttonHeight,
-                      color: Colors.black12,
+                      //padding: EdgeInsets.all(10),
+                      //minWidth: buttonsWidth,
+                      height: buttonHeight / 1.2,
+                      color: Colors.green,
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand1] ==
                             quiz.correctAnswers[questionNumber]) {
@@ -171,10 +167,10 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
                     //Button2
                     new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: buttonsWidth,
-                      height: buttonHeight,
-                      color: Colors.black12,
+                      //padding: EdgeInsets.all(10),
+                      //minWidth: buttonsWidth,
+                      height: buttonHeight / 1.2,
+                      color: Colors.green,
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand2] ==
                             quiz.correctAnswers[questionNumber]) {
@@ -193,19 +189,21 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       ),
                     ),
                   ],
+                  //),
                 ),
+
                 new Row(children: <Widget>[new Text(" ")],),
                 new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
                     //Button3
                     new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: buttonsWidth,
-                      height: buttonHeight,
-                      color: Colors.black12,
+                      //padding: EdgeInsets.all(10),
+                      //minWidth: buttonsWidth,
+                      height: buttonHeight / 1.2,
+                      color: Colors.green,
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand3] ==
                             quiz.correctAnswers[questionNumber]) {
@@ -227,10 +225,10 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
                     //Button4
                     new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: buttonsWidth,
-                      height: buttonHeight,
-                      color: Colors.black12,
+                      //padding: EdgeInsets.all(10),
+                      //minWidth: buttonsWidth,
+                      height: buttonHeight / 1.2,
+                      color: Colors.green,
                       onPressed: () {
                         if (quiz.choices[questionNumber][rand4] ==
                             quiz.correctAnswers[questionNumber]) {
@@ -250,30 +248,41 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
+                
 
-                new Row(children: <Widget>[new Text(" ")],),
-                new Container(
-                  alignment: Alignment.bottomCenter,
-                  child: new MaterialButton(
-                    color: Colors.red,
-                    minWidth: buttonsWidth,
-                    height: buttonHeight,
-                    onPressed: resetQuiz,
-                    child: new Text("Quit",
-                      style: new TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white
-                      ),
-                    ),
+            new Column(
+              children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.end,
+                
+              children: <Widget>[
 
-                  ),
-                )
-
+              Align(
+                //alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                  
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(FontAwesomeIcons.arrowLeft),
+                      Text("Palaa takaisin"),
+                    ],
+                  ), onPressed: resetQuiz,
+                ),
+              ),
+              ],
+              ),
               ],
             ),
+            //],
+            ],),
+            )
           ),
-        ),
-        onWillPop: () async => false);
+        onWillPop: () async => false
+        //),
+        );
   }
 
   void Startade() async{
@@ -375,7 +384,9 @@ class Summary extends StatelessWidget {
     double buttonHeight = screenHeight / 10;
 
     // TODO: implement build
-    return new WillPopScope(child: Scaffold(
+    return new WillPopScope(
+      
+      child: Scaffold(
 
       body: new Container(
 
@@ -400,43 +411,44 @@ class Summary extends StatelessWidget {
                 ),
               ),
 
-              new MaterialButton(
-                color: Colors.lightGreen,
-                minWidth: buttonsWidth,
-                height: buttonHeight,
-                onPressed: () {
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              
+              children: <Widget>[
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      Icon(FontAwesomeIcons.arrowLeft),
+                      Text("Palaa takaisin"),
+                    ],
+                  ),                   
+
+                ),
+              ),
+
+
+                Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[                     
+                      Text("Yritä uudelleen"),
+                      Icon(FontAwesomeIcons.arrowRight),
+                    ],
+                  ),                   
+                  onPressed: () {
                   questionNumber = 0;
                   finalScore = 0;
                   Navigator.pop(context);
                 },
-                child: new Text("Yritä uudelleen",
-                  style: TextStyle(
-                      fontSize: buttonsWidth / 7,
-                      color: Colors.white
-                  ),
                 ),
               ),
 
-              new Text("\n\n\n"),
-
-
-              new MaterialButton(
-                  color: Colors.green,
-                  minWidth: buttonsWidth,
-                  height: buttonHeight,
-                  child: new Text("Palaa valikkoon",
-                    style: TextStyle(
-                      fontSize: buttonsWidth / 7,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    TriviaState triviaState = new TriviaState();
-                    triviaState.resetQuiz();
-                  }
-              ),
-
-              new Text("\n\n\n"),
+            ],)
 
             ],
           )
