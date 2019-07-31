@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:math';
 import 'Globals.dart';
+import 'Navigation.dart';
 import 'Themes/MasterTheme.dart';
 import 'user.dart';
 
@@ -72,29 +73,79 @@ class PlayerVotingState extends State<PlayerVoting> {
       valuesOnce = false;
     }
 
-    if(votingDone)
-    {
+    if (votingDone) {
       return WillPopScope(
         onWillPop: () async => false,
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
+              body: ListView(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Äänestys on ohi! Voittajat: "),
-                  Column(children: getWinners(),),
-                ]
-                )
-              )
-          )
-        )
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Column(children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          "Äänestys on ohi!",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.subtitle,
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                            "Voittajat: ",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline,
+                        ),
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: getWinners(),
+                      ),
+                    ],)
+                      
+                    ),
+              ),
+            ],
+          )),
+        ),
       );
     }
     if (!playersGot) {
@@ -103,47 +154,76 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(30.0),
-                    child: Text(
-                      timeText,
-                      style: TextStyle(
-                        fontSize: 30,
-                      ),
+              body: ListView(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
                     ),
-                  ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
 
+              Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Text(
+                  timeText,
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+              ),
+
+              Column(
+                children: <Widget>[
                   getPlayers(),
-                  // StreamBuilder(
-                  // stream: Firestore.instance.collection('players').snapshots(),
-                  // builder: (context, snapshot){
-                  //   if(!snapshot.hasData)
-                  //   {
-                  //     return new CircularProgressIndicator();
-                  //   }
-                  //   else
-                  //   {
-                  //     print(snapshot.data);
-                  //     return new ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemExtent: 80.0,
-                  //       itemCount: snapshot.data.documents.length,
-                  //       itemBuilder: (context, index) =>
-                  //         buildListItem(context, snapshot.data.documents[index]),
-                  //     );
-                  //   }
-                  // }),
-                ],
-              ))),
+
+              ],)
+
+              // StreamBuilder(
+              // stream: Firestore.instance.collection('players').snapshots(),
+              // builder: (context, snapshot){
+              //   if(!snapshot.hasData)
+              //   {
+              //     return new CircularProgressIndicator();
+              //   }
+              //   else
+              //   {
+              //     print(snapshot.data);
+              //     return new ListView.builder(
+              //       shrinkWrap: true,
+              //       itemExtent: 80.0,
+              //       itemCount: snapshot.data.documents.length,
+              //       itemBuilder: (context, index) =>
+              //         buildListItem(context, snapshot.data.documents[index]),
+              //     );
+              //   }
+              // }),
+            ],
+          )),
         ),
       );
     } else {
@@ -152,103 +232,151 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              appBar: AppBar(
-                title: (Text('Pelaajaäänestys')),
-                backgroundColor: Global.titleBarColor,
-              ),
-              body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(30.0),
-                    child: Text(
-                      timeText,
-                      style: TextStyle(
-                        fontSize: 30,
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Järjestys: ",
-                              style: new TextStyle(
-                                fontSize: 20.0,
-                              )),
-                          Center(
-                            child: DropdownButton<String>(
-                              value: sortValue,
-                              onChanged: (String newValue) {
-                                setState(() {
-                                  sortValue = newValue;
-                                  sortPlayers(sortValue);
-                                });
-                              },
-                              items: sortValues.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
+              body: ListView(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn1',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
                           ),
-                        ],
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Pelaajaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
                       ),
+                    )
+                  ],
+                ),
+              ),
+
+              Row(children: <Widget>[
+                Expanded(
+                child: Text(
+                  timeText,
+                  style: Theme.of(context).textTheme.subhead,
+                ),
+              ),
+              ],),
+              
+
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(
+                  "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.subhead,
+                ),
+              ),
+
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Järjestys: ",
+                          style: new TextStyle(
+                            fontSize: 20.0,
+                          )),
+                      Center(
+                        child: DropdownButton<String>(
+                          value: sortValue,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              sortValue = newValue;
+                              sortPlayers(sortValue);
+                            });
+                          },
+                          items: sortValues
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              Row(children: <Widget>[
+                Expanded(child:  Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(
+                  "Etsi pelaaja:",
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.body1,
+                ),
+              ),),
+               
+              Expanded(child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 150,
+                    child: TextField(
+                      controller: filter,
                     ),
                   ),
-
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      "Etsi pelaaja",
-                      textAlign: TextAlign.center,
-                      style: new TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
+                  IconButton(
+                    icon: searchIcon,
+                    onPressed: () {
+                      searchPressed();
+                    },
                   ),
-
-                  buildFilteredPlayers(),
-                  // StreamBuilder(
-                  // stream: Firestore.instance.collection('players').snapshots(),
-                  // builder: (context, snapshot){
-                  //   if(!snapshot.hasData)
-                  //   {
-                  //     return new CircularProgressIndicator();
-                  //   }
-                  //   else
-                  //   {
-                  //     print(snapshot.data);
-                  //     return new ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemExtent: 80.0,
-                  //       itemCount: snapshot.data.documents.length,
-                  //       itemBuilder: (context, index) =>
-                  //         buildListItem(context, snapshot.data.documents[index]),
-                  //     );
-                  //   }
-                  // }),
                 ],
-              ))),
+              ),
+            ),
+            ]),
+              
+
+              Column(
+                children: <Widget>[
+                  buildFilteredPlayers(),
+
+              ],)
+              
+              // StreamBuilder(
+              // stream: Firestore.instance.collection('players').snapshots(),
+              // builder: (context, snapshot){
+              //   if(!snapshot.hasData)
+              //   {
+              //     return new CircularProgressIndicator();
+              //   }
+              //   else
+              //   {
+              //     print(snapshot.data);
+              //     return new ListView.builder(
+              //       shrinkWrap: true,
+              //       itemExtent: 80.0,
+              //       itemCount: snapshot.data.documents.length,
+              //       itemBuilder: (context, index) =>
+              //         buildListItem(context, snapshot.data.documents[index]),
+              //     );
+              //   }
+              // }),
+            ],
+          )),
         ),
       );
     }
@@ -258,25 +386,50 @@ class PlayerVotingState extends State<PlayerVoting> {
     List<Widget> winnerPlayers = new List<Widget>();
     allPlayers.sort((a, b) => a.currentVotes.compareTo(b.currentVotes));
     List<int> winnerVotes = new List<int>();
-    for(int i = 0; i < allPlayers.length; i++)
-    {
+    for (int i = 0; i < allPlayers.length; i++) {
       winnerVotes.add(allPlayers[i].currentVotes);
     }
     int winnerVote = winnerVotes.reduce(max);
-    for(int i = 0; i < allPlayers.length; i++)
-    {
-      if(allPlayers[i].currentVotes == winnerVote)
-      {
-        winnerPlayers.add(Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: setTeamColors(i),
-                ),
-              )]
-              )
-          );
+    for (int i = 0; i < allPlayers.length; i++) {
+      if (allPlayers[i].currentVotes == winnerVote) {
+        winnerPlayers.add(
+          SizedBox(
+            width: Global.SCREENWIDTH * 0.8,
+            child: Card(
+              color: MasterTheme.bgBoxColour,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                        style: allPlayers[i].team == "KTP" // Check if home team or away
+                            ? new TextStyle(
+                                color: MasterTheme.accentColour,
+                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
+                                fontSize: Theme.of(context).textTheme.subhead.fontSize
+                              )
+                            : new TextStyle(
+                                color: MasterTheme.awayTeamColour,
+                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
+                                fontSize: Theme.of(context).textTheme.subhead.fontSize
+                              ),
+                      ),
+                    ),
+                    Text(
+                      "Ääniä: " + allPlayers[i].currentVotes.toString(),
+                      style: Theme.of(context).textTheme.body1,
+                    )
+                  ]),
+              ),
+            ),
+          ),
+          
+        );
       }
     }
     return winnerPlayers;
@@ -294,17 +447,16 @@ class PlayerVotingState extends State<PlayerVoting> {
     // })
 
     // Set listener
-    var playerSnaps = await Firestore.instance.collection('players').snapshots();
+    var playerSnaps =
+        await Firestore.instance.collection('players').snapshots();
     Player tempPlayer;
     playerSnaps.listen((data) {
       data.documentChanges.forEach((change) {
-        print("JEE: ");
-        print(change.document.data.toString());
+        // print("JEE: ");
+        // print(change.document.data.toString());
         tempPlayer = new Player.fromJson(change.document.data);
-        for(int i = 0; i < allPlayers.length; i++)
-        {
-          if(allPlayers[i].id == tempPlayer.id)
-          {
+        for (int i = 0; i < allPlayers.length; i++) {
+          if (allPlayers[i].id == tempPlayer.id) {
             allPlayers[i].currentVotes++;
             i = allPlayers.length;
           }
@@ -312,8 +464,8 @@ class PlayerVotingState extends State<PlayerVoting> {
       });
     });
 
-
-    QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+    QuerySnapshot querySnapshot =
+        await Firestore.instance.collection('players').getDocuments();
 
     List<DocumentSnapshot> playerSnapshot = new List<DocumentSnapshot>();
 
@@ -461,10 +613,15 @@ class PlayerVotingState extends State<PlayerVoting> {
         addFilterListener();
       }
 
-      return Expanded(
-          child: SingleChildScrollView(
-              child:
-                  ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
+      return Column(
+        children: filteredPlayerWidgets,
+        
+      );
+
+      // return Expanded(
+      //     child: SingleChildScrollView(
+      //         child:
+      //             ListView(shrinkWrap: true, children: filteredPlayerWidgets)));
     }
   }
 
@@ -492,24 +649,6 @@ class PlayerVotingState extends State<PlayerVoting> {
     filteredPlayerWidgets.clear();
     List<Widget> list = new List<Widget>();
     list.clear();
-    list.add(Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          width: 250,
-          child: TextField(
-            controller: filter,
-          ),
-        ),
-        IconButton(
-          icon: searchIcon,
-          onPressed: () {
-            searchPressed();
-          },
-        ),
-      ],
-    ));
     if (searchText.isEmpty) {
       for (int i = 0; i < allPlayers.length; i++) {
         print(setTeamColors(i));
@@ -578,9 +717,14 @@ class PlayerVotingState extends State<PlayerVoting> {
       });
     }
 
-    return Expanded(
-        //child: SingleChildScrollView(
-        child: ListView(shrinkWrap: true, children: filteredPlayerWidgets));
+    return Column(
+        children: filteredPlayerWidgets,
+        
+      );
+
+    // return Expanded(
+    //     //child: SingleChildScrollView(
+    //     child: ListView(shrinkWrap: true, children: filteredPlayerWidgets));
     //)
   }
 

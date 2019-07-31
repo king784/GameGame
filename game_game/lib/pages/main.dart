@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
-import 'route_generator.dart';
-import 'pages/home.dart';
+import '../route_generator.dart';
+import 'home.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,5 +19,4 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
-
 }
