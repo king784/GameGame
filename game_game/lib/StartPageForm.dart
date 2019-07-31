@@ -43,7 +43,7 @@ class StartPageFormState extends State<StartPageForm> {
               padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
               child: TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'esim. XQ34H',
+                  labelText: 'esim. XQ34',
                   prefixStyle: Theme.of(context).textTheme.display1,
                   labelStyle: Theme.of(context).textTheme.subhead,
                 ),
@@ -102,8 +102,7 @@ class StartPageFormState extends State<StartPageForm> {
         .where('date', isEqualTo: today)
         .limit(1) //limits documents to one where the date is same
         .getDocuments();
-    String gameCode = result.documents[0]
-        ['code']; //get the code string from the first item in the collection, there should onbly be one document
+    String gameCode = result.documents[0]['code']; //get the code string from the first item in the collection, there should onbly be one document
     //print("today: " + today + ", result: " + gameCode);
     _currentGameCode = gameCode;
   }
