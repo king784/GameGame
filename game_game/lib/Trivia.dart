@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'main.dart';
+import 'pages/main.dart';
 //import 'mainTrivia.dart';
 import 'Globals.dart';
 import 'dart:math';
@@ -15,10 +15,10 @@ import "dart:io";
 import 'package:path_provider/path_provider.dart';
 
 class ktpQuiz{
+  //var questions = ["Mikä rakennus näkyy kuvassa?", "Mikä on Larry poundsin jäädytetyn pelipaidan numero?", ]
 
   var images = [
     "Halli", "pepe2", "pepe3", "Halli2", "kentta"];
-
 
   var choices=[
     ["Kotkan uimahalli", "Steveco areena", "Eduskunta talo", "Karhuvuoren koulu"],
