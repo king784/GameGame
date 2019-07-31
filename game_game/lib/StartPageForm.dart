@@ -1,13 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'Themes/MasterTheme.dart';
 
 class StartPageForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-
     return StartPageFormState();
   }
 }
@@ -18,7 +19,6 @@ class StartPageFormState extends State<StartPageForm> {
 
   @override
   void initState() {
- 
     super.initState();
 
     getCurrentGameCode();
@@ -26,7 +26,6 @@ class StartPageFormState extends State<StartPageForm> {
 
   @override
   Widget build(BuildContext context) {
-
     return Form(
         key: _formKey,
         child: Column(
@@ -51,12 +50,10 @@ class StartPageFormState extends State<StartPageForm> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Syötä koodi, se löytyy pelialueelta.';
-                  }
-                  else if(value.toString()!=_currentGameCode){
+                  } else if (value.toString() != _currentGameCode) {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';
-                  }
-                  else if(value.toString()==_currentGameCode){
+                  } else if (value.toString() == _currentGameCode) {
                     Navigation.openMainPage(context);
                   }
                   return null;
@@ -97,7 +94,17 @@ class StartPageFormState extends State<StartPageForm> {
         ));
   }
 
-  void getCurrentGameCode(){
-_currentGameCode = 'A';
+  Future<void> getCurrentGameCode() async {
+    String today = DateFormat("dd-MM-yyyy").format(DateTime.now()).toString();
+    final QuerySnapshot result = await Firestore
+        .instance //get collection of gamecodes where date is same today
+        .collection('gameCodes')
+        .where('date', isEqualTo: today)
+        .limit(1) //limits documents to one where the date is same
+        .getDocuments();
+    String gameCode = result.documents[0]
+        ['code']; //get the code string from the first item in the collection, there should onbly be one document
+    //print("today: " + today + ", result: " + gameCode);
+    _currentGameCode = gameCode;
   }
 }
