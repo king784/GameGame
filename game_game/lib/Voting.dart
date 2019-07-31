@@ -79,7 +79,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: Column(
+              body: ListView(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
@@ -112,18 +112,28 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 225.0, 0.0, 0.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Align(
                     alignment: Alignment.center,
                     child: Column(children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "Äänestys on ohi! Voittajat: ",
+                          "Äänestys on ohi!",
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.title,
+                          style: Theme.of(context).textTheme.subtitle,
                         ),
                       ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                            "Voittajat: ",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline,
+                        ),
+                      ),
+
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,7 +154,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: Column(
+              body: ListView(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
@@ -222,7 +232,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-              body: Column(
+              body: ListView(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
@@ -254,24 +264,23 @@ class PlayerVotingState extends State<PlayerVoting> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(30.0),
+
+              Row(children: <Widget>[
+                Expanded(
                 child: Text(
                   timeText,
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
+                  style: Theme.of(context).textTheme.subhead,
                 ),
               ),
+              ],),
+              
 
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: Text(
                   "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
                   textAlign: TextAlign.left,
-                  style: new TextStyle(
-                    fontSize: 20.0,
-                  ),
+                  style: Theme.of(context).textTheme.subhead,
                 ),
               ),
 
@@ -309,23 +318,22 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
 
-              Padding(
+              Row(children: <Widget>[
+                Expanded(child:  Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: Text(
-                  "Etsi pelaaja",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    fontSize: 20.0,
-                  ),
+                  "Etsi pelaaja:",
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.body1,
                 ),
-              ),
-
-              Row(
+              ),),
+               
+              Expanded(child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    width: 250,
+                    width: 150,
                     child: TextField(
                       controller: filter,
                     ),
@@ -338,6 +346,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                   ),
                 ],
               ),
+            ),
+            ]),
+              
 
               Column(
                 children: <Widget>[
@@ -382,33 +393,39 @@ class PlayerVotingState extends State<PlayerVoting> {
     for (int i = 0; i < allPlayers.length; i++) {
       if (allPlayers[i].currentVotes == winnerVote) {
         winnerPlayers.add(
-          Card(
-            color: MasterTheme.bgBoxColour,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                    style: allPlayers[i].team == "KTP"
-                        ? new TextStyle(
-                            color: MasterTheme.accentColour,
-                            fontSize: 30.0,
-                          )
-                        : new TextStyle(
-                            color: MasterTheme.awayTeamColour,
-                            fontSize: 30.0,
-                          ),
-                  ),
-                  Text(
-                    "Ääniä: " + allPlayers[i].currentVotes.toString(),
-                    style: new TextStyle(
-                      fontSize: 30.0,
+          SizedBox(
+            width: Global.SCREENWIDTH * 0.8,
+            child: Card(
+              color: MasterTheme.bgBoxColour,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
+                        style: allPlayers[i].team == "KTP" // Check if home team or away
+                            ? new TextStyle(
+                                color: MasterTheme.accentColour,
+                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
+                                fontSize: Theme.of(context).textTheme.subhead.fontSize
+                              )
+                            : new TextStyle(
+                                color: MasterTheme.awayTeamColour,
+                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
+                                fontSize: Theme.of(context).textTheme.subhead.fontSize
+                              ),
+                      ),
+                    ),
+                    Text(
+                      "Ääniä: " + allPlayers[i].currentVotes.toString(),
+                      style: Theme.of(context).textTheme.body1,
                     )
-                  )
-                ]),
+                  ]),
+              ),
             ),
           ),
           
