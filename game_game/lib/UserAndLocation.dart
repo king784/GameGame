@@ -37,7 +37,7 @@ class UserLocation {
   Future getEventAddressIntoPlacemark() async {
     print('waiting for event address.');
     eventAddress =
-        await Geolocator().placemarkFromCoordinates(60.459403, 26.932751);
+        await Geolocator().placemarkFromCoordinates(60.472995, 26.945155);
   }
 
   void checkGeolocationPermissionStatus() async {
@@ -66,7 +66,7 @@ class UserLocation {
         userPos.latitude,
         userPos.longitude);
 
-    if (distanceInMeters < 100 && positionDataEnabled) {
+    if (distanceInMeters < 300 && positionDataEnabled) {
       userLocationOk = true;
     } else {
       userLocationOk = false;
