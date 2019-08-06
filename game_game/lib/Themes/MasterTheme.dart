@@ -7,7 +7,11 @@ class MasterTheme {
   static Color bgBoxColour = Color.fromARGB(150, 65, 68, 68);
   static Color awayTeamColour = Colors.red;
 
-  static String bestFont = 'Quicksand';
+  static String regular = 'Quicksand-Regular';
+  static String bold = 'Quicksand-Bold';
+  static String semibold = 'Quicksand-SemiBold';
+  static String medium = 'Quicksand-Medium';
+  static String light = 'Quicksand-Light';
 
   static double headlineSize = 70;
   static double display1Size = 100;
@@ -29,24 +33,19 @@ class MasterTheme {
     brightness: brightness,
     primaryColor: primaryColour,
     accentColor: accentColour,
-    fontFamily: bestFont,
+    fontFamily: regular,
     textTheme: TextTheme(
-      headline:
-          TextStyle(fontSize: headlineSize, fontWeight: FontWeight.normal),
-      title: TextStyle(fontSize: titleSize, fontWeight: FontWeight.bold),
-      subtitle:
-          TextStyle(fontSize: subTitleSize, fontWeight: FontWeight.normal),
-      display1: TextStyle(fontSize: display1Size, fontWeight: FontWeight.bold, color: primaryColour),
-      body1: TextStyle(fontSize: body1Size, fontWeight: FontWeight.normal),
-      body2: TextStyle(fontSize: body2Size, fontWeight: FontWeight.bold),
+      headline: TextStyle(fontFamily: bold, fontSize: headlineSize),
+      title: TextStyle(fontFamily: semibold, fontSize: titleSize),
+      subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
+      display1: TextStyle(
+          fontFamily: medium, fontSize: display1Size, color: primaryColour),
+      body1: TextStyle(fontFamily: regular, fontSize: body1Size),
+      body2: TextStyle(fontFamily: regular, fontSize: body2Size),
       subhead: TextStyle(
-          fontSize: btnFontSize,
-          fontWeight: FontWeight.normal,
-          color: accentColour),
+          fontFamily: semibold, fontSize: btnFontSize, color: accentColour),
       button: TextStyle(
-          fontSize: btnFontSize,
-          fontWeight: FontWeight.normal,
-          color: bgBoxColour),
+          fontFamily: light, fontSize: btnFontSize, color: bgBoxColour),
     ),
   );
 }

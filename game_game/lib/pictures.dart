@@ -236,6 +236,7 @@ class PicturesState extends State<Pictures> {
                       : new Padding(
                           padding: EdgeInsets.all(10),
                           child: MaterialButton(
+                            onPressed: () => {},
                             color: Colors.black26,
                             child: Row(
                               children: <Widget>[
