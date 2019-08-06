@@ -7,7 +7,7 @@ class MasterTheme {
   static Color bgBoxColour = Color.fromARGB(150, 65, 68, 68);
   static Color awayTeamColour = Colors.red;
 
-  static String bestFont = 'Fredericka';
+  static String bestFont = 'Quicksand';
 
   static double headlineSize = 70;
   static double display1Size = 100;

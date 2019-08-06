@@ -105,10 +105,18 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts: 
-    - family: Fredericka
+    - family: Quicksand
       fonts: 
-        - asset: assets/fonts/FrederickatheGreat-Regular.ttf
+        - asset: assets/fonts/Quicksand-Regular.ttf
           style: normal
+        - asset: assets/fonts/Quicksand-Light.ttf
+          style: light
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          style: medium
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
+          style: semibold
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          style: bold
 
   #   - family: Trajan Pro
   #     fonts:
