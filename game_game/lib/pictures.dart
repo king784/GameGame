@@ -8,9 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_testuu/votePics.dart';
 import 'Globals.dart';
-import 'votePics.dart';
+import 'Navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Pictures extends StatefulWidget {
@@ -37,16 +36,15 @@ File _image;
 bool imagesLoaded = false;
 
 class PicturesState extends State<Pictures> {
-
   List<Widget> thisIsAList = new List<Widget>();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     if (firstTime) {
       ImageVotes imgVotes = ImageVotes.instance;
       ImageVotes.instance.votes = new List<int>();
       loadStorageFiles();
-    
+
       //GetAllImages();
       firstTime = false;
       thisIsAList.add(Container());
@@ -54,37 +52,71 @@ class PicturesState extends State<Pictures> {
 
     // TODO: implement build
     return new WillPopScope(
+        onWillPop: () async => false,
         child: Theme(
-          data: MasterTheme.mainTheme,
-          child: Scaffold(
-            body: new ListView(
-        children: <Widget>[
-        new Column(
-          children: <Widget>[
-
-            _image == null ? SizedBox.shrink() : Image.file(_image,
-                  width: 200,
-                ),
-
-                    //SizedBox(height: 50),
-                
-                  imageReady == false ? SizedBox.shrink() :new MaterialButton(
-                      padding: EdgeInsets.all(10),
-                      minWidth: 100,
-                      height: 50,
-                      color: Global.buttonColors,
-                      onPressed: () {
-                        uploadPhoto(context);
-                      },
-                      child: new Text("Lähetä kuva",
-                        style: new TextStyle(
-                            fontSize: 100 / 7,
-                            color: Colors.white
-                        ),
+            data: MasterTheme.mainTheme,
+            child: Scaffold(
+                body: new ListView(
+              children: <Widget>[
+                new Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                            child: FloatingActionButton(
+                                heroTag: 'backBtn2',
+                                child: Icon(
+                                  FontAwesomeIcons.arrowLeft,
+                                  color: MasterTheme.accentColour,
+                                  size: 40,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                onPressed: () => Navigation.openGames(context),
+                                elevation: 0),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                'Kuvan äänestys',
+                                textAlign: TextAlign.right,
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
+                    _image == null
+                        ? SizedBox.shrink()
+                        : Image.file(
+                            _image,
+                            width: 200,
+                          ),
 
-            new MaterialButton(
+                    //SizedBox(height: 50),
+
+                    imageReady == false
+                        ? SizedBox.shrink()
+                        : new MaterialButton(
+                            padding: EdgeInsets.all(10),
+                            minWidth: 100,
+                            height: 50,
+                            color: Global.buttonColors,
+                            onPressed: () {
+                              uploadPhoto(context);
+                            },
+                            child: new Text(
+                              "Lähetä kuva",
+                              style: new TextStyle(
+                                  fontSize: 100 / 7, color: Colors.white),
+                            ),
+                          ),
+
+                    new MaterialButton(
                       padding: EdgeInsets.all(10),
                       minWidth: 100,
                       height: 50,
@@ -92,53 +124,42 @@ class PicturesState extends State<Pictures> {
                       onPressed: () {
                         choosePhoto();
                       },
-                      child: new Text("Lisää kuva",
+                      child: new Text(
+                        "Lisää kuva",
                         style: new TextStyle(
-                            fontSize: 100 / 7,
-                            color: Colors.white
-                        ),
+                            fontSize: 100 / 7, color: Colors.white),
                       ),
                     ),
-                  //nextImage == null ? Text(errorMessage) : (nextImage),
-            Column(
-              children: imagesLoaded == true ? imagesWidget : thisIsAList,
-            ),
-            //nextImage != null ? Text("I like it ;)") : Text(""),
-            new Text("Image " +
-                imageIndex.toString() +
-                " / " +
-                ImageVotes.instance.votes.length.toString() +
-                "\n"),
+                    //nextImage == null ? Text(errorMessage) : (nextImage),
+                    Column(
+                      children:
+                          imagesLoaded == true ? imagesWidget : thisIsAList,
+                    ),
+                    //nextImage != null ? Text("I like it ;)") : Text(""),
+                    new Text("Image " +
+                        imageIndex.toString() +
+                        " / " +
+                        ImageVotes.instance.votes.length.toString() +
+                        "\n"),
 
-            new MaterialButton(
-              padding: EdgeInsets.all(10),
-              minWidth: 100,
-              height: 50,
-              color: Global.buttonColors,
-              onPressed: () {
-                getTheWinner();
-              },
-              child: new Text(
-                "Laske äänet",
-                style: new TextStyle(fontSize: 100 / 7, color: Colors.white),
-              ),
-            ),
-
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: RaisedButton(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(FontAwesomeIcons.arrowLeft),
-                      Text("Palaa takaisin"),
-                    ],
-                  ),
+                    new MaterialButton(
+                      padding: EdgeInsets.all(10),
+                      minWidth: 100,
+                      height: 50,
+                      color: Global.buttonColors,
+                      onPressed: () {
+                        getTheWinner();
+                      },
+                      child: new Text(
+                        "Laske äänet",
+                        style: new TextStyle(
+                            fontSize: 100 / 7, color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-          ],
-        ),
-      ],
-    ))) );
+              ],
+            ))));
   }
 
   Future GetAllImages() async {
@@ -187,94 +208,87 @@ class PicturesState extends State<Pictures> {
                 ),
               ),
               Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              voteButtonsEnabled == true
-                  ? new Padding(
-                    padding: EdgeInsets.all(10),
-                    child: MaterialButton(
-                      color: Colors.green,
-                      highlightColor: Colors.green,
-                      splashColor: Colors.green,
-                      onPressed: () {
-                        like();
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(FontAwesomeIcons.plus)
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  voteButtonsEnabled == true
+                      ? new Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            color: Colors.green,
+                            highlightColor: Colors.green,
+                            splashColor: Colors.green,
+                            onPressed: () {
+                              like();
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(FontAwesomeIcons.plus)),
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text("Vote")),
+                              ],
+                            ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text("Vote")
+                        )
+                      : new Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            color: Colors.black26,
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(FontAwesomeIcons.plus)),
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text("Vote")),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                  : new Padding(
-                    padding: EdgeInsets.all(10),
-                    child: MaterialButton(
-                      color: Colors.black26,
-                      child: Row(
-                        children: <Widget>[
-                           Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(FontAwesomeIcons.plus)
+                        ),
+
+                  //SizedBox(width: Global.SCREENWIDTH),
+                  voteButtonsEnabled == true
+                      ? new Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            color: Colors.red,
+                            highlightColor: Colors.red,
+                            splashColor: Colors.red,
+                            onPressed: () {
+                              notLike();
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(FontAwesomeIcons.minus)),
+                                Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text("Unvote")),
+                              ],
+                            ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text("Vote")
+                        )
+                      : new MaterialButton(
+                          onPressed: () => {},
+                          color: Colors.black26,
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Icon(FontAwesomeIcons.plus)),
+                              Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text("Unvote")),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-              
-              //SizedBox(width: Global.SCREENWIDTH),
-              voteButtonsEnabled == true
-                  ? new Padding(
-                    padding: EdgeInsets.all(10),
-                    child: MaterialButton(
-                      color: Colors.red,
-                      highlightColor: Colors.red,
-                      splashColor: Colors.red,
-                      onPressed: () {
-                        notLike();
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(FontAwesomeIcons.minus)
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text("Unvote")
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                  : new MaterialButton(
-                      color: Colors.black26,
-                      child: Row(
-                        children: <Widget>[
-                           Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(FontAwesomeIcons.plus)
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text("Unvote")
-                          ),
-                        ],
-                      ),
-                    ),
-            ],
-          ),
+                        ),
+                ],
+              ),
             ],
           )),
         );
@@ -286,8 +300,7 @@ class PicturesState extends State<Pictures> {
     }
   }
 
-  Future choosePhoto() async{
-    
+  Future choosePhoto() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     //File image = await ImagePicker.pickImage(source: ImageSource.camera);
 
@@ -301,8 +314,7 @@ class PicturesState extends State<Pictures> {
     });
   }
 
-  Future uploadPhoto(BuildContext context) async{
-
+  Future uploadPhoto(BuildContext context) async {
     //var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
 //
     //docRef.get().then((DocumentSnapshot ds){
@@ -312,58 +324,61 @@ class PicturesState extends State<Pictures> {
     //  //print(fileName);
 //
     //  setState(() {
-    //    infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + storageSize.toString(); 
+    //    infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + storageSize.toString();
     //  });
 //
     //});
 
     loadStorageFiles();
     String tmpString = "";
-    if(ImageVotes.instance.votes == null)
-    {
+    if (ImageVotes.instance.votes == null) {
       tmpString = "0";
-    }
-    else
-    {
+    } else {
       ImageVotes.instance.votes.add(0);
       tmpString = ImageVotes.instance.votes.length.toString();
     }
 
-      setState(() {
-        infoText = "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " +  tmpString; 
-      });
-
-    await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp").updateData({
-      'votes': ImageVotes.instance.votes
+    setState(() {
+      infoText =
+          "Kuvaa lähetetään. Odota hetki.\nKuvia tietokannassa: " + tmpString;
     });
 
-    String fileName = (ImageVotes.instance.votes.length-1).toString(); // storageSize.toString();
+    await Firestore.instance
+        .collection("variables")
+        .document("7nqCGxfYuNlmfhAwMoAp")
+        .updateData({'votes': ImageVotes.instance.votes});
 
-    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+    String fileName = (ImageVotes.instance.votes.length - 1)
+        .toString(); // storageSize.toString();
+
+    StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(fileName);
     //_image.rename(fileName);
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     //storageSize++;
-    
+
     setState(() {
       print("File named: " + fileName + " uploaded");
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => new Pictures()));
+      Navigator.push(
+          context, new MaterialPageRoute(builder: (context) => new Pictures()));
       //Scaffold.of(context).showSnackBar(snackbar);
     });
   }
 
-  void resetImages(){
+  void resetImages() {
     voteButtonsEnabled = true;
     setState(() {
       infoText = "Nollataan";
-      storageSize = 0;
       imageIndex = 1;
       infoText = "Nollattu";
     });
   }
 
-  void loadStorageFiles() async{
-    var docRef = await Firestore.instance.collection("variables").document("7nqCGxfYuNlmfhAwMoAp");
+  void loadStorageFiles() async {
+    var docRef = await Firestore.instance
+        .collection("variables")
+        .document("7nqCGxfYuNlmfhAwMoAp");
 
     // docRef.get().then((DocumentSnapshot ds){
     //   //print(ds['numOfImages'].toString());
@@ -372,9 +387,9 @@ class PicturesState extends State<Pictures> {
     //   //print(fileName);
     // });
     var jsonList;
-    docRef.get().then((DocumentSnapshot ds){
-        jsonList = ImageVotes.fromJson(ds.data);
-        print("imgVotes: " + jsonList.toString());
+    docRef.get().then((DocumentSnapshot ds) {
+      jsonList = ImageVotes.fromJson(ds.data);
+      print("imgVotes: " + jsonList.toString());
     });
     imagesLoaded = true;
 
@@ -397,26 +412,26 @@ class PicturesState extends State<Pictures> {
 
   Future notLike() async {
     if (imageIndex <= ImageVotes.instance.votes.length) {
-    //   print("I do not like it. Next image index: " + (imageIndex).toString());
+      //   print("I do not like it. Next image index: " + (imageIndex).toString());
 
-    //   final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
+      //   final ref = FirebaseStorage.instance.ref().child(imageIndex.toString());
 
-    //   imageIndex++;
+      //   imageIndex++;
 
-    //   var url = await ref.getDownloadURL();
+      //   var url = await ref.getDownloadURL();
 
-    //   Image newImage = Image.network(url);
-    //   print(Image.network(url));
+      //   Image newImage = Image.network(url);
+      //   print(Image.network(url));
 
-    //   setState(() {
-    //     errorMessage = url;
-    //     nextImage = newImage;
-    //   });
-    // } else {
-    //   setState(() {
-    //     print("Yli meni");
-    //     imageIndex = 0;
-    //   });
+      //   setState(() {
+      //     errorMessage = url;
+      //     nextImage = newImage;
+      //   });
+      // } else {
+      //   setState(() {
+      //     print("Yli meni");
+      //     imageIndex = 0;
+      //   });
     }
   }
 
