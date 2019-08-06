@@ -12,7 +12,6 @@ import 'BallGame.dart';
 import 'PassTheBall.dart';
 import 'mainTrivia.dart';
 import 'Trivia.dart';
-import 'votePics.dart';
 import "pictures.dart";
 
 void main() => runApp(MyApp());
