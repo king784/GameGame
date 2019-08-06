@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'pages/main.dart';
@@ -83,6 +84,11 @@ class Trivia extends StatefulWidget{
 //}
 
 class TriviaState extends State<Trivia> with TickerProviderStateMixin {
+
+  List<Question> questions = new List<Question>();
+  bool questionsLoaded = false;
+  int questionIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery
@@ -103,7 +109,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     List<List<String>> quizContents = new List<List<String>>();
     quizContents.add(Global.contents.split(";"));
     // TODO: implement build
-    return new WillPopScope(
+    return !questionsLoaded ? new Text("Loading...") : new WillPopScope(
       
       child: Scaffold(
 
@@ -120,7 +126,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
                 //new Text(readFromFile,
                 //new Text(quizContents[0][questionNumber],
-                new Text("MITTEE?",
+                new Text(questions[questionIndex].question,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                     fontSize: screenHeight / 30,
@@ -290,10 +296,30 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     {
       //loadQuestions();
       //await loadQuestions();
+      await LoadQuestions();
       RandomizeQuestions();
       ReAddValues();
       firstRun = false;
     }
+  }
+
+  void LoadQuestions() async 
+  {
+    QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+
+    List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
+    questionSnapshot = querySnapshot.documents;
+    Question tempQuestion;
+    questionSnapshot.forEach((q)
+    {
+      tempQuestion = new Question.fromJson(q.data);
+      questions.add(tempQuestion);
+    });
+    for(int i = 0; i < questions.length; i++)
+    {
+      print(questions[i].question);
+    }
+    questionsLoaded = true;
   }
 
 void _timer() async{

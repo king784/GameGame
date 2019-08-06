@@ -32,6 +32,8 @@ class AdminState extends State<Admin> {
   DateTime votingEndTime = null;
   Timer customTimer;
 
+  final formKey = GlobalKey<FormState>();
+
   @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -68,6 +70,30 @@ class AdminState extends State<Admin> {
             ),
             Text(
               timeText
+            ),
+            ListView(
+              children: <Widget>[
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    if(formKey.currentState.validate())
+                    {
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing data')));
+                    }
+                  },
+                ),
+              ],
             ),
             // ADDING PLAYERS
             // RaisedButton(

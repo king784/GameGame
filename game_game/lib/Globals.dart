@@ -83,3 +83,32 @@ class ImageVotes{
     'votes': votes,
   };
 }
+
+class Question{
+  String question;
+  List<String> choices = new List<String>();
+  int correct;
+  String imagePath;
+
+  Question.fromJson(Map<String, dynamic> json)
+  {
+    this.question = json['question'];
+    this.correct = json['correct'];
+    this.imagePath = json['imagePath'];
+
+    var choicesFromJson = json['choices'];
+    List<String> choicesList = choicesFromJson.cast<String>();
+    for(int i = 0; i < choicesList.length; i++)
+    {
+      this.choices.add(choicesList[i]);
+    }
+  }
+
+  Map<String, dynamic> toJson() =>
+  {
+    'choices': choices,
+    'correct': correct,
+    'imagePath': imagePath,
+    'question': question,
+  };
+}
