@@ -90,6 +90,14 @@ class Question{
   int correct;
   String imagePath;
 
+  Question(String newQuestion, List<String> newChoices, int newCorrect, String newImagePath)
+  {
+    this.question = newQuestion;
+    this.choices = newChoices;
+    this.correct = newCorrect;
+    this.imagePath = newImagePath;
+  }
+
   Question.fromJson(Map<String, dynamic> json)
   {
     this.question = json['question'];

@@ -68,10 +68,21 @@ class AdminState extends State<Admin> {
                 });
               },
             ),
+            RaisedButton(
+              child: const Text("Lisää kysymys"),
+              onPressed: (){
+                AddQuestion();
+                //print(DateTime.now().toString());
+                setState(() {
+                  
+                });
+              },
+            ),
             Text(
               timeText
             ),
             ListView(
+              shrinkWrap: true,
               children: <Widget>[
                 Form(
                   key: formKey,
@@ -144,6 +155,16 @@ class AdminState extends State<Admin> {
           ],
         )
       );
+    }
+
+    void AddQuestion() async
+    {
+      Question question = new Question("Mikä oli Larry Poundsin pelinumero?", ["3", "9", "14", "25"], 3, "LarryPounds");
+      CollectionReference dbCollectionRef = Firestore.instance.collection('questions');
+      Firestore.instance.runTransaction((Transaction tx) async {
+        var result = await dbCollectionRef.add(question.toJson());
+      });
+    setState(() {});
     }
 
     void AddPlayerNumbers() async

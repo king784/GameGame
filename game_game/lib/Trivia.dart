@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'pages/main.dart';
@@ -85,7 +87,13 @@ class Trivia extends StatefulWidget{
 
 class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
+  // Question variables
+  Image nextImage;
+  bool nextImgLoaded = false;
+  List<Question> allQuestions = new List<Question>();
+  // questions list is used to randomize question from all questions and pop it out of the list
   List<Question> questions = new List<Question>();
+  Question currentQuestion;
   bool questionsLoaded = false;
   int questionIndex = 0;
 
@@ -126,15 +134,14 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
                 //new Text(readFromFile,
                 //new Text(quizContents[0][questionNumber],
-                new Text(questions[questionIndex].question,
+                new Text(allQuestions[questionIndex].question,
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                     fontSize: screenHeight / 30,
                   ),
                 ),
 
-                new Image.asset("images/${quiz.images[questionNumber]}.jpg",
-                  height: screenHeight / 2.5, width: screenWidth,),
+                nextImgLoaded ? nextImage : CircularProgressIndicator(),
         
 
                 new Row(
@@ -154,8 +161,8 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       height: buttonHeight / 1.2,
                       color: Colors.green,
                       onPressed: () {
-                        if (quiz.choices[questionNumber][rand1] ==
-                            quiz.correctAnswers[questionNumber]) {
+                        if (currentQuestion.correct == 0) 
+                        {
                           finalScore++;
                         }
                         else {
@@ -163,7 +170,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                         updateQuestion();
                       },
                       child: new Text(
-                        quiz.choices[questionNumber][rand1],
+                        currentQuestion.choices[0],
                         style: new TextStyle(
                             fontSize: buttonsWidth / 7,
                             color: Colors.white
@@ -178,8 +185,8 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       height: buttonHeight / 1.2,
                       color: Colors.green,
                       onPressed: () {
-                        if (quiz.choices[questionNumber][rand2] ==
-                            quiz.correctAnswers[questionNumber]) {
+                        if (currentQuestion.correct == 1) 
+                        {
                           finalScore++;
                         }
                         else {
@@ -187,7 +194,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                         updateQuestion();
                       },
                       child: new Text(
-                        quiz.choices[questionNumber][rand2],
+                        currentQuestion.choices[1],
                         style: new TextStyle(
                             fontSize: buttonsWidth / 7,
                             color: Colors.white
@@ -211,8 +218,8 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       height: buttonHeight / 1.2,
                       color: Colors.green,
                       onPressed: () {
-                        if (quiz.choices[questionNumber][rand3] ==
-                            quiz.correctAnswers[questionNumber]) {
+                        if (currentQuestion.correct == 2) 
+                        {
                           finalScore++;
                         }
                         else {
@@ -220,7 +227,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                         updateQuestion();
                       },
                       child: new Text(
-                        quiz.choices[questionNumber][rand3],
+                        currentQuestion.choices[2],
                         style: new TextStyle(
                             fontSize: buttonsWidth / 7,
                             color: Colors.white
@@ -236,8 +243,8 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       height: buttonHeight / 1.2,
                       color: Colors.green,
                       onPressed: () {
-                        if (quiz.choices[questionNumber][rand4] ==
-                            quiz.correctAnswers[questionNumber]) {
+                        if (currentQuestion.correct == 3) 
+                        {
                           finalScore++;
                         }
                         else {
@@ -245,7 +252,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                         updateQuestion();
                       },
                       child:
-                      new Text(quiz.choices[questionNumber][rand4],
+                      new Text(currentQuestion.choices[3],
                         style: new TextStyle(
                             fontSize: buttonsWidth / 7,
                             color: Colors.white
@@ -305,7 +312,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
   void LoadQuestions() async 
   {
-    QuerySnapshot querySnapshot = await Firestore.instance.collection('players').getDocuments();
+    QuerySnapshot querySnapshot = await Firestore.instance.collection('questions').getDocuments();
 
     List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
     questionSnapshot = querySnapshot.documents;
@@ -313,13 +320,31 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     questionSnapshot.forEach((q)
     {
       tempQuestion = new Question.fromJson(q.data);
-      questions.add(tempQuestion);
+      allQuestions.add(tempQuestion);
     });
-    for(int i = 0; i < questions.length; i++)
-    {
-      print(questions[i].question);
-    }
+
+    questions = allQuestions;
+    currentQuestion = GetRandomQuestion();
+
     questionsLoaded = true;
+    NextImage(currentQuestion.imagePath);
+    setState(() {});
+  }
+
+  Question GetRandomQuestion()
+  {
+    return questions.removeAt(Random().nextInt(questions.length));
+  }
+
+  void NextImage(String nextUrl) async
+  {
+    nextImgLoaded = false;
+    final ref = FirebaseStorage.instance.ref().child("Quizes/1/" + nextUrl + ".jpg");
+    var url = await ref.getDownloadURL();
+    
+    nextImage = Image.network(url);
+    nextImgLoaded = true;
+    setState(() {});
   }
 
 void _timer() async{
@@ -327,7 +352,7 @@ void _timer() async{
     timeLeft = 10;    
     Timer.periodic(Duration(seconds: 1), (timer) {
       timeLeft--;
-      print(timeLeft);
+      // print(timeLeft);
     });   
   });
 }
@@ -337,6 +362,22 @@ void _timer() async{
       Navigator.pop(context);
       finalScore = 0;
       questionNumber = 0;
+    });
+  }
+
+  void GetNextQuestion()
+  {
+    setState(() {
+      timeLeft = 10;
+    if(questions.length <= 0)
+    {
+      Navigator.push(context, new MaterialPageRoute(
+            builder: (context) => new Summary(score: finalScore)));
+    }
+    else
+    {
+
+    }
     });
   }
 
