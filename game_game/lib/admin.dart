@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'Globals.dart';
-
+import 'Navigation.dart';
 
 void main() => runApp(AdminMain());
 
@@ -69,6 +69,7 @@ class AdminState extends State<Admin> {
             Text(
               timeText
             ),
+
             // ADDING PLAYERS
             // RaisedButton(
             //   child: const Text("Lisää pelaaja"),
