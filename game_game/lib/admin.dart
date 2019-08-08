@@ -32,6 +32,8 @@ class AdminState extends State<Admin> {
   DateTime votingEndTime = null;
   Timer customTimer;
 
+  final formKey = GlobalKey<FormState>();
+
   @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -66,8 +68,43 @@ class AdminState extends State<Admin> {
                 });
               },
             ),
+            RaisedButton(
+              child: const Text("Lisää kysymys"),
+              onPressed: (){
+                AddQuestion();
+                //print(DateTime.now().toString());
+                setState(() {
+                  
+                });
+              },
+            ),
             Text(
               timeText
+            ),
+            ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    if(formKey.currentState.validate())
+                    {
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing data')));
+                    }
+                  },
+                ),
+              ],
             ),
             // ADDING PLAYERS
             // RaisedButton(
@@ -118,6 +155,16 @@ class AdminState extends State<Admin> {
           ],
         )
       );
+    }
+
+    void AddQuestion() async
+    {
+      Question question = new Question("Mikä oli Larry Poundsin pelinumero?", ["3", "9", "14", "25"], 3, "LarryPounds");
+      CollectionReference dbCollectionRef = Firestore.instance.collection('questions');
+      Firestore.instance.runTransaction((Transaction tx) async {
+        var result = await dbCollectionRef.add(question.toJson());
+      });
+    setState(() {});
     }
 
     void AddPlayerNumbers() async
