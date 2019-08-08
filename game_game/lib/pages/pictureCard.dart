@@ -9,6 +9,13 @@ class PictureCardList extends StatefulWidget {
 
 class _PictureCardListState extends State<PictureCardList> {
   List<imageFromDB> allimages = new List<imageFromDB>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Text("working on this");
@@ -51,12 +58,16 @@ class _PictureCardListState extends State<PictureCardList> {
       ),
     );
   }
+
+  void loadImagesFromDB()async{
+    
+  }
 }
 
 class imageFromDB {
   String photographerName;
-  int totalVotes;
   String imgUrl;
+  int totalVotes;
 
-  imageFromDB() {}
+  imageFromDB(this.photographerName, this.imgUrl, this.totalVotes);
 }
