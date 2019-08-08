@@ -35,7 +35,7 @@ class Player{
   final String team;
   int playerNumber;
 
-  Player(this.id, this.currentVotes, this.firstName, this.lastName, this.team, this.playerNumber){}
+  Player(this.id, this.currentVotes, this.firstName, this.lastName, this.team, this.playerNumber);
 
   Player.fromJson(Map<String, dynamic> json)
   : id = json['ID'],

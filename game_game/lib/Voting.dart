@@ -19,7 +19,6 @@ class PlayerVotingMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       home: PlayerVoting(),
     );
   }
@@ -113,33 +112,31 @@ class PlayerVotingState extends State<PlayerVoting> {
                 padding: const EdgeInsets.all(10.0),
                 child: Align(
                     alignment: Alignment.center,
-                    child: Column(children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Äänestys on ohi!",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.subtitle,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            "Äänestys on ohi!",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
                         ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
                             "Voittajat: ",
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headline,
+                          ),
                         ),
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: getWinners(),
-                      ),
-                    ],)
-                      
-                    ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: getWinners(),
+                        ),
+                      ],
+                    )),
               ),
             ],
           )),
@@ -161,7 +158,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                       child: FloatingActionButton(
-                          heroTag: 'backBtn1',
+                          heroTag: 'backBtn3',
                           child: Icon(
                             FontAwesomeIcons.arrowLeft,
                             color: MasterTheme.accentColour,
@@ -198,8 +195,8 @@ class PlayerVotingState extends State<PlayerVoting> {
               Column(
                 children: <Widget>[
                   getPlayers(),
-
-              ],)
+                ],
+              )
 
               // StreamBuilder(
               // stream: Firestore.instance.collection('players').snapshots(),
@@ -239,7 +236,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                     Padding(
                       padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                       child: FloatingActionButton(
-                          heroTag: 'backBtn1',
+                          heroTag: 'backBtn3',
                           child: Icon(
                             FontAwesomeIcons.arrowLeft,
                             color: MasterTheme.accentColour,
@@ -263,15 +260,16 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
               ),
 
-              Row(children: <Widget>[
-                Expanded(
-                child: Text(
-                  timeText,
-                  style: Theme.of(context).textTheme.subhead,
-                ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      timeText,
+                      style: Theme.of(context).textTheme.subhead,
+                    ),
+                  ),
+                ],
               ),
-              ],),
-              
 
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -317,43 +315,44 @@ class PlayerVotingState extends State<PlayerVoting> {
               ),
 
               Row(children: <Widget>[
-                Expanded(child:  Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Text(
-                  "Etsi pelaaja:",
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body1,
-                ),
-              ),),
-               
-              Expanded(child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 150,
-                    child: TextField(
-                      controller: filter,
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Text(
+                      "Etsi pelaaja:",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                   ),
-                  IconButton(
-                    icon: searchIcon,
-                    onPressed: () {
-                      searchPressed();
-                    },
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 150,
+                        child: TextField(
+                          controller: filter,
+                        ),
+                      ),
+                      IconButton(
+                        icon: searchIcon,
+                        onPressed: () {
+                          searchPressed();
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            ]),
-              
+                ),
+              ]),
 
               Column(
                 children: <Widget>[
                   buildFilteredPlayers(),
+                ],
+              )
 
-              ],)
-              
               // StreamBuilder(
               // stream: Firestore.instance.collection('players').snapshots(),
               // builder: (context, snapshot){
@@ -398,35 +397,47 @@ class PlayerVotingState extends State<PlayerVoting> {
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                        style: allPlayers[i].team == "KTP" // Check if home team or away
-                            ? new TextStyle(
-                                color: MasterTheme.accentColour,
-                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
-                                fontSize: Theme.of(context).textTheme.subhead.fontSize
-                              )
-                            : new TextStyle(
-                                color: MasterTheme.awayTeamColour,
-                                fontFamily: Theme.of(context).textTheme.subhead.fontFamily,
-                                fontSize: Theme.of(context).textTheme.subhead.fontSize
-                              ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          allPlayers[i].firstName +
+                              ' ' +
+                              allPlayers[i].lastName,
+                          style: allPlayers[i].team ==
+                                  "KTP" // Check if home team or away
+                              ? new TextStyle(
+                                  color: MasterTheme.accentColour,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .subhead
+                                      .fontFamily,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .subhead
+                                      .fontSize)
+                              : new TextStyle(
+                                  color: MasterTheme.awayTeamColour,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .subhead
+                                      .fontFamily,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .subhead
+                                      .fontSize),
+                        ),
                       ),
-                    ),
-                    Text(
-                      "Ääniä: " + allPlayers[i].currentVotes.toString(),
-                      style: Theme.of(context).textTheme.body1,
-                    )
-                  ]),
+                      Text(
+                        "Ääniä: " + allPlayers[i].currentVotes.toString(),
+                        style: Theme.of(context).textTheme.body1,
+                      )
+                    ]),
               ),
             ),
           ),
-          
         );
       }
     }
@@ -613,7 +624,6 @@ class PlayerVotingState extends State<PlayerVoting> {
 
       return Column(
         children: filteredPlayerWidgets,
-        
       );
 
       // return Expanded(
@@ -716,9 +726,8 @@ class PlayerVotingState extends State<PlayerVoting> {
     }
 
     return Column(
-        children: filteredPlayerWidgets,
-        
-      );
+      children: filteredPlayerWidgets,
+    );
 
     // return Expanded(
     //     //child: SingleChildScrollView(
@@ -772,74 +781,75 @@ class PlayerVotingState extends State<PlayerVoting> {
 
   void showVotePopup(int i) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          if (fakeUser.playerVotes > 0) {
-            return Theme(
-              data: MasterTheme.mainTheme,
-              child: AlertDialog(
-                title: new Text("Annatko äänen pelaajalle " +
-                    allPlayers[i].firstName +
-                    " " +
-                    allPlayers[i].lastName),
-                actions: <Widget>[
-                  new FlatButton(
-                    child: new Text("Kyllä"),
-                    onPressed: () {
-                      giveVote(i);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  new FlatButton(
-                    child: new Text(
-                      "En",
-                      style: TextStyle(
-                        color: MasterTheme.awayTeamColour,
-                      ),
+      context: context,
+      builder: (BuildContext context) {
+        if (fakeUser.playerVotes > 0) {
+          return Theme(
+            data: MasterTheme.mainTheme,
+            child: AlertDialog(
+              title: new Text("Annatko äänen pelaajalle " +
+                  allPlayers[i].firstName +
+                  " " +
+                  allPlayers[i].lastName),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("Kyllä"),
+                  onPressed: () {
+                    giveVote(i);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                new FlatButton(
+                  child: new Text(
+                    "En",
+                    style: TextStyle(
+                      color: MasterTheme.awayTeamColour,
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
-                ],
-              ),
-            );
-          } else {
-            return Theme(
-              data: MasterTheme.mainTheme,
-              child: AlertDialog(
-                title: new Text("Ei ääniä jäljellä."),
-                actions: <Widget>[
-                  new FlatButton(
-                    child: new Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: new Text(
-                            "Nyyh",
-                            style: TextStyle(
-                              color: MasterTheme.awayTeamColour,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: new Icon(
-                            FontAwesomeIcons.sadTear,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Theme(
+            data: MasterTheme.mainTheme,
+            child: AlertDialog(
+              title: new Text("Ei ääniä jäljellä."),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: new Text(
+                          "Nyyh",
+                          style: TextStyle(
                             color: MasterTheme.awayTeamColour,
                           ),
                         ),
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: new Icon(
+                          FontAwesomeIcons.sadTear,
+                          color: MasterTheme.awayTeamColour,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-        });
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
   }
 
   void giveVote(int i) async {
@@ -885,16 +895,22 @@ class PlayerVotingState extends State<PlayerVoting> {
     final DocumentReference playerRef = Firestore.instance
         .collection('players')
         .document(playersQuery.documents[0].documentID);
-    Firestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot freshSnap = await transaction.get(playerRef);
-      await transaction.update(freshSnap.reference, {
-        'currentVotes': freshSnap['currentVotes'] + 1,
-      }).then((data) {
-        setState(() {
-          //allPlayers[i].currentVotes++;
-          fakeUser.playerVotes--;
-        });
-      });
-    });
+    Firestore.instance.runTransaction(
+      (transaction) async {
+        DocumentSnapshot freshSnap = await transaction.get(playerRef);
+        await transaction.update(freshSnap.reference, {
+          'currentVotes': freshSnap['currentVotes'] + 1,
+        }).then(
+          (data) {
+            setState(
+              () {
+                //allPlayers[i].currentVotes++;
+                fakeUser.playerVotes--;
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

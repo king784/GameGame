@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
+import 'package:flutter_testuu/pages/PictureCompetition.dart';
 //import 'package:routing_prep/main.dart';
 
 import 'package:flutter_testuu/pages/activities.dart';
@@ -61,7 +62,7 @@ class RouteGenerator {
         case '/imageVoting':
         if (args is String) {
           return MaterialPageRoute(
-            builder: (_) => Pictures(),
+            builder: (_) => PictureCompetition(),
           );
         }
         return _errorRoute();
