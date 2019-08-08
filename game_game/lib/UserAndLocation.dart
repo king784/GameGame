@@ -15,7 +15,7 @@ class UserLocation {
   List<Placemark> eventAddress;
 
   Future getCurrentLocation() async {
-    print('waiting for user location.');
+    // print('waiting for user location.');
     //update the current location
     userPos = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -31,11 +31,11 @@ class UserLocation {
 //       }
 //     });
 
-    print('user location found: ' + userPos.toString() + '.');
+    // print('user location found: ' + userPos.toString() + '.');
   }
 
   Future getEventAddressIntoPlacemark() async {
-    print('waiting for event address.');
+    // print('waiting for event address.');
     eventAddress =
         await Geolocator().placemarkFromCoordinates(60.459403, 26.932751);
   }
@@ -49,7 +49,7 @@ class UserLocation {
     } else {
       positionDataEnabled = false;
     }
-    print('checking geolocation status: ' + geolocationStatus.value.toString());
+    //print('checking geolocation status: ' + geolocationStatus.value.toString());
   }
 
   void updateUserDistanceFromEvent() async {
@@ -76,10 +76,10 @@ class UserLocation {
       loadingLocation = false;
     }
 
-    print('updating user location, distance from event is ' +
-        distanceInMeters.toString() +
-        ' meters. bool userLocationOk = ' +
-        userLocationOk.toString() +
-        '.');
+    // print('updating user location, distance from event is ' +
+    //     distanceInMeters.toString() +
+    //     ' meters. bool userLocationOk = ' +
+    //     userLocationOk.toString() +
+    //     '.');
   }
 }
