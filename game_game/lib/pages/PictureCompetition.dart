@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
@@ -28,37 +29,37 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         child: Scaffold(
           body: ListView(
             children: <Widget>[
-               Align(
-                      alignment: Alignment.topCenter,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                            child: FloatingActionButton(
-                                heroTag: 'backBtn2',
-                                child: Icon(
-                                  FontAwesomeIcons.arrowLeft,
-                                  color: MasterTheme.accentColour,
-                                  size: 40,
-                                ),
-                                backgroundColor: Colors.transparent,
-                                onPressed: () => Navigation.openGames(context),
-                                elevation: 0),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                      child: FloatingActionButton(
+                          heroTag: 'backBtn2',
+                          child: Icon(
+                            FontAwesomeIcons.arrowLeft,
+                            color: MasterTheme.accentColour,
+                            size: 40,
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text(
-                                'Kuva äänestys',
-                                textAlign: TextAlign.right,
-                                style: Theme.of(context).textTheme.title,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                          backgroundColor: Colors.transparent,
+                          onPressed: () => Navigation.openGames(context),
+                          elevation: 0),
                     ),
-
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          'Kuvaäänestys',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              PictureCardList(),
             ],
           ),
         ),
