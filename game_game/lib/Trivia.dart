@@ -53,6 +53,7 @@ List<Question> allQuestions = new List<Question>();
 List<Question> questions = new List<Question>();
 Question currentQuestion;
 typedef GetNextQuestionCallback = void Function();
+bool questionsLoaded = false;
 
 int timeLeft = 10;
 
@@ -98,7 +99,6 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   // Question variables
   Image nextImage;
   bool nextImgLoaded = false;
-  bool questionsLoaded = false;
   int questionIndex = 0;
 
   @override
@@ -116,7 +116,19 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     quizContents.add(Global.contents.split(";"));
     // TODO: implement build
     return !questionsLoaded
-        ? new Text("Ladataan...")
+        ? new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  "Ladataan...",
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+              ),
+              CircularProgressIndicator(),
+            ],
+          )
         : new WillPopScope(
             child: Theme(
               data: MasterTheme.mainTheme,
@@ -124,20 +136,39 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                   bottomNavigationBar: BottomAppBar(
                     child: Row(
                       children: <Widget>[
-                        FloatingActionButton(
-                            heroTag: 'backBtn4',
-                            child: Icon(
-                              FontAwesomeIcons.arrowLeft,
-                              color: MasterTheme.primaryColour,
-                              size: 40,
-                            ),
-                            backgroundColor: Colors.transparent,
-                            onPressed: resetQuiz,
-                            elevation: 0),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text("Luovuta",
-                              style: Theme.of(context).textTheme.subtitle),
+                        Expanded(
+                          child: FloatingActionButton(
+                              heroTag: 'backBtn7',
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Icon(
+                                      FontAwesomeIcons.arrowLeft,
+                                      color: MasterTheme.primaryColour,
+                                      size: 40,
+                                    ),
+                                  ),
+                                  Text("Luovuta",
+                                      style:
+                                          Theme.of(context).textTheme.subtitle),
+                                ],
+                              ),
+                              backgroundColor: Colors.transparent,
+                              onPressed: () {
+                                questions.clear();
+                                questions.addAll(allQuestions);
+                                currentQuestion = questions.removeAt(
+                                    Random().nextInt(questions.length));
+                                questionNumber = 0;
+                                finalScore = 0;
+                                Navigation.openGames(context);
+                                questionsLoaded = true;
+                              },
+                              elevation: 0),
+                        ),
+                        Expanded(
+                          child: Text(""),
                         ),
                       ],
                     ),
@@ -350,6 +381,10 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       ReAddValues();
       firstRun = false;
     }
+    if(!nextImgLoaded && currentQuestion != null)
+    {
+      NextImage(currentQuestion.imagePath);
+    }
   }
 
   void LoadQuestions() async {
@@ -508,12 +543,20 @@ class Summary extends StatelessWidget {
                             ),
                           ),
                           Text("Palaa",
-                              style:
-                                  Theme.of(context).textTheme.subtitle),
+                              style: Theme.of(context).textTheme.subtitle),
                         ],
                       ),
                       backgroundColor: Colors.transparent,
-                      onPressed: () => Navigation.openGames(context),
+                      onPressed: () {
+                        questions.clear();
+                        questions.addAll(allQuestions);
+                        currentQuestion = questions
+                            .removeAt(Random().nextInt(questions.length));
+                        questionNumber = 0;
+                        finalScore = 0;
+                        Navigation.openGames(context);
+                        questionsLoaded = true;
+                      },
                       elevation: 0),
                 ),
                 Expanded(
@@ -523,8 +566,7 @@ class Summary extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text("Yritä uudelleen",
-                              style:
-                                  Theme.of(context).textTheme.subtitle),
+                              style: Theme.of(context).textTheme.subtitle),
                           Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Icon(
@@ -537,12 +579,14 @@ class Summary extends StatelessWidget {
                       ),
                       backgroundColor: Colors.transparent,
                       onPressed: () {
+                        questions.clear();
                         questions.addAll(allQuestions);
                         currentQuestion = questions
                             .removeAt(Random().nextInt(questions.length));
                         questionNumber = 0;
                         finalScore = 0;
-                        Navigation.openGames(context);
+                        Navigation.openTrivia(context);
+                        questionsLoaded = true;
                       },
                       elevation: 0),
                 ),

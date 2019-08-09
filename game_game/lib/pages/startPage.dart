@@ -21,6 +21,7 @@ class _StartState extends State<Start> {
   void initState() {
     //check for location data
     userLoc.checkGeolocationPermissionStatus();
+    checkUserLocation();
     locationUpdateTimer =
         Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
     super.initState();
