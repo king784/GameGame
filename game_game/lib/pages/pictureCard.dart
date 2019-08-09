@@ -55,17 +55,43 @@ class _PictureCardListState extends State<PictureCardList> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(8.0),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Text(
+                            'Kuvaaja:',
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: Text(
+                            photographersUsername,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.display4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           'Saadut äänet:',
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.body1,
                         ),
                       ),
@@ -73,15 +99,15 @@ class _PictureCardListState extends State<PictureCardList> {
                         padding: EdgeInsets.all(2.0),
                         child: Text(
                           votes.toString(),
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.display2,
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.display4,
                         ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
+                  padding: EdgeInsets.all(10),
                   child: SizedBox(
                     width: 50,
                     height: 50,
@@ -93,7 +119,7 @@ class _PictureCardListState extends State<PictureCardList> {
                       color: Theme.of(context).accentColor,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
