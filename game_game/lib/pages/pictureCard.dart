@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Globals.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PictureCardList extends StatefulWidget {
@@ -21,8 +22,6 @@ class _PictureCardListState extends State<PictureCardList> {
     loadImagesFromDB();
   }
 
-//fix the images that aren't loading
-
   @override
   Widget build(BuildContext context) {
     return !imagesLoaded
@@ -34,40 +33,69 @@ class _PictureCardListState extends State<PictureCardList> {
                   style: Theme.of(context).textTheme.caption),
             ),
           )
-        : Column(
-            children: imageCardList,
-          );
+        : Column(children: imageCardList);
   }
 
   _cardWithPic(String photographersUsername, String imgUrl, int votes) {
     return Card(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Image.network(imgUrl),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Saadut äänet:',
-                      textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.body1,
-                    ),
-                    Text(
-                      votes.toString(),
-                      textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.subhead,
-                    ),
-                    RaisedButton(
-                      child: Icon(FontAwesomeIcons.plus),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: Global.SCREENWIDTH * 0.9,
+              child: Image.network(imgUrl),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Text(
+                          'Saadut äänet:',
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.body1,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: Text(
+                          votes.toString(),
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.display2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 5, 5, 5),
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: RaisedButton(
+                      child: Icon(
+                        FontAwesomeIcons.plus,
+                      ),
                       onPressed: () => {},
                       color: Theme.of(context).accentColor,
-                    )
-                  ],
-                ),
-              ),
-            ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -88,11 +116,10 @@ class _PictureCardListState extends State<PictureCardList> {
 
   void loadImagesFromDB() async {
     //remember to update list after someone votes a pic
-    final QuerySnapshot result = await Firestore
-        .instance //get collection of gamecodes where date is same today
+    final QuerySnapshot result = await Firestore.instance
         .collection('imagesForBestImageVoting')
         .getDocuments();
-    //String gameCode = result.documents[0]['code'];
+
     for (int i = 0; i < result.documents.length; i++) {
       //go through all the documents we got from firestore
       allimages.add(new imageFromDB(result.documents[i]['photographerName'],
@@ -100,6 +127,10 @@ class _PictureCardListState extends State<PictureCardList> {
       print(allimages[i].toString());
     }
     makeWidgetListFromPictures();
+
+    if (allimages != null) {
+      imagesLoaded = true;
+    }
   }
 }
 

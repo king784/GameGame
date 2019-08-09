@@ -40,9 +40,9 @@ class MasterTheme {
       headline: TextStyle(fontFamily: bold, fontSize: headlineSize),
       title: TextStyle(fontFamily: semibold, fontSize: titleSize),
       subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
-      display1: TextStyle(fontFamily: medium, fontSize: display1Size, color: primaryColour),
-      display2: TextStyle(fontFamily: medium, fontSize: display2Size, color: primaryColour),
-      display3: TextStyle(fontFamily: bold, fontSize: display3Size, color: primaryColour),
+      display1: TextStyle(fontFamily: medium, fontSize: display1Size, color: accentColour),
+      display2: TextStyle(fontFamily: medium, fontSize: display2Size, color: accentColour),
+      display3: TextStyle(fontFamily: bold, fontSize: display3Size, color: accentColour),
       body1: TextStyle(fontFamily: regular, fontSize: body1Size),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size),
       subhead: TextStyle(

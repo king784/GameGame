@@ -4,9 +4,7 @@ import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../Globals.dart';
 import '../Navigation.dart';
-import '../radialMenu.dart';
 
 class PictureCompetition extends StatefulWidget {
   @override
@@ -27,39 +25,53 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: ListView(
+          body: Column(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                      child: FloatingActionButton(
-                          heroTag: 'backBtn2',
-                          child: Icon(
-                            FontAwesomeIcons.arrowLeft,
-                            color: MasterTheme.accentColour,
-                            size: 40,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
-                          elevation: 0),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          'Kuvaäänestys',
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.title,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                  child: Container(
+                    color: MasterTheme.accentColour,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(2, 10, 10, 10),
+                          child: FloatingActionButton(
+                              heroTag: 'backBtn2',
+                              child: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: MasterTheme.primaryColour,
+                                size: 40,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              onPressed: () => Navigation.openGames(context),
+                              elevation: 0),
                         ),
-                      ),
-                    )
-                  ],
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'Kuvaäänestys',
+                              textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              PictureCardList(),
+              Expanded(
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: PictureCardList(),
+                  ),
+                ),
+              )
             ],
           ),
         ),
