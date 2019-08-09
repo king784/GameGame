@@ -17,6 +17,7 @@ class MasterTheme {
   static double display1Size = 100;
   static double display2Size = 30;
   static double display3Size = 35;
+  static double display4Size = 27;
   static double titleSize = 30;
   static double subTitleSize = 22;
   static double subHeadSize = 19;
@@ -40,9 +41,10 @@ class MasterTheme {
       headline: TextStyle(fontFamily: bold, fontSize: headlineSize),
       title: TextStyle(fontFamily: semibold, fontSize: titleSize),
       subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
-      display1: TextStyle(fontFamily: medium, fontSize: display1Size, color: primaryColour),
-      display2: TextStyle(fontFamily: medium, fontSize: display2Size, color: primaryColour),
-      display3: TextStyle(fontFamily: bold, fontSize: display3Size, color: primaryColour),
+      display1: TextStyle(fontFamily: medium, fontSize: display1Size, color: accentColour),
+      display2: TextStyle(fontFamily: medium, fontSize: display2Size, color: accentColour),
+      display3: TextStyle(fontFamily: bold, fontSize: display3Size, color: accentColour),
+      display4: TextStyle(fontFamily: bold, fontSize: display4Size, color: accentColour),
       body1: TextStyle(fontFamily: regular, fontSize: body1Size),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size),
       subhead: TextStyle(
