@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 class Global{
   static bool GAMELOOP = true;
   static double SCREENWIDTH=100, SCREENHEIGHT=100;
+  static String CURRENTROUTE="";
 
     //Trivia global variables
     static String contents = "";
