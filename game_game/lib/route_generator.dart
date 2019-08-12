@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
+import 'Globals.dart';
 import 'package:flutter_testuu/pages/PictureCompetition.dart';
 //import 'package:routing_prep/main.dart';
 
@@ -18,9 +19,11 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/startPage':
+        Global.CURRENTROUTE = "/startPage";
         return MaterialPageRoute(builder: (_) => Start());
 
       case '/home':
+        Global.CURRENTROUTE = "/home";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Home(),
@@ -29,13 +32,16 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/activities':
+        Global.CURRENTROUTE = "/activities";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Activities(),
           );
         }
         return _errorRoute();
+
       case '/help':
+        Global.CURRENTROUTE = "/help";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Ohje(),
@@ -44,6 +50,7 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/userPage':
+        Global.CURRENTROUTE = "/userPage";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => UserPage(),
@@ -52,6 +59,7 @@ class RouteGenerator {
         return _errorRoute();
 
         case '/userPageWithoutMenu':
+        Global.CURRENTROUTE = "/userPageWithoutMenu";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => UserPageWithoutMenu(),
@@ -60,6 +68,7 @@ class RouteGenerator {
         return _errorRoute();
 
         case '/imageVoting':
+        Global.CURRENTROUTE = "/imageVoting";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => PictureCompetition(),
@@ -68,6 +77,7 @@ class RouteGenerator {
         return _errorRoute();
 
         case '/playerVoting':
+        Global.CURRENTROUTE = "/playerVoting";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => PlayerVoting(),
@@ -76,6 +86,7 @@ class RouteGenerator {
         return _errorRoute();
 
         case '/trivia':
+        Global.CURRENTROUTE = "/trivia";
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Trivia(),

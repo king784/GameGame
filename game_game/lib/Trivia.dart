@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_testuu/Timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'Navigation.dart';
@@ -64,7 +65,7 @@ class Trivia extends StatefulWidget {
   }
 }
 
-//class TimerPainter extends CustomPainter{
+// class TimerPainter extends CustomPainter{
 //  TimerPainter({
 //    this.animation,
 //    this.backgroundColor,
@@ -72,34 +73,36 @@ class Trivia extends StatefulWidget {
 //  }) : super(repaint: animation);
 //  final Animation<double> animation;
 //  final Color backgroundColor, color;
-//
+
 //  void paint(Canvas canvas, Size size){
 //    Paint paint = Paint()
 //    ..color = backgroundColor
 //    ..strokeWidth = 5.0
 //    ..strokeCap = StrokeCap.round
 //    ..style = PaintingStyle.stroke;
-//
-//
+
+
 //  canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
 //  paint.color = color;
 //  double progress = (1.0 - animation.value) * 2 * 3.14;
 //  canvas.drawArc(Offset.zero & size, 3.14 * 1.5, -progress, false, paint);
 //  }
-//
-//@override
-//bool shouldRepaint(TimerPainter old){
+
+// @override
+// bool shouldRepaint(TimerPainter old){
 //  return animation.value != old.animation.value ||
 //  color != old.color ||
 //  backgroundColor != old.backgroundColor;
-//}
-//}
+// }
+// }
 
 class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   // Question variables
   Image nextImage;
   bool nextImgLoaded = false;
   int questionIndex = 0;
+
+  Timer customTimer;
 
   @override
   Widget build(BuildContext context) {
@@ -162,8 +165,11 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     Random().nextInt(questions.length));
                                 questionNumber = 0;
                                 finalScore = 0;
-                                Navigation.openGames(context);
+                                Navigation.openGamesFromTrivia(context);
                                 questionsLoaded = true;
+                                customTimer.cancel();
+                                customTimer = null;
+                                timeLeft = 10;
                               },
                               elevation: 0),
                         ),
@@ -178,7 +184,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: new Text(
-                          "Aika: ${timeLeft}",
+                          "Aika: " + timeLeft.toString(),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.display2,
                         ),
@@ -381,10 +387,34 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       ReAddValues();
       firstRun = false;
     }
+
+    if(customTimer == null && Global.CURRENTROUTE == "/trivia")
+    {
+      customTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) => TimerFunction());
+    }
+
+    if(Global.CURRENTROUTE != "/trivia")
+    {
+      customTimer = null;
+      timeLeft = 0;
+    }
+
     if(!nextImgLoaded && currentQuestion != null)
     {
       NextImage(currentQuestion.imagePath);
     }
+  }
+
+  void TimerFunction()
+  {
+    print(timeLeft);
+    timeLeft =  timeLeft - 1;
+    if(timeLeft == 0)
+    {
+      timeLeft = 10;
+      GetNextQuestion();
+    }
+    setState(() {});
   }
 
   void LoadQuestions() async {
@@ -554,8 +584,11 @@ class Summary extends StatelessWidget {
                             .removeAt(Random().nextInt(questions.length));
                         questionNumber = 0;
                         finalScore = 0;
-                        Navigation.openGames(context);
+                        Navigation.openGamesFromTrivia(context);
                         questionsLoaded = true;
+                        customTimer.cancel();
+                        customTimer = null;
+                        timeLeft = 10;
                       },
                       elevation: 0),
                 ),
@@ -585,8 +618,11 @@ class Summary extends StatelessWidget {
                             .removeAt(Random().nextInt(questions.length));
                         questionNumber = 0;
                         finalScore = 0;
-                        Navigation.openTrivia(context);
+                        Navigation.openGamesFromTrivia(context);
                         questionsLoaded = true;
+                        customTimer.cancel();
+                        customTimer = null;
+                        timeLeft = 10;
                       },
                       elevation: 0),
                 ),

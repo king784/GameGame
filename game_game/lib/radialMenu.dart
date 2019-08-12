@@ -61,7 +61,12 @@ class RadialAnimation extends StatelessWidget {
               curve: Curves.decelerate,
             ),
           ),
-        ),
+        )..addStatusListener((status) {
+            if(status == AnimationStatus.completed)
+            {
+              // Open here
+            }
+          }),
         super(key: key);
 
   build(context) {
