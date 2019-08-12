@@ -1,4 +1,6 @@
 // Global variables
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,6 +8,8 @@ class Global{
   static bool GAMELOOP = true;
   static double SCREENWIDTH=100, SCREENHEIGHT=100;
   static String CURRENTROUTE="";
+  // Trivia timer
+  static bool TIMERSTARTED = false;
 
     //Trivia global variables
     static String contents = "";
@@ -26,17 +30,6 @@ class Global{
     SCREENWIDTH = width;
     SCREENHEIGHT = height;
   }
-}
-
-class CustomTimer{
-  // ImageVotes instance, we need only 1 that we can access
-  CustomTimer.imgVotesPrivate();
-
-  static final CustomTimer _instance = CustomTimer.imgVotesPrivate();
-
-  static CustomTimer get instance{return _instance;}
-
-  Timer theTimer;
 }
 
 class Player{

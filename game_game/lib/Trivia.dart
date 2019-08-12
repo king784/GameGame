@@ -56,6 +56,8 @@ Question currentQuestion;
 typedef GetNextQuestionCallback = void Function();
 bool questionsLoaded = false;
 
+// timerstuff
+bool canUpdateTimer = true;
 int timeLeft = 10;
 
 class Trivia extends StatefulWidget {
@@ -102,6 +104,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   bool nextImgLoaded = false;
   int questionIndex = 0;
 
+  bool timerStarted = false;
   Timer customTimer;
 
   @override
@@ -382,22 +385,21 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     if (firstRun) {
       //loadQuestions();
       //await loadQuestions();
+
+      if(Global.CURRENTROUTE == "/trivia" && !Global.TIMERSTARTED)
+      {
+        canUpdateTimer = true;
+        timeLeft = 10;
+        customTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) => TimerFunction());
+        Global.TIMERSTARTED = true;
+      }
+
       await LoadQuestions();
       RandomizeQuestions();
       ReAddValues();
       firstRun = false;
     }
 
-    if(customTimer == null && Global.CURRENTROUTE == "/trivia")
-    {
-      customTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) => TimerFunction());
-    }
-
-    if(Global.CURRENTROUTE != "/trivia")
-    {
-      customTimer = null;
-      timeLeft = 0;
-    }
 
     if(!nextImgLoaded && currentQuestion != null)
     {
@@ -407,8 +409,12 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
   void TimerFunction()
   {
-    print(timeLeft);
+    if(Global.CURRENTROUTE != "/trivia" && canUpdateTimer)
+    {
+      return;
+    }
     timeLeft =  timeLeft - 1;
+    print(timeLeft);
     if(timeLeft == 0)
     {
       timeLeft = 10;
@@ -476,10 +482,12 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     setState(() {
       timeLeft = 10;
       if (questions.length <= 0) {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new Summary(score: finalScore)));
+        canUpdateTimer = false;
+        Navigation.openSummary(context);
+        // Navigator.push(
+        //     context,
+        //     new MaterialPageRoute(
+        //         builder: (context) => new Summary(score: finalScore)));
       } else {
         currentQuestion = GetRandomQuestion();
         NextImage(currentQuestion.imagePath);
@@ -488,24 +496,22 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     });
   }
 
-  void updateQuestion() {
-    setState(() {
-      timeLeft = 10;
-      if (questionNumber == Global.contents.split(";").length - 1) {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new Summary(
-                      score: finalScore,
-                      getNextQuestionCallback: GetNextQuestion,
-                    )));
-      } else {
-        questionNumber++;
-        RandomizeQuestions();
-        ReAddValues();
-      }
-    });
-  }
+  // void updateQuestion() {
+  //   setState(() {
+  //     timeLeft = 10;
+  //     if (questionNumber == Global.contents.split(";").length - 1) {
+  //       Navigator.push(
+  //           context,
+  //           new MaterialPageRoute(
+  //               builder: (context) => new Summary(
+  //                   )));
+  //     } else {
+  //       questionNumber++;
+  //       RandomizeQuestions();
+  //       ReAddValues();
+  //     }
+  //   });
+  // }
 
   void RandomizeQuestions() {
     //timeLeft = 10;
@@ -537,13 +543,14 @@ String scoreText(final int score) {
     return "Hurraa!! Sait kaikki oikein. Pisteesi: $score";
 }
 
-class Summary extends StatelessWidget {
-  final int score;
+class Summary extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new SummaryState();
+  }
+}
 
-  Summary({Key key, this.getNextQuestionCallback, @required this.score})
-      : super(key: key);
-
-  final GetNextQuestionCallback getNextQuestionCallback;
+class SummaryState extends State<Summary>{
 
   @override
   Widget build(BuildContext context) {
@@ -632,7 +639,7 @@ class Summary extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(scoreText(score),
+              new Text(scoreText(finalScore),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3),
             ],

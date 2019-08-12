@@ -94,6 +94,15 @@ class RouteGenerator {
         }
         return _errorRoute();
 
+         case '/summary':
+        Global.CURRENTROUTE = "/summary";
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => Summary(),
+          );
+        }
+        return _errorRoute();
+
       default:
         return _errorRoute();
     }
