@@ -17,7 +17,6 @@ class _PictureCardListState extends State<PictureCardList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadImagesFromDB();
   }
@@ -150,11 +149,14 @@ class _PictureCardListState extends State<PictureCardList> {
       //go through all the documents we got from firestore
       allimages.add(new imageFromDB(result.documents[i]['photographerName'],
           result.documents[i]['imgUrl'], result.documents[i]['totalVotes']));
-      print(allimages[i].toString());
+      //print(allimages[i].toString());
     }
-    makeWidgetListFromPictures();
 
     if (allimages != null) {
+      allimages.sort((a, b) => a.totalVotes.compareTo(b.totalVotes));
+      allimages = allimages.reversed.toList();
+      print("Total votes: " + allimages[1].totalVotes.toString());
+      await makeWidgetListFromPictures();
       imagesLoaded = true;
     }
   }
