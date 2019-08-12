@@ -28,6 +28,17 @@ class Global{
   }
 }
 
+class CustomTimer{
+  // ImageVotes instance, we need only 1 that we can access
+  CustomTimer.imgVotesPrivate();
+
+  static final CustomTimer _instance = CustomTimer.imgVotesPrivate();
+
+  static CustomTimer get instance{return _instance;}
+
+  Timer theTimer;
+}
+
 class Player{
   int id;
   int currentVotes;
