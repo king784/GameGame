@@ -16,15 +16,16 @@ class Start extends StatefulWidget {
 class _StartState extends State<Start> {
   UserLocation userLoc = new UserLocation();
   Timer locationUpdateTimer;
+  String messageAboutLocation;
 
   @override
   void initState() {
     //check for location data
     userLoc.checkGeolocationPermissionStatus();
-    checkUserLocation();
     locationUpdateTimer =
         Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
     super.initState();
+    checkUserLocation();
   }
 
   @override
@@ -63,6 +64,7 @@ class _StartState extends State<Start> {
     }
 //if location data is enabled and userlocation is close enough to event location
     else if (userLoc.userLocationOk) {
+      messageAboutLocation = "Sijainti on kunnossa.";
       return WillPopScope(
         //onwill popscope disables the use of the android back button
         onWillPop: () async => false,
@@ -71,8 +73,20 @@ class _StartState extends State<Start> {
           child: Scaffold(
             body: ListView(
               children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Text(messageAboutLocation,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 100, 20, 10),
+                  padding: EdgeInsets.all(20),
                   child: Card(
                     child: StartPageForm(),
                   ),
@@ -100,6 +114,16 @@ class _StartState extends State<Start> {
         ),
       );
     } else {
+      if (userLoc.positionDataEnabled) {
+        int dist = UserLocation.distanceInMeters.round() -
+            UserLocation.radiusFromEvent.round();
+        messageAboutLocation =
+            "Matka hyväksyttävälle etäisyydelle tapahtumapaikasta: " +
+                dist.toString() +
+                "m.";
+      } else {
+        messageAboutLocation = "Sijainti ei ole käytössä.";
+      }
       return WillPopScope(
         //onwill popscope disables the use of the android back button
         onWillPop: () async => false,
@@ -113,8 +137,7 @@ class _StartState extends State<Start> {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(20, 100, 30, 5),
-                        child: Text(
-                            'Sijainti ei ole käytössä tai se ei toimi. Pystyt silti katsomaan omat tietosi',
+                        child: Text(messageAboutLocation,
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.caption),
                       ),

@@ -11,6 +11,7 @@ class UserLocation {
   GeolocationStatus geolocationStatus;
   //static StreamSubscription<Position> userPositionStream;
   static double distanceInMeters;
+  static double radiusFromEvent = 100;
 
   List<Placemark> eventAddress;
 
@@ -37,7 +38,7 @@ class UserLocation {
   Future getEventAddressIntoPlacemark() async {
     // print('waiting for event address.');
     eventAddress =
-        await Geolocator().placemarkFromCoordinates(60.459403, 26.932751);
+        await Geolocator().placemarkFromCoordinates(60.487251, 26.892282);
   }
 
   void checkGeolocationPermissionStatus() async {
@@ -66,7 +67,7 @@ class UserLocation {
         userPos.latitude,
         userPos.longitude);
 
-    if (distanceInMeters < 100 && positionDataEnabled) {
+    if (distanceInMeters < radiusFromEvent && positionDataEnabled) {
       userLocationOk = true;
     } else {
       userLocationOk = false;

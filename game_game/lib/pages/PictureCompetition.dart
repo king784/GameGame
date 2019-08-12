@@ -79,7 +79,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
               ),
             ),
           ),
-          _addingPicture(),
+          _addingPictureWidget(),
           Expanded(
             child: Container(
               child: SingleChildScrollView(
@@ -108,7 +108,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     }
   }
 
-  _addingPicture() {
+  _addingPictureWidget() {
     //let user add their own pic if they haven't done it yet
     if (!competitionIsOn) {
       return Text("");
@@ -132,7 +132,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                   ),
                 ],
               ),
-              onPressed: () => {},
+              onPressed: choosePictureToAdd(),
               color: Theme.of(context).accentColor,
             ),
           ),
@@ -179,5 +179,11 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     competitionStatusChecked = true;
 
     setState(() {});
+  }
+
+//help from here https://youtu.be/7uqmY6le4xk
+
+  choosePictureToAdd(){
+
   }
 }
