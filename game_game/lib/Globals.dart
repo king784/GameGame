@@ -1,4 +1,6 @@
 // Global variables
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,6 +8,8 @@ class Global{
   static bool GAMELOOP = true;
   static double SCREENWIDTH=100, SCREENHEIGHT=100;
   static String CURRENTROUTE="";
+  // Trivia timer
+  static bool TIMERSTARTED = false;
 
     //Trivia global variables
     static String contents = "";

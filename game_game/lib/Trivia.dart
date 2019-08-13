@@ -181,14 +181,14 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                   ),
                   body: new ListView(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: new Text(
-                          "Aika: " + timeLeft.toString(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display2,
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   child: new Text(
+                      //     "Aika: " + timeLeft.toString(),
+                      //     textAlign: TextAlign.center,
+                      //     style: Theme.of(context).textTheme.display2,
+                      //   ),
+                      // ),
                       Card(
                         margin: EdgeInsets.all(5.0),
                         child: Column(
@@ -388,16 +388,16 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       firstRun = false;
     }
 
-    if(customTimer == null && Global.CURRENTROUTE == "/trivia")
-    {
-      customTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) => TimerFunction());
-    }
+    // if(customTimer == null && Global.CURRENTROUTE == "/trivia")
+    // {
+    //   customTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) => TimerFunction());
+    // }
 
-    if(Global.CURRENTROUTE != "/trivia")
-    {
-      customTimer = null;
-      timeLeft = 0;
-    }
+    // if(Global.CURRENTROUTE != "/trivia")
+    // {
+    //   customTimer = null;
+    //   timeLeft = 0;
+    // }
 
     if(!nextImgLoaded && currentQuestion != null)
     {
