@@ -20,12 +20,9 @@ class _StartState extends State<Start> {
 
   @override
   void initState() {
-    //check for location data
-    userLoc.checkGeolocationPermissionStatus();
-    locationUpdateTimer =
-        Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
+    initialiseUserLocationAtStart();
     super.initState();
-    checkUserLocation();
+
   }
 
   @override
@@ -183,5 +180,13 @@ class _StartState extends State<Start> {
     //follow user position and distance between it and event
     userLoc.updateUserDistanceFromEvent();
     setState(() {});
+  }
+
+  void initialiseUserLocationAtStart()async{//check for location data at the start
+    await userLoc.checkGeolocationPermissionStatus();
+    locationUpdateTimer =
+        Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
+
+    checkUserLocation();
   }
 }
