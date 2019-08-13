@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Navigation.dart';
 
@@ -132,7 +135,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                   ),
                 ],
               ),
-              onPressed: choosePictureToAdd(),
+              onPressed: () => choosePictureToAdd(),
               color: Theme.of(context).accentColor,
             ),
           ),
@@ -169,7 +172,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     }
   }
 
-  Future<void> getIscompetitionOn() async {//check if the competition is on
+  Future<void> getIscompetitionOn() async {
+    //check if the competition is on
     final QuerySnapshot result = await Firestore.instance
         .collection('bestPictureCompetitionOn')
         .limit(1) //limits documents to one
@@ -183,7 +187,13 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
 //help from here https://youtu.be/7uqmY6le4xk
 
-  choosePictureToAdd(){
+  choosePictureToAdd() async {
+    //use the image picker to choose a file from phone's gallery and wait until it's done
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    //for debugging
+    print(image.path);
+
 
   }
 }

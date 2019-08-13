@@ -173,4 +173,10 @@ class imageFromDB {
   String toString() {
     return photographerName + ", " + imgUrl + ", " + totalVotes.toString();
   }
+
+  Map<String, dynamic> toJson() => {
+        'photographerName': photographerName,
+        'imgUrl': imgUrl,
+        'totalVotes': totalVotes
+      };
 }
