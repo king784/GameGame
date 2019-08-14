@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Admin/AddQuestions.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
 import 'Globals.dart';
@@ -90,6 +91,15 @@ class RouteGenerator {
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Trivia(),
+          );
+        }
+        return _errorRoute();
+
+        case '/addQuestions':
+        Global.CURRENTROUTE = "/addQuestions";
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => AddQuestionForm(),
           );
         }
         return _errorRoute();
