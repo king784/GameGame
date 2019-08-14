@@ -9,7 +9,6 @@ import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
 import 'package:flutter_testuu/pages/userPageNoMenu.dart';
-import 'package:flutter_testuu/pictures.dart';
 import './pages/home.dart';
 import './pages/userPage.dart';
 
@@ -106,7 +105,7 @@ class RouteGenerator {
           title: Text('Error'),
         ),
         body: Center(
-          child: Text('Error'),
+          child: Text('Error\n:)'),
         ),
       );
     });

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Globals.dart';
@@ -203,47 +204,74 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       context: context,
       builder: (context) {
         return AlertDialog(
-            title: Text('Lisää kuva'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  SizedBox(
-                    width: Global.SCREENWIDTH * .5,
-                    child: Image.file(image),
-                  ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      RaisedButton(
-                        child: Text('Lähetä',
-                            style: Theme.of(context).textTheme.body1),
-                        onPressed: () {
-                          _addImageToDatabase(
-                              image); //add the image to database
-                          Navigator.of(context).pop(context);
-                        },
-                        color: Theme.of(context).accentColor,
-                      ),
-                      RaisedButton(
-                        child: Text('Ei sittenkään',
-                            style: Theme.of(context).textTheme.body1),
-                        onPressed: () {
-                          Navigator.of(context).pop(context);
-                        }, //close popup
-                        color: MasterTheme.awayTeamColour,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ));
+          title: Text('Lisää kuva'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                SizedBox(
+                  width: Global.SCREENWIDTH * .5,
+                  child: Image.file(image),
+                ),
+                ButtonBar(
+                  alignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text('Lähetä',
+                          style: Theme.of(context).textTheme.body1),
+                      onPressed: () {
+                        _addImageToDatabase(image); //add the image to database
+                        Navigator.of(context).pop(context);
+                      },
+                      color: Theme.of(context).accentColor,
+                    ),
+                    RaisedButton(
+                      child: Text('Ei sittenkään',
+                          style: Theme.of(context).textTheme.body1),
+                      onPressed: () {
+                        Navigator.of(context).pop(context);
+                      }, //close popup
+                      color: MasterTheme.awayTeamColour,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
-  _addImageToDatabase(File img) {
+  _addImageToDatabase(File img) async {//fix this to update the view after adding images
+  
+    //https://stackoverflow.com/questions/51857796/flutter-upload-image-to-firebase-storage
+
+    //firebase storage reference
+    FirebaseStorage _storage = FirebaseStorage.instance;
+
+//filename
+    String imgName = img.path.split('/').last;
+    print('image name: ' + imgName);
+
+    //reference to the location/file folder in firestorage
+    StorageReference reference =
+        _storage.ref().child('bestPictureCompetition/').child(imgName);
+
+    print('Reference: ' + reference.toString());
+
 //add picture to firebase storage
+    StorageUploadTask uploadTask = reference.putFile(img);
 
 //add picture to database document with the needed voting parameters
+    await Firestore.instance
+        .collection('imagesForBestImageVoting')
+        .document()
+        .setData(
+      {
+        'photographerName': 'photographerName', //this should be the user's name
+        'imgUrl': 'bestPictureCompetition/' + imgName,
+        'totalVotes': 0
+      },
+    );
   }
 }
