@@ -11,7 +11,7 @@ class UserLocation {
   GeolocationStatus geolocationStatus;
   //static StreamSubscription<Position> userPositionStream;
   static double distanceInMeters;
-  static double radiusFromEvent = 100;
+  static double radiusFromEvent = 300;
 
   List<Placemark> eventAddress;
 
