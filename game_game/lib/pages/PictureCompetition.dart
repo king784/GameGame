@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -135,7 +136,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                   ),
                 ],
               ),
-              onPressed: () => choosePictureToAdd(),
+              onPressed: () => _createImagePopUpDialog(context),
               color: Theme.of(context).accentColor,
             ),
           ),
@@ -193,7 +194,56 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
     //for debugging
     print(image.path);
+  }
 
+  _createImagePopUpDialog(BuildContext context) async {
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            title: Text('Lisää kuva'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  SizedBox(
+                    width: Global.SCREENWIDTH * .5,
+                    child: Image.file(image),
+                  ),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text('Lähetä',
+                            style: Theme.of(context).textTheme.body1),
+                        onPressed: () {
+                          _addImageToDatabase(
+                              image); //add the image to database
+                          Navigator.of(context).pop(context);
+                        },
+                        color: Theme.of(context).accentColor,
+                      ),
+                      RaisedButton(
+                        child: Text('Ei sittenkään',
+                            style: Theme.of(context).textTheme.body1),
+                        onPressed: () {
+                          Navigator.of(context).pop(context);
+                        }, //close popup
+                        color: MasterTheme.awayTeamColour,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ));
+      },
+    );
+  }
 
+  _addImageToDatabase(File img) {
+//add picture to firebase storage
+
+//add picture to database document with the needed voting parameters
   }
 }

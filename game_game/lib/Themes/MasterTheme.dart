@@ -45,7 +45,7 @@ class MasterTheme {
       display2: TextStyle(fontFamily: medium, fontSize: display2Size, color: accentColour),
       display3: TextStyle(fontFamily: bold, fontSize: display3Size, color: accentColour),
       display4: TextStyle(fontFamily: bold, fontSize: display4Size, color: accentColour),
-      body1: TextStyle(fontFamily: regular, fontSize: body1Size),
+      body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: primaryColour),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size),
       subhead: TextStyle(
           fontFamily: semibold, fontSize: btnFontSize, color: accentColour),
