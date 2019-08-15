@@ -242,7 +242,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     );
   }
 
-  _addImageToDatabase(File img) async {//fix this to update the view after adding images
+  _addImageToDatabase(File img) async {
   
     //https://stackoverflow.com/questions/51857796/flutter-upload-image-to-firebase-storage
 

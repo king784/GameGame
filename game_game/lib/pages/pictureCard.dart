@@ -14,6 +14,7 @@ class _PictureCardListState extends State<PictureCardList> {
   List<imageFromDB> allimages = new List<imageFromDB>();
   List<Card> imageCardList = new List<Card>();
   bool imagesLoaded = false;
+  bool firstRun = true;
 
   @override
   void initState() {
@@ -128,6 +129,7 @@ class _PictureCardListState extends State<PictureCardList> {
   }
 
   Future<void> makeWidgetListFromPictures() async {
+    imageCardList.clear();
     String tempDBImageUrl = "";
     for (int i = 0; i < allimages.length; i++) {
       var firebaseInstanceReference =
@@ -140,9 +142,47 @@ class _PictureCardListState extends State<PictureCardList> {
   }
 
   void loadImagesFromDB() async {
-    //remember to update list after someone votes a pic
-    final QuerySnapshot result = await Firestore.instance
+    //listen to changes and update images after first time
+    var res = await Firestore.instance
         .collection('imagesForBestImageVoting')
+        .snapshots();
+
+    imageFromDB tempImg;
+
+    res.listen((data) {
+      print("Listening to db for image changes");
+      allimages.clear();
+      //get the documents from firestore and make a new tempimg from each changed document
+      data.documentChanges.forEach((change) {
+        print("pictures should have been added");
+        tempImg = new imageFromDB(change.document['photographerName'],
+            change.document['imgUrl'], change.document['totalVotes']);
+        //see if there is an old image with same path and photographer in  the allimagews list and save the index
+        int queryIndex = allimages.indexWhere((img) =>
+            img.photographerName == tempImg.photographerName &&
+            img.imgUrl == tempImg.imgUrl);
+        if (queryIndex >= 0) {
+          //if an image with same uploader and path/filename was found
+          if (tempImg.totalVotes > allimages[queryIndex].totalVotes) {
+            //if the image from db has more votes than the temp image
+            //just to make it clear the temp image is the never version of the found image query
+            //update the old image
+            allimages[queryIndex] = tempImg;
+          }
+        } else {
+          //the same image was not found
+          // add the new image to allimages list
+          if (!firstRun) {
+            allimages.add(tempImg);
+          }
+        }
+        makeWidgetListFromPictures();
+      });
+    });
+
+    final QuerySnapshot result = await Firestore.instance
+        .collection(
+            'imagesForBestImageVoting') //get the documents from this collection
         .getDocuments();
 
     for (int i = 0; i < result.documents.length; i++) {
@@ -159,6 +199,7 @@ class _PictureCardListState extends State<PictureCardList> {
       await makeWidgetListFromPictures();
       imagesLoaded = true;
     }
+    firstRun = false;
   }
 }
 
