@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../Themes/MasterTheme.dart';
@@ -23,6 +26,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   final answer4Key = GlobalKey<FormState>();
   final dateKey = GlobalKey<FormState>();
   DateTime currentDate;
+  File questionImage;
   String newQuestion;
   List<String> answers = new List<String>(4);
 
@@ -36,7 +40,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Future<Widget> build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Theme(
@@ -250,20 +254,14 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                   )),
 
               // Image for quiz
+              RaisedButton(
+                onPressed: (){
+                  File questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+                },
+              ),
+              
 
-              // DateTimePickerFormField(
-              //   format: dateFormat,
-              //   onChanged: (date) {
-              //     Scaffold.of(context)
-              //         .showSnackBar(SnackBar(content: Text('$date')));
-              //   },
-              // ),
-
-              // DateTimePickerFormField(
-              //   format: dateFormat,
-              //   enabled: false,
-              // ),
-
+            
               // Button to submit
               Padding(
                 padding: EdgeInsets.all(20),
@@ -300,6 +298,11 @@ class AddQuestionFormState extends State<AddQuestionForm> {
         ),
       ),
     );
+  }
+
+  void GetQuestionImage() async
+  {
+    
   }
 
   void LoadAllQuestions() async {
