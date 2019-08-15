@@ -62,6 +62,7 @@ dependencies:
   firebase_messaging: ^5.0.2
   overlay_support: ^1.0.0
 
+  flutter_datetime_picker: ^1.2.6
 
 
   # The following adds the Cupertino Icons font to your application.

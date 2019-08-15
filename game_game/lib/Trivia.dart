@@ -476,11 +476,9 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     setState(() {
       timeLeft = 10;
       if (questions.length <= 0) {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new Summary(score: finalScore)));
-      } else {
+        Navigation.openSummary(context); 
+      }
+      else {
         currentQuestion = GetRandomQuestion();
         NextImage(currentQuestion.imagePath);
         setState(() {});
@@ -492,13 +490,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     setState(() {
       timeLeft = 10;
       if (questionNumber == Global.contents.split(";").length - 1) {
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => new Summary(
-                      score: finalScore,
-                      getNextQuestionCallback: GetNextQuestion,
-                    )));
+        Navigation.openSummary(context); 
       } else {
         questionNumber++;
         RandomizeQuestions();
@@ -538,13 +530,6 @@ String scoreText(final int score) {
 }
 
 class Summary extends StatelessWidget {
-  final int score;
-
-  Summary({Key key, this.getNextQuestionCallback, @required this.score})
-      : super(key: key);
-
-  final GetNextQuestionCallback getNextQuestionCallback;
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -632,7 +617,7 @@ class Summary extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(scoreText(score),
+              new Text(scoreText(finalScore),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display3),
             ],

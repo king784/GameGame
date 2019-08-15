@@ -70,4 +70,10 @@ class Navigation {
     // Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
     Navigator.of(context).pushReplacementNamed('/summary', arguments: 'summary');
   }
+  
+  static void openAddQuestions(BuildContext context) {
+    // Navigator.pop(context);
+    // Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
+    Navigator.of(context).pushReplacementNamed('/addQuestions', arguments: 'addQuestions');
+  }
 }
