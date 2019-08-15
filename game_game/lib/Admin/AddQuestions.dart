@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 import '../Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
@@ -22,7 +22,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   final answer3Key = GlobalKey<FormState>();
   final answer4Key = GlobalKey<FormState>();
   final dateKey = GlobalKey<FormState>();
-  final dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
+  DateTime currentDate;
   String newQuestion;
   List<String> answers = new List<String>(4);
 
@@ -230,6 +230,27 @@ class AddQuestionFormState extends State<AddQuestionForm> {
               ),
 
               // Date picker
+              FlatButton(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(2019, 6, 1),
+                        maxTime: DateTime(2020, 6, 1), onChanged: (date) {
+                      print('change $date');
+                      currentDate = date;
+                    }, onConfirm: (date) {
+                      print('confirm $date');
+                      currentDate = date;
+                      // The fi Localetype was not part of the DatePicker package.
+                    }, currentTime: DateTime.now(), locale: LocaleType.fi); 
+                  },
+                  child: Text(
+                    'Valitse aika painamalla tästä.',
+                    style: Theme.of(context).textTheme.subtitle,
+                  )),
+
+              // Image for quiz
+
               // DateTimePickerFormField(
               //   format: dateFormat,
               //   onChanged: (date) {
