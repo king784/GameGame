@@ -40,7 +40,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   }
 
   @override
-  Future<Widget> build(BuildContext context) {
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Theme(
