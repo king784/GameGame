@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/StartPageForm.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
 //import 'package:routing_prep/main.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_testuu/pages/userPageNoMenu.dart';
 import 'package:flutter_testuu/pictures.dart';
 import './pages/home.dart';
 import './pages/userPage.dart';
+import 'UserAuthentication.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -78,6 +80,14 @@ class RouteGenerator {
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => Trivia(),
+          );
+        }
+        return _errorRoute();
+
+        case '/userAuthentication':
+        if (args is String) {
+          return MaterialPageRoute(
+            builder: (_) => UserAuthentication(),
           );
         }
         return _errorRoute();
