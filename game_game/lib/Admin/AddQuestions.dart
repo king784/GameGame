@@ -27,6 +27,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   final dateKey = GlobalKey<FormState>();
   DateTime currentDate;
   File questionImage;
+  bool imageLoaded = false;
   String newQuestion;
   List<String> answers = new List<String>(4);
 
@@ -234,7 +235,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
               ),
 
               // Date picker
-              FlatButton(
+              RaisedButton(
                   onPressed: () {
                     DatePicker.showDatePicker(context,
                         showTitleActions: true,
@@ -249,18 +250,29 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                     }, currentTime: DateTime.now(), locale: LocaleType.fi); 
                   },
                   child: Text(
-                    'Valitse aika painamalla tästä.',
+                    'Valitse ottelun päivä painamalla tästä.',
                     style: Theme.of(context).textTheme.subtitle,
                   )),
 
               // Image for quiz
               RaisedButton(
+                child: Text(
+                  "Lisää kuva"
+                ),
                 onPressed: (){
-                  File questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+                  GetQuestionImage();
                 },
               ),
               
-
+              !imageLoaded ? Text("") : Column(
+                children: <Widget>[
+                  Text("Valittu kuva: "),
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.8,
+                    child: Image.file(questionImage),
+                    ),
+                ],
+              ),
             
               // Button to submit
               Padding(
@@ -302,7 +314,9 @@ class AddQuestionFormState extends State<AddQuestionForm> {
 
   void GetQuestionImage() async
   {
-    
+    questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    imageLoaded = true;
+    setState(() {});
   }
 
   void LoadAllQuestions() async {
