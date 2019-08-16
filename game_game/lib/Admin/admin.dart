@@ -32,10 +32,13 @@ class AdminState extends State<Admin> {
   DateTime votingEndTime = null;
   Timer customTimer;
 
+  var usersATM;
+
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    userCounter();
     return WillPopScope(
       onWillPop: () async => false,
       child: Theme(
@@ -105,6 +108,7 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   Text(timeText),
+                  Text("Kilpoilijoita: " + usersATM),
                 ],
               ),
               // ADDING PLAYERS
@@ -284,5 +288,23 @@ class AdminState extends State<Admin> {
         ],
       ),
     );
+  }
+
+  void userCounter() async{
+
+    var t = await Firestore.instance.collection("users").getDocuments();
+    usersATM = t.documents.length.toString();
+    //t.asStream().length;
+
+    //TOIMIS NY SOOTANA!
+
+    var dbUsers = await Firestore.instance.collection("users");
+    var dbLastSeen = dbUsers.where("lastSeen");
+    dbLastSeen.snapshots().length;
+
+
+    //print(dbUsers.toString() + " " + dbLastSeen.snapshots()..length.toString());
+
+
   }
 }
