@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "410792683234-2g3coejpm14ic1oe07pgrrov7tadhnh3.apps.googleusercontent.com",
+          "client_id": "410792683234-k5073ocsahemrrn80njfhrn0efuq2tcd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.xamk.game_game",
-            "certificate_hash": "2e850d1c0051576fc44c9381c2fbc803d59b218f"
+            "certificate_hash": "04a446198c1464cc676cb1bdec5f8296cff67f12"
           }
         },
         {

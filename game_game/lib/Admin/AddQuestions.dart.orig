@@ -265,9 +265,14 @@ class AddQuestionFormState extends State<AddQuestionForm> {
 
               // Image for quiz
               RaisedButton(
+<<<<<<< HEAD
+                onPressed: (){
+                  //File questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+=======
                 child: Text("Lisää kuva"),
                 onPressed: () {
                   GetQuestionImage();
+>>>>>>> AdminVisuals
                 },
               ),
 
@@ -342,15 +347,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
     //     });
     //   },
     // ),
-    String imgName = questionImage.path.split('/').last;
-    Question question = new Question(newQuestion, answers, correctAnswer, imgName);
-    CollectionReference dbCollectionRef = Firestore.instance.collection('questions');
-        Firestore.instance.runTransaction((Transaction tx) async {
-          var result = await dbCollectionRef.add(question.toJson());
-        });
-        setState(() {
-
-        });
+    //Question question = new Question(newQuestion, answers, newCorrect, newImagePath)
   }
 
   void LoadAllQuestions() async {
