@@ -55,6 +55,7 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
+  var googleUser;
 
   Observable<FirebaseUser> user;
   Observable<Map<String, dynamic>> profile;
@@ -78,13 +79,23 @@ class AuthService {
 
   Future<FirebaseUser> googleSignIn() async {
     loading.add(true);
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    try
+    {
+      googleUser = await _googleSignIn.signIn();
+    } catch(error)
+    {
+      print(error);
+    }
+    
+    print("SignIn done");
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    print("Auth done");
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    print("AuthCred done");
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
     print("signed in " + user.displayName);
@@ -97,7 +108,8 @@ class AuthService {
 
     return ref.setData({
       'uid': user.uid,
-      'email': user.email,
+      //'email': user.email,
+      'email': googleUser.email,
 
       //These may be unnecessary :D
       'photoUrl': user.photoUrl,
