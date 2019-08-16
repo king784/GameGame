@@ -46,6 +46,7 @@ dependencies:
   #cloud_firestore: ^0.12.5
   firebase_messaging: ^5.0.2
   overlay_support: ^1.0.0
+  ansicolor: ^1.0.2
 
 
 

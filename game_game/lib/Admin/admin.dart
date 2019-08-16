@@ -190,7 +190,7 @@ class AdminState extends State<Admin> {
 
   void AddQuestion() async {
     Question question = new Question("Mikä oli Larry Poundsin pelinumero?",
-        ["3", "9", "14", "25"], 3, "LarryPounds");
+        ["3", "9", "14", "25"], 3, "LarryPounds", DateTime.now());
     CollectionReference dbCollectionRef =
         Firestore.instance.collection('questions');
     Firestore.instance.runTransaction((Transaction tx) async {

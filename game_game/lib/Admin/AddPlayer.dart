@@ -13,23 +13,20 @@ import 'package:numberpicker/numberpicker.dart';
 import '../Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
 
-class AddQuestionForm extends StatefulWidget {
+class AddPlayerForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return AddQuestionFormState();
+    return AddPlayerFormState();
   }
 }
 
-class AddQuestionFormState extends State<AddQuestionForm> {
+class AddPlayerFormState extends State<AddPlayerForm> {
   final formKey = GlobalKey<FormState>();
-  DateTime currentDate;
-  File questionImage;
-  bool imageLoaded = false;
-  String newQuestion;
-  List<String> answers = new List<String>(4);
-  int correctAnswer = 1;
-
-  List<Question> allQuestions = new List<Question>();
+  int newID;
+  String firstName;
+  String lastName;
+  int playerNum;
+  String team;
 
   @override
   void initState() {
@@ -68,7 +65,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                       child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          'Kysymyksen lisäys',
+                          'Pelaajan lisäys',
                           textAlign: TextAlign.right,
                           style: Theme.of(context).textTheme.title,
                         ),
@@ -100,7 +97,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                               if (value.isEmpty) {
                                 return 'Kysymyskenttä on tyhjä.';
                               } else {
-                                newQuestion = value;
+                                //newQuestion = value;
                               }
                               return null;
                             },
@@ -126,7 +123,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                answers[0] = value;
+                                //answers[0] = value;
                               }
                               return null;
                             },
@@ -152,7 +149,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                answers[1] = value;
+                                //answers[1] = value;
                               }
                               return null;
                             },
@@ -178,7 +175,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                answers[2] = value;
+                                // answers[2] = value;
                               }
                               return null;
                             },
@@ -204,7 +201,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                answers[3] = value;
+                                // answers[3] = value;
                               }
                               return null;
                             },
@@ -221,54 +218,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.subtitle,
               ),
-              NumberPicker.integer(
-                highlightSelectedValue: false,
-                initialValue: correctAnswer,
-                minValue: 1,
-                maxValue: 4,
-                onChanged: (newValue) => correctAnswer = newValue,
-              ),
-
-              // Date picker
-              RaisedButton(
-                  onPressed: () {
-                    DatePicker.showDatePicker(context,
-                        showTitleActions: true,
-                        minTime: DateTime.now(),
-                        maxTime: DateTime(2020, 6, 1), onChanged: (date) {
-                      print('change $date');
-                      currentDate = date;
-                    }, onConfirm: (date) {
-                      print('confirm $date');
-                      currentDate = date;
-                      // The fi Localetype was not part of the DatePicker package.
-                    }, currentTime: DateTime.now(), locale: LocaleType.fi);
-                  },
-                  child: Text(
-                    'Valitse ottelun päivä painamalla tästä.',
-                    style: Theme.of(context).textTheme.subtitle,
-                  )),
-
-              // Image for quiz
-              RaisedButton(
-                child: Text("Lisää kuva"),
-                onPressed: () {
-                  GetQuestionImage();
-                },
-              ),
-
-              !imageLoaded
-                  ? Text("")
-                  : Column(
-                      children: <Widget>[
-                        Text("Valittu kuva: "),
-                        SizedBox(
-                          width: Global.SCREENWIDTH * 0.8,
-                          child: Image.file(questionImage),
-                        ),
-                      ],
-                    ),
-
+            
               // Button to submit
               Padding(
                 padding: EdgeInsets.all(20),
@@ -304,12 +254,6 @@ class AddQuestionFormState extends State<AddQuestionForm> {
     );
   }
 
-  void GetQuestionImage() async {
-    questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-    imageLoaded = true;
-    setState(() {});
-  }
-
   void AddQuestionToDB() {
     // RaisedButton(
     //   child: const Text("Lisää pelaaja"),
@@ -325,43 +269,43 @@ class AddQuestionFormState extends State<AddQuestionForm> {
     //   },
     // ),
 
-    String imgName = "";
-    if (questionImage != null) {
-      imgName = questionImage.path.split('/').last;
-    }
-    Question question =
-        new Question(newQuestion, answers, (correctAnswer-1), imgName, currentDate);
-    CollectionReference dbCollectionRef =
-        Firestore.instance.collection('questions');
-    Firestore.instance.runTransaction((Transaction tx) async {
-      var result = await dbCollectionRef.add(question.toJson());
-    });
+//     String imgName = "";
+//     if (questionImage != null) {
+//       imgName = questionImage.path.split('/').last;
+//     }
+//     Question question =
+//         new Question(newQuestion, answers, (correctAnswer-1), imgName, currentDate);
+//     CollectionReference dbCollectionRef =
+//         Firestore.instance.collection('questions');
+//     Firestore.instance.runTransaction((Transaction tx) async {
+//       var result = await dbCollectionRef.add(question.toJson());
+//     });
 
-    // Upload image to db
-    StorageReference reference =
-        FirebaseStorage.instance.ref().child('Quizes/').child('1/').child(imgName);
+//     // Upload image to db
+//     StorageReference reference =
+//         FirebaseStorage.instance.ref().child('Quizes/').child('1/').child(imgName);
 
-    print('Reference: ' + reference.toString());
+//     print('Reference: ' + reference.toString());
 
-//add picture to firebase storage
-    StorageUploadTask uploadTask = reference.putFile(questionImage);
+// //add picture to firebase storage
+//     StorageUploadTask uploadTask = reference.putFile(questionImage);
     
-    print(Global.pen("DONE"));
-    setState(() {});
+//     print(Global.pen("DONE"));
+//     setState(() {});
   }
 
   void LoadAllQuestions() async {
-    QuerySnapshot querySnapshot =
-        await Firestore.instance.collection('questions').getDocuments();
+    // QuerySnapshot querySnapshot =
+    //     await Firestore.instance.collection('questions').getDocuments();
 
-    List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
-    questionSnapshot = querySnapshot.documents;
-    Question tempQuestion;
-    questionSnapshot.forEach((q) {
-      tempQuestion = new Question.fromJson(q.data);
-      allQuestions.add(tempQuestion);
-    });
+    // List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
+    // questionSnapshot = querySnapshot.documents;
+    // Question tempQuestion;
+    // questionSnapshot.forEach((q) {
+    //   tempQuestion = new Question.fromJson(q.data);
+    //   allQuestions.add(tempQuestion);
+    // });
 
-    setState(() {});
+    // setState(() {});
   }
 }
