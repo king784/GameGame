@@ -256,7 +256,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
               // Image for quiz
               RaisedButton(
                 onPressed: (){
-                  File questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+                  //File questionImage = await ImagePicker.pickImage(source: ImageSource.gallery);
                 },
               ),
               
