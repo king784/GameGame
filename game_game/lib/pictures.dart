@@ -9,7 +9,6 @@ import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'Globals.dart';
-import 'Navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Pictures extends StatefulWidget {
@@ -74,7 +73,7 @@ class PicturesState extends State<Pictures> {
                                   size: 40,
                                 ),
                                 backgroundColor: Colors.transparent,
-                                onPressed: () => Navigation.openGames(context),
+                                onPressed: () =>{},
                                 elevation: 0),
                           ),
                           Expanded(

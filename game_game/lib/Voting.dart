@@ -91,7 +91,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          //onPressed: () => Navigation.openPage(context, 'activities'),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
                           elevation: 0),
                     ),
                     Expanded(
@@ -164,7 +166,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
+                          // onPressed: () => Navigation.openPage(context, 'activities'),
                           elevation: 0),
                     ),
                     Expanded(
@@ -242,7 +246,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
+                          //Navigation.openPage(context, 'activities'),
                           elevation: 0),
                     ),
                     Expanded(

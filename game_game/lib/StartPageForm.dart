@@ -54,7 +54,8 @@ class StartPageFormState extends State<StartPageForm> {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';
                   } else if (value.toString() == _currentGameCode) {
-                    Navigation.openMainPage(context);
+                    Navigation.openHomePage(context);
+                    //Navigation.openPage(context, 'home');
                   }
                   return null;
                 },

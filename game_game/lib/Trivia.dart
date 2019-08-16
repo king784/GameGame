@@ -165,7 +165,8 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     Random().nextInt(questions.length));
                                 questionNumber = 0;
                                 finalScore = 0;
-                                Navigation.openGamesFromTrivia(context);
+                                Navigation.openActivitiesPage(context);
+                                // Navigation.openPage(context, 'activities');
                                 questionsLoaded = true;
                                 customTimer.cancel();
                                 customTimer = null;
@@ -584,7 +585,8 @@ class Summary extends StatelessWidget {
                             .removeAt(Random().nextInt(questions.length));
                         questionNumber = 0;
                         finalScore = 0;
-                        Navigation.openGamesFromTrivia(context);
+                        Navigation.openActivitiesPage(context);
+                        // Navigation.openPage(context, 'activities');
                         questionsLoaded = true;
                         customTimer.cancel();
                         customTimer = null;
@@ -618,7 +620,8 @@ class Summary extends StatelessWidget {
                             .removeAt(Random().nextInt(questions.length));
                         questionNumber = 0;
                         finalScore = 0;
-                        Navigation.openGamesFromTrivia(context);
+                        Navigation.openActivitiesPage(context);
+                        //Navigation.openPage(context, 'activities');
                         questionsLoaded = true;
                         customTimer.cancel();
                         customTimer = null;

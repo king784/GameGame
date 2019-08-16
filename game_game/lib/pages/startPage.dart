@@ -22,7 +22,6 @@ class _StartState extends State<Start> {
   void initState() {
     initialiseUserLocationAtStart();
     super.initState();
-
   }
 
   @override
@@ -93,6 +92,7 @@ class _StartState extends State<Start> {
                   child: MaterialButton(
                     onPressed: () =>
                         Navigation.openUserPageWithoutMenu(context),
+                    // Navigation.openPage(context, 'userPageWithoutMenu'),
                     color: MasterTheme.bgBoxColour,
                     padding: EdgeInsets.all(2),
                     child: Row(
@@ -148,6 +148,7 @@ class _StartState extends State<Start> {
                     child: MaterialButton(
                       onPressed: () =>
                           Navigation.openUserPageWithoutMenu(context),
+                      // Navigation.openPage(context, 'userPageWithoutMenu'),
                       color: MasterTheme.bgBoxColour,
                       padding: EdgeInsets.all(2),
                       child: Row(
@@ -182,7 +183,8 @@ class _StartState extends State<Start> {
     setState(() {});
   }
 
-  void initialiseUserLocationAtStart()async{//check for location data at the start
+  void initialiseUserLocationAtStart() async {
+    //check for location data at the start
     await userLoc.checkGeolocationPermissionStatus();
     locationUpdateTimer =
         Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
