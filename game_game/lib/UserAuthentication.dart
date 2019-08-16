@@ -108,7 +108,6 @@ class AuthService {
 
     return ref.setData({
       'uid': user.uid,
-      //'email': user.email,
       'email': googleUser.email,
 
       //These may be unnecessary :D
@@ -164,7 +163,7 @@ class UserProfileState extends State<UserProfile> {
 
   String profileName(){
     if(_profile.toString() == "{}")
-      return "Et ole vielä kirjautun sisään.";
+      return "Et ole vielä kirjautunut sisään.";
     else
       return "Kirjauduttu käyttäjällä:\n" + _profile.toString();
   }
