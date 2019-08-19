@@ -66,7 +66,9 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
+                          // onPressed: () => Navigation.openPage(context, 'activities'),
                           elevation: 0),
                     ),
                     Expanded(
@@ -219,7 +221,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                       child: Text('Lähetä',
                           style: Theme.of(context).textTheme.body1),
                       onPressed: () {
-                        _addImageToDatabase(image); //add the image to database
+                        _addFileToDatabase(image); //add the image to database
                         Navigator.of(context).pop(context);
                       },
                       color: Theme.of(context).accentColor,
@@ -242,12 +244,12 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     );
   }
 
-  _addImageToDatabase(File img) async {//fix this to update the view after adding images
-  
+  _addFileToDatabase(File img) async {
     //https://stackoverflow.com/questions/51857796/flutter-upload-image-to-firebase-storage
 
     //firebase storage reference
     FirebaseStorage _storage = FirebaseStorage.instance;
+    String downloadUrl;
 
 //filename
     String imgName = img.path.split('/').last;
@@ -257,21 +259,29 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     StorageReference reference =
         _storage.ref().child('bestPictureCompetition/').child(imgName);
 
-    print('Reference: ' + reference.toString());
+    //print('Reference: ' + reference.toString());
 
 //add picture to firebase storage
     StorageUploadTask uploadTask = reference.putFile(img);
 
-//add picture to database document with the needed voting parameters
-    await Firestore.instance
-        .collection('imagesForBestImageVoting')
-        .document()
-        .setData(
-      {
-        'photographerName': 'photographerName', //this should be the user's name
+    await uploadTask.onComplete.then((val) async {
+      //when uploading is complete
+      downloadUrl =
+          await val.ref.getDownloadURL(); //wait to get the url at first
+      //print('Download Url: ' + downloadUrl);
+    }).then((onValue) async {
+      //when the download url has been gotten
+      //add picture to database document with the needed voting parameters
+      await Firestore.instance
+          .collection('imagesForBestImageVoting')
+          .document()
+          .setData({
+        'photographerName': 'name', //this should be the user's name
         'imgUrl': 'bestPictureCompetition/' + imgName,
+        'downloadUrl': downloadUrl,
         'totalVotes': 0
-      },
-    );
+      });
+      //print("\nadding image to db, download url: $downloadUrl\n");
+    });
   }
 }

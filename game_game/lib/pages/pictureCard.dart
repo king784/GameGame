@@ -5,37 +5,83 @@ import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../imageFromDB.dart';
+
 class PictureCardList extends StatefulWidget {
   @override
   _PictureCardListState createState() => _PictureCardListState();
 }
 
 class _PictureCardListState extends State<PictureCardList> {
-  List<imageFromDB> allimages = new List<imageFromDB>();
-  List<Card> imageCardList = new List<Card>();
-  bool imagesLoaded = false;
-
+  bool pictureCardsLoaded = false;
   @override
   void initState() {
     super.initState();
-    loadImagesFromDB();
   }
 
   @override
   Widget build(BuildContext context) {
-    return !imagesLoaded
-        ? Card(
+    return StreamBuilder<QuerySnapshot>(
+      stream:
+          Firestore.instance.collection('imagesForBestImageVoting').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.data == null) {
+          return CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          // print('stream builder has an error');
+          return Card(
             child: Padding(
               padding: EdgeInsets.all(20),
-              child: Text('Odota, ladataan kuvia.',
+              child: Text('Error: ${snapshot.error}',
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.caption),
             ),
-          )
-        : Column(children: imageCardList);
+          );
+        }
+        // print('Inside stream builder.');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Card(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text('Odota...\nKuvia ladataan',
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.caption),
+              ),
+            );
+            break;
+          default:
+            // print('streambuilder switch case default, card should be returning');
+            return Column(
+              children: snapshot.data.documents
+                  .map<Widget>((DocumentSnapshot document) {
+                ImageFromDB tempImg = new ImageFromDB(
+                    document['photographerName'],
+                    document['imgUrl'],
+                    document['downloadUrl'],
+                    document['totalVotes']);
+
+                return _cardWithPic(tempImg);
+              }).toList(),
+            );
+            break;
+        }
+      },
+    );
   }
 
-  _cardWithPic(String photographersUsername, String imgUrl, int votes) {
+  // Future<String> _getImageDownloadURL(String imageName) async {
+  //   //get the download url for the image
+  //   var firebaseInstanceReference =
+  //       FirebaseStorage.instance.ref().child(imageName);
+
+  //   String tempDBImageUrl = await firebaseInstanceReference.getDownloadURL();
+
+  //   return tempDBImageUrl;
+  // }
+
+  _cardWithPic(ImageFromDB dbImage) {
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +91,9 @@ class _PictureCardListState extends State<PictureCardList> {
             padding: EdgeInsets.all(8.0),
             child: SizedBox(
               width: Global.SCREENWIDTH * 0.9,
-              child: Image.network(imgUrl),
+              child: (dbImage.downloadUrl == null || dbImage.downloadUrl == "")
+                  ? CircularProgressIndicator()
+                  : Image.network(dbImage.downloadUrl),
             ),
           ),
           Padding(
@@ -72,7 +120,7 @@ class _PictureCardListState extends State<PictureCardList> {
                         Padding(
                           padding: EdgeInsets.all(2.0),
                           child: Text(
-                            photographersUsername,
+                            dbImage.photographerName,
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.display4,
                           ),
@@ -97,7 +145,7 @@ class _PictureCardListState extends State<PictureCardList> {
                       Padding(
                         padding: EdgeInsets.all(2.0),
                         child: Text(
-                          votes.toString(),
+                          dbImage.totalVotes.toString(),
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.display4,
                         ),
@@ -126,57 +174,4 @@ class _PictureCardListState extends State<PictureCardList> {
       ),
     );
   }
-
-  Future<void> makeWidgetListFromPictures() async {
-    String tempDBImageUrl = "";
-    for (int i = 0; i < allimages.length; i++) {
-      var firebaseInstanceReference =
-          FirebaseStorage.instance.ref().child(allimages[i].imgUrl);
-      tempDBImageUrl = await firebaseInstanceReference.getDownloadURL();
-      imageCardList.add(_cardWithPic(allimages[i].photographerName,
-          tempDBImageUrl, allimages[i].totalVotes));
-    }
-    setState(() {});
-  }
-
-  void loadImagesFromDB() async {
-    //remember to update list after someone votes a pic
-    final QuerySnapshot result = await Firestore.instance
-        .collection('imagesForBestImageVoting')
-        .getDocuments();
-
-    for (int i = 0; i < result.documents.length; i++) {
-      //go through all the documents we got from firestore
-      allimages.add(new imageFromDB(result.documents[i]['photographerName'],
-          result.documents[i]['imgUrl'], result.documents[i]['totalVotes']));
-      //print(allimages[i].toString());
-    }
-
-    if (allimages != null) {
-      allimages.sort((a, b) => a.totalVotes.compareTo(b.totalVotes));
-      allimages = allimages.reversed.toList();
-      print("Total votes: " + allimages[1].totalVotes.toString());
-      await makeWidgetListFromPictures();
-      imagesLoaded = true;
-    }
-  }
-}
-
-class imageFromDB {
-  String photographerName;
-  String imgUrl;
-  int totalVotes;
-
-  imageFromDB(this.photographerName, this.imgUrl, this.totalVotes);
-
-  @override
-  String toString() {
-    return photographerName + ", " + imgUrl + ", " + totalVotes.toString();
-  }
-
-  Map<String, dynamic> toJson() => {
-        'photographerName': photographerName,
-        'imgUrl': imgUrl,
-        'totalVotes': totalVotes
-      };
 }

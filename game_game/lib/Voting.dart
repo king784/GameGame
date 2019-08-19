@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:math';
 import 'Globals.dart';
@@ -92,7 +91,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          //onPressed: () => Navigation.openPage(context, 'activities'),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
                           elevation: 0),
                     ),
                     Expanded(
@@ -165,7 +166,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
+                          // onPressed: () => Navigation.openPage(context, 'activities'),
                           elevation: 0),
                     ),
                     Expanded(
@@ -243,7 +246,9 @@ class PlayerVotingState extends State<PlayerVoting> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
+                          //Navigation.openPage(context, 'activities'),
                           elevation: 0),
                     ),
                     Expanded(

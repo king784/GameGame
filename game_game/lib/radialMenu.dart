@@ -78,22 +78,34 @@ class RadialAnimation extends StatelessWidget {
             width: 170,
             margin: EdgeInsets.fromLTRB(20, 5, 0, 10),
             child: Stack(alignment: Alignment.centerLeft, children: [
+
+              //open user page
               _buildButton(335,
                   color: MasterTheme.btnColours[0],
                   icon: FontAwesomeIcons.user,
                   function: () => Navigation.openUserPage(context)),
+                  // function: () => Navigation.openPage(context, 'userPage')),
+
+                  //open home page
               _buildButton(15,
                   color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.basketballBall,
-                  function: () => Navigation.openMainPage(context)),
+                  function: () => Navigation.openHomePage(context)),
+                  // function: () => Navigation.openPage(context, 'home')),
+
+                  //open activities page
               _buildButton(55,
                   color: MasterTheme.btnColours[2],
                   icon: FontAwesomeIcons.gamepad,
-                  function: () => Navigation.openGames(context)),
+                  function: () => Navigation.openActivitiesPage(context)),
+                  // function: () => Navigation.openPage(context, 'activities')),
+
+                  //open help page
               _buildButton(95,
                   color: MasterTheme.btnColours[3],
                   icon: FontAwesomeIcons.question,
-                  function: () => Navigation.openHelp(context)),
+                  function: () => Navigation.openHelpPage(context)),
+                  // function: () => Navigation.openPage(context, 'help')),
               Transform.scale(
                 scale: scale.value -
                     1.5, // subtract the beginning value to run the opposite animation
