@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
@@ -347,6 +348,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
     StorageUploadTask uploadTask = reference.putFile(questionImage);
     
     print(Global.pen("DONE"));
+    showToast('Kysymys lisätty');
     setState(() {});
   }
 
