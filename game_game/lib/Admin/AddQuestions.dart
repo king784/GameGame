@@ -4,12 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_testuu/Navigation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:oktoast/oktoast.dart';
 
 import '../Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
@@ -276,7 +274,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                 child: MaterialButton(
                   onPressed: () {
                     if (formKey.currentState.validate()) {
-                      print(Global.pen("ADDING"));
+                      print(Global.greenPen("ADDING"));
                       AddQuestionToDB();
                     }
                   },
@@ -330,25 +328,36 @@ class AddQuestionFormState extends State<AddQuestionForm> {
     if (questionImage != null) {
       imgName = questionImage.path.split('/').last;
     }
-    Question question =
-        new Question(newQuestion, answers, (correctAnswer-1), imgName, currentDate);
+    Question question = new Question(
+        newQuestion, answers, (correctAnswer - 1), imgName, currentDate);
     CollectionReference dbCollectionRef =
         Firestore.instance.collection('questions');
     Firestore.instance.runTransaction((Transaction tx) async {
       var result = await dbCollectionRef.add(question.toJson());
     });
 
-    // Upload image to db
-    StorageReference reference =
-        FirebaseStorage.instance.ref().child('Quizes/').child('1/').child(imgName);
+    if (imgName != "") {
+      // Upload image to db
+      StorageReference reference = FirebaseStorage.instance
+          .ref()
+          .child('Quizes/')
+          .child('1/')
+          .child(imgName);
 
-    print('Reference: ' + reference.toString());
+      print('Reference: ' + reference.toString());
 
 //add picture to firebase storage
-    StorageUploadTask uploadTask = reference.putFile(questionImage);
-    
-    print(Global.pen("DONE"));
-    showToast('Kysymys lisätty');
+      StorageUploadTask uploadTask = reference.putFile(questionImage);
+    }
+
+    print(Global.greenPen("DONE"));
+
+    Fluttertoast.showToast(
+      msg: 'Kysymys lisätty',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIos: 2,
+      );
     setState(() {});
   }
 

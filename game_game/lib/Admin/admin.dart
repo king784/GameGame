@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_testuu/Admin/AddPlayer.dart';
 import 'package:flutter_testuu/Admin/AddQuestions.dart';
 import 'package:flutter_testuu/route_generator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -107,8 +108,17 @@ class AdminState extends State<Admin> {
                       setState(() {});
                     },
                   ),
+                  RaisedButton(
+                    child: const Text("Lisää pelaaja"),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPlayerForm()),);
+                      //AddQuestion();
+                      //print(DateTime.now().toString());
+                      setState(() {});
+                    },
+                  ),
                   Text(timeText),
-                  Text("Kilpoilijoita: " + usersATM),
+                  usersATM == null ? Text("nullii") : Text("Kilpoilijoita: " + usersATM),
                 ],
               ),
               // ADDING PLAYERS
