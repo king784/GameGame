@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ansicolor/ansicolor.dart';
 
 class Global{
   static bool GAMELOOP = true;
@@ -10,6 +11,8 @@ class Global{
   static String CURRENTROUTE="";
   // Trivia timer
   static bool TIMERSTARTED = false;
+
+  static AnsiPen pen = new AnsiPen()..green();
 
     //Trivia global variables
     static String contents = "";
@@ -94,13 +97,15 @@ class Question{
   List<String> choices = new List<String>();
   int correct;
   String imagePath;
+  var questionTime;
 
-  Question(String newQuestion, List<String> newChoices, int newCorrect, String newImagePath)
+  Question(String newQuestion, List<String> newChoices, int newCorrect, String newImagePath, DateTime newQuestionTime)
   {
     this.question = newQuestion;
     this.choices = newChoices;
     this.correct = newCorrect;
     this.imagePath = newImagePath;
+    this.questionTime = newQuestionTime;
   }
 
   Question.fromJson(Map<String, dynamic> json)
@@ -108,13 +113,26 @@ class Question{
     this.question = json['question'];
     this.correct = json['correct'];
     this.imagePath = json['imagePath'];
-
     var choicesFromJson = json['choices'];
+
     List<String> choicesList = choicesFromJson.cast<String>();
     for(int i = 0; i < choicesList.length; i++)
     {
       this.choices.add(choicesList[i]);
     }
+
+    this.questionTime = json['questionTime'];
+    this.questionTime = DateTime.fromMillisecondsSinceEpoch(this.questionTime.millisecondsSinceEpoch);
+    // DocumentReference gamesRef = await Firestore.instance
+    //     .collection('games')
+    //     .document('iSFhdMRlPSQWh3879pXL');
+    // DateTime convertedTime;
+    // gamesRef.get().then((DocumentSnapshot ds) {
+    //   homeTeam = ds['HomeTeam'];
+    //   awayTeam = ds['AwayTeam'];
+
+    //   convertedTime = DateTime.fromMillisecondsSinceEpoch(
+    //       ds['VotingStartTime'].millisecondsSinceEpoch);
   }
 
   Map<String, dynamic> toJson() =>
@@ -123,5 +141,6 @@ class Question{
     'correct': correct,
     'imagePath': imagePath,
     'question': question,
+    'questionTime': questionTime
   };
 }
