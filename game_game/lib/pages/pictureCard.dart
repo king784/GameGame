@@ -13,6 +13,7 @@ class PictureCardList extends StatefulWidget {
 }
 
 class _PictureCardListState extends State<PictureCardList> {
+  bool pictureCardsLoaded = false;
   @override
   void initState() {
     super.initState();
@@ -24,7 +25,11 @@ class _PictureCardListState extends State<PictureCardList> {
       stream:
           Firestore.instance.collection('imagesForBestImageVoting').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.data == null) {
+          return CircularProgressIndicator();
+        }
         if (snapshot.hasError) {
+          // print('stream builder has an error');
           return Card(
             child: Padding(
               padding: EdgeInsets.all(20),
@@ -34,6 +39,7 @@ class _PictureCardListState extends State<PictureCardList> {
             ),
           );
         }
+        // print('Inside stream builder.');
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Card(
@@ -46,6 +52,7 @@ class _PictureCardListState extends State<PictureCardList> {
             );
             break;
           default:
+            // print('streambuilder switch case default, card should be returning');
             return Column(
               children: snapshot.data.documents
                   .map<Widget>((DocumentSnapshot document) {
@@ -64,15 +71,15 @@ class _PictureCardListState extends State<PictureCardList> {
     );
   }
 
-  Future<String> _getImageDownloadURL(String imageName) async {
-    //get the download url for the image
-    var firebaseInstanceReference =
-        FirebaseStorage.instance.ref().child(imageName);
+  // Future<String> _getImageDownloadURL(String imageName) async {
+  //   //get the download url for the image
+  //   var firebaseInstanceReference =
+  //       FirebaseStorage.instance.ref().child(imageName);
 
-    String tempDBImageUrl = await firebaseInstanceReference.getDownloadURL();
+  //   String tempDBImageUrl = await firebaseInstanceReference.getDownloadURL();
 
-    return tempDBImageUrl;
-  }
+  //   return tempDBImageUrl;
+  // }
 
   _cardWithPic(ImageFromDB dbImage) {
     return Card(
@@ -84,7 +91,9 @@ class _PictureCardListState extends State<PictureCardList> {
             padding: EdgeInsets.all(8.0),
             child: SizedBox(
               width: Global.SCREENWIDTH * 0.9,
-              child: Image.network(dbImage.downloadUrl),
+              child: (dbImage.downloadUrl == null || dbImage.downloadUrl == "")
+                  ? CircularProgressIndicator()
+                  : Image.network(dbImage.downloadUrl),
             ),
           ),
           Padding(
