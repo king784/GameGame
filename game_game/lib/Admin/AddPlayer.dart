@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_testuu/Navigation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -32,7 +33,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
   void initState() {
     super.initState();
 
-    LoadAllQuestions();
+    //LoadAllQuestions();
   }
 
   @override
@@ -85,7 +86,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Syötä kysymys:',
+                            'Syötä etunimi:',
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
@@ -97,7 +98,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                               if (value.isEmpty) {
                                 return 'Kysymyskenttä on tyhjä.';
                               } else {
-                                //newQuestion = value;
+                                firstName = value;
                               }
                               return null;
                             },
@@ -111,7 +112,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Syötä vastausvaihtoehto 1:',
+                            'Syötä sukunimi:',
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
@@ -123,7 +124,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                //answers[0] = value;
+                                lastName = value;
                               }
                               return null;
                             },
@@ -137,7 +138,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Syötä vastausvaihtoehto 2:',
+                            'Syötä pelaajanumero:',
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
@@ -149,7 +150,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                //answers[1] = value;
+                                playerNum = int.parse(value);
                               }
                               return null;
                             },
@@ -163,7 +164,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Syötä vastausvaihtoehto 3:',
+                            'Syötä joukkueen nimi:',
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.subtitle,
                           ),
@@ -175,33 +176,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                               if (value.isEmpty) {
                                 return 'Kenttä on tyhjä.';
                               } else {
-                                // answers[2] = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä vastausvaihtoehto 4:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kenttä on tyhjä.';
-                              } else {
-                                // answers[3] = value;
+                                team = value;
                               }
                               return null;
                             },
@@ -213,20 +188,14 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                 ),
               ),
 
-              Text(
-                'Anna oikea vastaus:',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle,
-              ),
-            
               // Button to submit
               Padding(
                 padding: EdgeInsets.all(20),
                 child: MaterialButton(
                   onPressed: () {
                     if (formKey.currentState.validate()) {
-                      print(Global.pen("ADDING"));
-                      AddQuestionToDB();
+                      print(Global.greenPen("ADDING"));
+                      AddPlayerToDB();
                     }
                   },
                   color: MasterTheme.accentColour,
@@ -237,7 +206,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: Text("Lisää kysymys"),
+                        child: Text("Lisää pelaaja"),
                       ),
                       Padding(
                         padding: EdgeInsets.all(10),
@@ -254,58 +223,35 @@ class AddPlayerFormState extends State<AddPlayerForm> {
     );
   }
 
-  void AddQuestionToDB() {
-    // RaisedButton(
-    //   child: const Text("Lisää pelaaja"),
-    //   onPressed: (){
-    //     Player pelaaja = new Player(22, 0, 'Trenton', 'Thompson', 'Salon Vilpas', 33);
-    //     CollectionReference dbCollectionRef = Firestore.instance.collection('players');
-    //     Firestore.instance.runTransaction((Transaction tx) async {
-    //       var result = await dbCollectionRef.add(pelaaja.toJson());
-    //     });
-    //     setState(() {
+  void AddPlayerToDB() async {
+    int highestID;
+    Player tempPlayer;
+    final QuerySnapshot playerDocs = await Firestore.instance
+        .collection('players')
+        .orderBy("ID", descending: true)
+        .limit(1)
+        .getDocuments(); //.limit(1).getDocuments();
+    // final DocumentReference playerDocRef = Firestore.instance
+    //     .collection('players')
+    //     .document(playerDocs.documents[0].documentID);
+    highestID = playerDocs.documents[0].data['ID'];
+    highestID += 1;
 
-    //     });
-    //   },
-    // ),
+    print(highestID);
 
-//     String imgName = "";
-//     if (questionImage != null) {
-//       imgName = questionImage.path.split('/').last;
-//     }
-//     Question question =
-//         new Question(newQuestion, answers, (correctAnswer-1), imgName, currentDate);
-//     CollectionReference dbCollectionRef =
-//         Firestore.instance.collection('questions');
-//     Firestore.instance.runTransaction((Transaction tx) async {
-//       var result = await dbCollectionRef.add(question.toJson());
-//     });
-
-//     // Upload image to db
-//     StorageReference reference =
-//         FirebaseStorage.instance.ref().child('Quizes/').child('1/').child(imgName);
-
-//     print('Reference: ' + reference.toString());
-
-// //add picture to firebase storage
-//     StorageUploadTask uploadTask = reference.putFile(questionImage);
+    Player pelaaja =
+        new Player(highestID, 0, firstName, lastName, team, playerNum);
+    CollectionReference dbCollectionRef =
+        Firestore.instance.collection('players');
+    Firestore.instance.runTransaction((Transaction tx) async {
+      var result = await dbCollectionRef.add(pelaaja.toJson());
+    });
     
-//     print(Global.pen("DONE"));
-//     setState(() {});
-  }
-
-  void LoadAllQuestions() async {
-    // QuerySnapshot querySnapshot =
-    //     await Firestore.instance.collection('questions').getDocuments();
-
-    // List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
-    // questionSnapshot = querySnapshot.documents;
-    // Question tempQuestion;
-    // questionSnapshot.forEach((q) {
-    //   tempQuestion = new Question.fromJson(q.data);
-    //   allQuestions.add(tempQuestion);
-    // });
-
-    // setState(() {});
+    Fluttertoast.showToast(
+      msg: 'Pelaaja lisätty',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIos: 2,
+      );
   }
 }
