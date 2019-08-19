@@ -16,8 +16,18 @@ class _MessageHandlerState extends State<MessageHandler> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return new WillPopScope();
+
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: Theme(
+        data: MasterTheme.mainTheme,
+        child: Scaffold(
+          body: Column(
+            children: <Widget>[],
+          ),
+        ),
+      ),
+    );
   }
 
   void fireBaseCloudMessaging() {

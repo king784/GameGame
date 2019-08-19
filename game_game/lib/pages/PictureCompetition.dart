@@ -262,18 +262,24 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     //print('Reference: ' + reference.toString());
 
 //add picture to firebase storage
-    // StorageUploadTask uploadTask = reference.putFile(img);
-    await reference.putFile(img).onComplete.then((val) {
-      val.ref.getDownloadURL().then((val) {
-        print(val);
-        downloadUrl = val; //Val here is Already String
-      });
-    });
+    StorageUploadTask uploadTask = reference.putFile(img);
+    // await reference.putFile(img).onComplete.then((val) {
+    //   val.ref.getDownloadURL().then((val) {
+    //     print(val);
+    //     downloadUrl = val; //Val here is Already String
+    //   });
+    // });
 
 //get the image download url for the image data collection
     // var downloadUrl = await reference.getDownloadURL() as String;
     // String downloadUrl = (await uploadTask.onComplete).ref.getDownloadURL().toString();
     // String downloadUrl = Uri.parse(await reference.getDownloadURL()) as String;
+    reference
+        .child('bestPictureCompetition/' + imgName)
+        .getDownloadURL()
+        .then((val) {
+      downloadUrl = val.toString();
+    });
 
 //just help for this
     // StorageTaskSnapshot sts = await uploadTask.onComplete;
@@ -281,7 +287,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     // var dowurl = await (await uploadTask.onComplete).ref.getDownloadURL();
     // url = dowurl.toString();
 
-    print("adding image to db, download url: $downloadUrl");
+    print("\nadding image to db, download url: $downloadUrl\n");
 
 //add picture to database document with the needed voting parameters
     await Firestore.instance
