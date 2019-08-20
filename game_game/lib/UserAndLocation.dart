@@ -6,17 +6,18 @@ class UserLocation {
 
   bool userLocationOk = false;
   bool positionDataEnabled = false;
+  bool locationOn = false;
   bool loadingLocation = true;
 
   GeolocationStatus geolocationStatus;
   //static StreamSubscription<Position> userPositionStream;
-  static double distanceInMeters;
-  static double radiusFromEvent = 300;
+  double _distanceInMeters;
+  double _radiusFromEvent = 300;
 
   List<Placemark> eventAddress;
 
   Future getCurrentLocation() async {
-    // print('waiting for user location.');
+    //print('waiting for user location.');
     //update the current location
     userPos = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -36,12 +37,12 @@ class UserLocation {
   }
 
   Future getEventAddressIntoPlacemark() async {
-    // print('waiting for event address.');
+    //print('waiting for event address.');
     eventAddress =
         await Geolocator().placemarkFromCoordinates(60.487251, 26.892282);
   }
 
-  void checkGeolocationPermissionStatus() async {
+  Future<void> checkGeolocationPermissionStatus() async {
     geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
     //print('Geolocation status: ' + geolocationStatus.value.toString());
     if (geolocationStatus.value == 2) {
@@ -50,27 +51,30 @@ class UserLocation {
     } else {
       positionDataEnabled = false;
     }
+
     //print('checking geolocation status: ' + geolocationStatus.value.toString());
   }
 
   void updateUserDistanceFromEvent() async {
+    await checkIfLocationIsOn();
     if (eventAddress == null) {
       await getEventAddressIntoPlacemark();
     }
+    if (positionDataEnabled && locationOn) {
+      await getCurrentLocation();
 
-    await getCurrentLocation();
+      //calculate distance between user and event address
+      _distanceInMeters = await Geolocator().distanceBetween(
+          eventAddress[0].position.latitude,
+          eventAddress[0].position.longitude,
+          userPos.latitude,
+          userPos.longitude);
 
-    //calculate distance between user and event address
-    distanceInMeters = await Geolocator().distanceBetween(
-        eventAddress[0].position.latitude,
-        eventAddress[0].position.longitude,
-        userPos.latitude,
-        userPos.longitude);
-
-    if (distanceInMeters < radiusFromEvent && positionDataEnabled) {
-      userLocationOk = true;
-    } else {
-      userLocationOk = false;
+      if (_distanceInMeters < _radiusFromEvent) {
+        userLocationOk = true;
+      } else {
+        userLocationOk = false;
+      }
     }
 
     if (loadingLocation) {
@@ -82,5 +86,19 @@ class UserLocation {
     //     ' meters. bool userLocationOk = ' +
     //     userLocationOk.toString() +
     //     '.');
+  }
+
+  Future<void> checkIfLocationIsOn() async {
+    await Geolocator().isLocationServiceEnabled().then((val) {
+      locationOn = val;
+    });
+  }
+
+  int distanceFromRadius() {
+    int dist;
+    if (_distanceInMeters != null) {
+      dist = _distanceInMeters.round() - _radiusFromEvent.round();
+    }
+    return dist;
   }
 }

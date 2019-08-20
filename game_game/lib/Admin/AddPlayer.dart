@@ -194,7 +194,7 @@ class AddPlayerFormState extends State<AddPlayerForm> {
                 child: MaterialButton(
                   onPressed: () {
                     if (formKey.currentState.validate()) {
-                      print(Global.greenPen("ADDING"));
+                      //print(Global.greenPen("ADDING"));
                       AddPlayerToDB();
                     }
                   },

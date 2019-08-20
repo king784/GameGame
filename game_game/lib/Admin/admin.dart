@@ -61,7 +61,7 @@ class AdminState extends State<Admin> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openGames(context),
+                          onPressed: () => Navigation.openActivitiesPage(context),
                           elevation: 0),
                     ),
                     Expanded(

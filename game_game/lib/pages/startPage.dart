@@ -110,15 +110,15 @@ class _StartState extends State<Start> {
           ),
         ),
       );
-    } else {
-      if (userLoc.positionDataEnabled) {
-        int dist = UserLocation.distanceInMeters.round() -
-            UserLocation.radiusFromEvent.round();
-        messageAboutLocation =
-            "Matka hyväksyttävälle etäisyydelle tapahtumapaikasta: " +
-                dist.toString() +
-                "m.";
-      } else {
+    } else if (!userLoc.userLocationOk) {
+      if (userLoc.locationOn) {
+        if (userLoc.distanceFromRadius() != null) {
+          messageAboutLocation =
+              "Matka hyväksyttävälle etäisyydelle tapahtumapaikasta: " +
+                  userLoc.distanceFromRadius().toString() +
+                  "m.";
+        }
+      } else if (!userLoc.positionDataEnabled || !userLoc.locationOn) {
         messageAboutLocation = "Sijainti ei ole käytössä.";
       }
       return WillPopScope(
@@ -169,6 +169,20 @@ class _StartState extends State<Start> {
                     ),
                   ),
                 ),
+                MaterialButton(
+                  //heinous dev button for bypassing location
+                  onPressed: () => Navigation.openUserPage(context),
+                  // Navigation.openPage(context, 'userPageWithoutMenu'),
+                  color: MasterTheme.bgBoxColour,
+                  padding: EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("DevBtn", style: Theme.of(context).textTheme.body1),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -187,7 +201,7 @@ class _StartState extends State<Start> {
     //check for location data at the start
     await userLoc.checkGeolocationPermissionStatus();
     locationUpdateTimer =
-        Timer.periodic(Duration(seconds: 10), (Timer t) => checkUserLocation());
+        Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
 
     checkUserLocation();
   }
