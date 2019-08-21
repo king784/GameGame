@@ -215,7 +215,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                       height: 300,
                                       child: nextImage,
                                     )
-                                  : CircularProgressIndicator(),
+                                  :Text(""),
                             ),
 
                             new Row(
@@ -519,15 +519,19 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 String scoreText(final int score) {
   double percentage = (((score).toDouble()) / allQuestions.length) * 100;
   print("Percentage: " + percentage.toString());
+  String theText = "";
 
   if (percentage <= 15)
-    return "Harmillista. Sait vain $score pistettä.";
+    theText = "Harmillista. Sait vain $score pistettä.";
   else if (percentage >= 16 && percentage <= 45)
-    return "Noh.. Ainahan sitä voi vähän petrata. Pisteesi: $score";
+    theText = "Noh.. Ainahan sitä voi vähän petrata. Pisteesi: $score";
   else if (percentage >= 46 && percentage <= 94)
-    return "Nyt alkaa näyttämään jo hyvältä. Pisteesi: $score";
+    theText = "Nyt alkaa näyttämään jo hyvältä. Pisteesi: $score";
   else
-    return "Hurraa!! Sait kaikki oikein. Pisteesi: $score";
+    theText = "Hurraa!! Sait kaikki oikein. Pisteesi: $score";
+
+  theText += "/" + allQuestions.length.toString();
+  return theText;
 }
 
 class Summary extends StatelessWidget {

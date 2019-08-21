@@ -70,7 +70,7 @@ class Navigation {
 
   static void openSummary(BuildContext context) {
     // Navigator.pop(context);
-    Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
+    Navigator.of(context).pushNamed('/summary', arguments: 'summary');
     //Navigator.of(context).pushReplacementNamed('/summary', arguments: 'summary');
   }
   
