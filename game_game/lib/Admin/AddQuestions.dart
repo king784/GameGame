@@ -256,7 +256,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                       print('confirm $date');
                       currentDate = date;
                       // The fi Localetype was not part of the DatePicker package.
-                    }, currentTime: DateTime.now(), locale: LocaleType.fi);
+                    }, currentTime: DateTime.now(), locale: LocaleType.en);
                   },
                   child: Text(
                     'Valitse ottelun päivä painamalla tästä.',
