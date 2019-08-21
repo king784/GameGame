@@ -3,13 +3,14 @@ class ImageFromDB {
   String imgUrl;
   String downloadUrl;
   int totalVotes;
+  String dateTaken;
 
-  ImageFromDB(
-      this.photographerName, this.imgUrl, this.downloadUrl, this.totalVotes);
+  ImageFromDB(this.photographerName, this.imgUrl, this.downloadUrl,
+      this.totalVotes, this.dateTaken);
 
   @override
   String toString() {
-    return "$photographerName $imgUrl $downloadUrl $totalVotes";
+    return "$photographerName, $imgUrl, $downloadUrl, $totalVotes, $dateTaken.";
   }
 
   Map<String, dynamic> toJson() => {
