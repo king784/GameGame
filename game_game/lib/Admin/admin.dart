@@ -143,17 +143,23 @@ class AdminState extends State<Admin> {
                       setState(() {});
                     },
                   ),
-
                   RaisedButton(
-                    child: const Text("Lisää pelipäivä"),
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Lisää pelipäivä",
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddGamedayForm()),);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddGamedayForm()),
+                      );
                       //AddQuestion();
                       //print(DateTime.now().toString());
                       setState(() {});
                     },
                   ),
-
                   Text(timeText),
                   usersATM != null ? Text(usersATM) : Text("Odota hetki"),
                 ],
@@ -340,11 +346,10 @@ class AdminState extends State<Admin> {
   void userCounter() async {
     //TOIMIS NY SAATANA!
 
-
     final QuerySnapshot result = await Firestore.instance
-    .collection('users')
-    .limit(1) //limits documents to one
-    .getDocuments();
+        .collection('users')
+        .limit(1) //limits documents to one
+        .getDocuments();
 
     DateTime gameDay = DateTime(2019, 8, 17, 12);
     DateTime lastSeen;
@@ -352,28 +357,27 @@ class AdminState extends State<Admin> {
 
     //print("Game day: " + gameDay.toString() + " Last seen: " + lastSeen.toString());
 
-    if(lastSeen.year == gameDay.year && lastSeen.month == gameDay.month && lastSeen.day == gameDay.day){
-      print("Today is a game day. Game time: " + gameDay.hour.toString() + " to " + (gameDay.hour + 3).toString());
-      if(lastSeen.hour >= gameDay.hour && lastSeen.hour <= gameDay.hour + 3){
+    if (lastSeen.year == gameDay.year &&
+        lastSeen.month == gameDay.month &&
+        lastSeen.day == gameDay.day) {
+      print("Today is a game day. Game time: " +
+          gameDay.hour.toString() +
+          " to " +
+          (gameDay.hour + 3).toString());
+      if (lastSeen.hour >= gameDay.hour && lastSeen.hour <= gameDay.hour + 3) {
         print("Player active");
 
         var t = await Firestore.instance.collection("users").getDocuments();
         usersATM = t.documents.length.toString() + " aktiivista käyttäjää";
         //t.asStream().length;
 
-      }
-      else{
+      } else {
         usersATM = "Ei aktiivisia käyttäjiä";
       }
     }
 
-
     //print(lastSeen);
 
-
-        setState(() {
-      
-        });
-
+    setState(() {});
   }
 }
