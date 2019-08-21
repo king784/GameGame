@@ -61,7 +61,8 @@ class AdminState extends State<Admin> {
                             size: 40,
                           ),
                           backgroundColor: Colors.transparent,
-                          onPressed: () => Navigation.openActivitiesPage(context),
+                          onPressed: () =>
+                              Navigation.openActivitiesPage(context),
                           elevation: 0),
                     ),
                     Expanded(
@@ -83,7 +84,11 @@ class AdminState extends State<Admin> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
-                    child: const Text("Aloita 3 minuutin ajastin"),
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Aloita 3 minuutin ajastin",
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () {
                       setVotingStartTime();
                       //getVotingStartTime();
@@ -92,7 +97,11 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    child: const Text("Kerro paljon aikaa"),
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Kerro paljon aikaa",
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () {
                       getVotingStartTime();
                       //print(DateTime.now().toString());
@@ -100,25 +109,43 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    child: const Text("Lisää kysymys"),
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Lisää kysymys",
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddQuestionForm()),);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddQuestionForm()),
+                      );
                       //AddQuestion();
                       //print(DateTime.now().toString());
                       setState(() {});
                     },
                   ),
                   RaisedButton(
-                    child: const Text("Lisää pelaaja"),
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Lisää pelaaja",
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPlayerForm()),);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddPlayerForm()),
+                      );
                       //AddQuestion();
                       //print(DateTime.now().toString());
                       setState(() {});
                     },
                   ),
                   Text(timeText),
-                  usersATM == null ? Text("nullii") : Text("Kilpoilijoita: " + usersATM),
+                  usersATM == null
+                      ? Text("nullii")
+                      : Text("Kilpoilijoita: " + usersATM),
                 ],
               ),
               // ADDING PLAYERS
@@ -300,8 +327,7 @@ class AdminState extends State<Admin> {
     );
   }
 
-  void userCounter() async{
-
+  void userCounter() async {
     var t = await Firestore.instance.collection("users").getDocuments();
     usersATM = t.documents.length.toString();
     //t.asStream().length;
@@ -312,9 +338,6 @@ class AdminState extends State<Admin> {
     var dbLastSeen = dbUsers.where("lastSeen");
     dbLastSeen.snapshots().length;
 
-
     //print(dbUsers.toString() + " " + dbLastSeen.snapshots()..length.toString());
-
-
   }
 }

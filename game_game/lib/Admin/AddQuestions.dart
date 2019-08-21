@@ -7,6 +7,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import '../Themes/MasterTheme.dart';
@@ -26,7 +27,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
   bool imageLoaded = false;
   String newQuestion;
   List<String> answers = new List<String>(4);
-  int correctAnswer = 1;
+  int correctAnswer = 4;
 
   List<Question> allQuestions = new List<Question>();
 
@@ -44,7 +45,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: ListView(
+          body: Column(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
@@ -76,223 +77,299 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                   ],
                 ),
               ),
-              // Question form
-              Form(
-                key: formKey,
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä kysymys:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
+              Expanded(
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Question form
+                          Form(
+                            key: formKey,
+                            child: Column(
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Syötä kysymys:',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Kysymyskenttä on tyhjä.';
+                                          } else {
+                                            newQuestion = value;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Syötä vastausvaihtoehto 1:',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Kenttä on tyhjä.';
+                                          } else {
+                                            answers[0] = value;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Syötä vastausvaihtoehto 2:',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Kenttä on tyhjä.';
+                                          } else {
+                                            answers[1] = value;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Syötä vastausvaihtoehto 3:',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Kenttä on tyhjä.';
+                                          } else {
+                                            answers[2] = value;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        'Syötä vastausvaihtoehto 4:',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                      child: TextFormField(
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Kenttä on tyhjä.';
+                                          } else {
+                                            answers[3] = value;
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kysymyskenttä on tyhjä.';
-                              } else {
-                                newQuestion = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä vastausvaihtoehto 1:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kenttä on tyhjä.';
-                              } else {
-                                answers[0] = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä vastausvaihtoehto 2:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kenttä on tyhjä.';
-                              } else {
-                                answers[1] = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä vastausvaihtoehto 3:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kenttä on tyhjä.';
-                              } else {
-                                answers[2] = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            'Syötä vastausvaihtoehto 4:',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Kenttä on tyhjä.';
-                              } else {
-                                answers[3] = value;
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
 
-              Text(
-                'Anna oikea vastaus:',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle,
-              ),
-              NumberPicker.integer(
-                highlightSelectedValue: false,
-                initialValue: correctAnswer,
-                minValue: 1,
-                maxValue: 4,
-                onChanged: (newValue) => correctAnswer = newValue,
-              ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 5, 5, 10),
+                            child: Text(
+                              'Anna oikea vastaus:',
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                          ),
 
-              // Date picker
-              RaisedButton(
-                  onPressed: () {
-                    DatePicker.showDatePicker(context,
-                        showTitleActions: true,
-                        minTime: DateTime.now(),
-                        maxTime: DateTime(2020, 6, 1), onChanged: (date) {
-                      print('change $date');
-                      currentDate = date;
-                    }, onConfirm: (date) {
-                      print('confirm $date');
-                      currentDate = date;
-                      // The fi Localetype was not part of the DatePicker package.
-                    }, currentTime: DateTime.now(), locale: LocaleType.fi);
-                  },
-                  child: Text(
-                    'Valitse ottelun päivä painamalla tästä.',
-                    style: Theme.of(context).textTheme.subtitle,
-                  )),
+                          // Date picker
+                          Theme(
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(5, 5, 5, 50),
+                                child: NumberPicker.integer(
+                                    highlightSelectedValue: true,
+                                    initialValue: correctAnswer,
+                                    minValue: 1,
+                                    maxValue: 4,
+                                    onChanged: (newValue) {
+                                      correctAnswer = newValue;
+                                      setState(() {});
+                                    }),
+                              ),
+                            ),
+                            data: ThemeData(
+                              accentColor: MasterTheme.accentColour,
+                              textTheme: TextTheme(
+                                headline:
+                                    TextStyle(color: MasterTheme.accentColour),
+                                body1:
+                                    TextStyle(color: MasterTheme.primaryColour),
+                              ),
+                            ),
+                          ),
 
-              // Image for quiz
-              RaisedButton(
-                child: Text("Lisää kuva"),
-                onPressed: () {
-                  GetQuestionImage();
-                },
-              ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: RaisedButton(
+                                  color: MasterTheme.primaryColour,
+                                  onPressed: () {
+                                    DatePicker.showDatePicker(context,
+                                        showTitleActions: true,
+                                        minTime: DateTime.now(),
+                                        maxTime: DateTime(2020, 6, 1),
+                                        onChanged: (date) {
+                                      currentDate = date;
+                                    }, onConfirm: (date) {
+                                      currentDate = date;
+                                      setState(() {});
+                                      // The fi Localetype was not part of the DatePicker package.
+                                    },
+                                        currentTime: DateTime.now(),
+                                        locale: LocaleType.fi);
+                                  },
+                                  child: Text(
+                                    'Valitse ottelun päivä',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.button,
+                                  )),
+                            ),
+                          ),
 
-              !imageLoaded
-                  ? Text("")
-                  : Column(
-                      children: <Widget>[
-                        Text("Valittu kuva: "),
-                        SizedBox(
-                          width: Global.SCREENWIDTH * 0.8,
-                          child: Image.file(questionImage),
-                        ),
-                      ],
-                    ),
+                          currentDate != null
+                              ? Center(
+                                  child: Text("Valittu päivä: " +
+                                      DateFormat("dd-MM-yyyy")
+                                          .format(currentDate)
+                                          .toString()),
+                                )
+                              : Center(
+                                  child: Text("Päivää ei ole valittu"),
+                                ),
 
-              // Button to submit
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: MaterialButton(
-                  onPressed: () {
-                    if (formKey.currentState.validate()) {
-                      print(Global.greenPen("ADDING"));
-                      AddQuestionToDB();
-                    }
-                  },
-                  color: MasterTheme.accentColour,
-                  padding: EdgeInsets.all(5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text("Lisää kysymys"),
+                          // Image for quiz
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Center(
+                              child: RaisedButton(
+                                color: MasterTheme.primaryColour,
+                                child: Text(
+                                  "Lisää kuva",
+                                  style: Theme.of(context).textTheme.button,
+                                ),
+                                onPressed: () {
+                                  GetQuestionImage();
+                                },
+                              ),
+                            ),
+                          ),
+
+                          !imageLoaded
+                              ? SizedBox.shrink()
+                              : Column(
+                                  children: <Widget>[
+                                    Text("Valittu kuva: "),
+                                    SizedBox(
+                                      width: Global.SCREENWIDTH * 0.8,
+                                      child: Image.file(questionImage),
+                                    ),
+                                  ],
+                                ),
+
+                          // Button to submit
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                if (formKey.currentState.validate()) {
+                                  print(Global.greenPen("ADDING"));
+                                  AddQuestionToDB();
+                                }
+                              },
+                              color: MasterTheme.accentColour,
+                              padding: EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text("Lisää kysymys"),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                    child:
+                                        Icon(FontAwesomeIcons.questionCircle),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Icon(FontAwesomeIcons.questionCircle),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -357,7 +434,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 2,
-      );
+    );
     setState(() {});
   }
 
