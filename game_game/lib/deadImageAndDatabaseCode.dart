@@ -48,7 +48,8 @@ class dontUseMe {
             change.document['photographerName'],
             change.document['downloadUrl'],
             change.document['imgUrl'],
-            change.document['totalVotes']);
+            change.document['totalVotes'],
+            change.document['dateTaken']);
 
         //see if there is an old image with same path and photographer in  the allimagews list and save the index
         int queryIndex = allimages.indexWhere((img) =>
@@ -86,7 +87,8 @@ class dontUseMe {
           result.documents[i]['photographerName'],
           result.documents[i]['downloadUrl'],
           result.documents[i]['imgUrl'],
-          result.documents[i]['totalVotes']));
+          result.documents[i]['totalVotes'],
+          result.documents[i]['dateTaken']));
       // print('result image url: ' + allimages[i].imgUrl);
       //print(allimages[i].toString());
     }

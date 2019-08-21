@@ -9,6 +9,7 @@ import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../Navigation.dart';
 
@@ -211,7 +212,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
             child: ListBody(
               children: <Widget>[
                 SizedBox(
-                  width: Global.SCREENWIDTH * .5,
+                  width: Global.SCREENWIDTH * .9,
                   child: Image.file(image),
                 ),
                 ButtonBar(
@@ -279,7 +280,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         'photographerName': 'name', //this should be the user's name
         'imgUrl': 'bestPictureCompetition/' + imgName,
         'downloadUrl': downloadUrl,
-        'totalVotes': 0
+        'totalVotes': 0,
+        'dateTaken': DateFormat("dd-MM-yyyy").format(DateTime.now()).toString()
       });
       //print("\nadding image to db, download url: $downloadUrl\n");
     });

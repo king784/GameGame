@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Globals.dart';
+import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../imageFromDB.dart';
 
@@ -53,17 +53,31 @@ class _PictureCardListState extends State<PictureCardList> {
             break;
           default:
             // print('streambuilder switch case default, card should be returning');
-            return Column(
-              children: snapshot.data.documents
-                  .map<Widget>((DocumentSnapshot document) {
-                ImageFromDB tempImg = new ImageFromDB(
-                    document['photographerName'],
-                    document['imgUrl'],
-                    document['downloadUrl'],
-                    document['totalVotes']);
+            List<Widget> imgCardList =
+                new List<Widget>(); //lis tto hold the imagecards
+            List<ImageFromDB> imgList = snapshot.data
+                .documents //map the data from the gotten documents to imagefromdb
+                .map<ImageFromDB>((DocumentSnapshot document) {
+              ImageFromDB tempImg = new ImageFromDB(
+                  document['photographerName'],
+                  document['imgUrl'],
+                  document['downloadUrl'],
+                  document['totalVotes'],
+                  document['dateTaken']);
 
-                return _cardWithPic(tempImg);
-              }).toList(),
+              return tempImg;
+            }).toList();
+            imgList.sort((a, b) =>
+                a.totalVotes.compareTo(b.totalVotes)); //sort list by the votes
+            imgList = imgList.reversed
+                .toList(); //thanks to dart the lists sort in the wrong order so we need to reverse the final one
+            for (int i = 0; i < imgList.length; i++) {
+              //make an image card from each object in imglist and add it to the list
+              imgCardList.add(_cardWithPic(imgList[i]));
+            }
+
+            return Column(
+              children: imgCardList, //return the updated and sorted imagecards
             );
             break;
         }
@@ -80,6 +94,41 @@ class _PictureCardListState extends State<PictureCardList> {
 
   //   return tempDBImageUrl;
   // }
+  _createImagePopUpDialog(BuildContext context, ImageFromDB img) async {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Anna ääni'),
+          content: SingleChildScrollView(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                RaisedButton(
+                  child:
+                      Text('Joo', style: Theme.of(context).textTheme.body1),
+                  onPressed: () {
+                    giveVoteToImage(img);
+                    Navigator.of(context).pop(context);
+                  },
+                  color: Theme.of(context).accentColor,
+                ),
+                RaisedButton(
+                  child: Text('Ei sittenkään',
+                      style: Theme.of(context).textTheme.body1),
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                  }, //close popup
+                  color: MasterTheme.awayTeamColour,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   _cardWithPic(ImageFromDB dbImage) {
     return Card(
@@ -162,7 +211,9 @@ class _PictureCardListState extends State<PictureCardList> {
                       child: Icon(
                         FontAwesomeIcons.plus,
                       ),
-                      onPressed: () => {},
+                      onPressed: () {
+                        _createImagePopUpDialog(context, dbImage);
+                      },
                       color: Theme.of(context).accentColor,
                     ),
                   ),
@@ -173,5 +224,31 @@ class _PictureCardListState extends State<PictureCardList> {
         ],
       ),
     );
+  }
+
+  void giveVoteToImage(ImageFromDB img) async {
+    //give one vote to image in database
+    String today = DateFormat("dd-MM-yyyy")
+        .format(DateTime.now())
+        .toString(); //today's date
+
+    await Firestore.instance //get the document with the matching parameters
+        .collection('imagesForBestImageVoting')
+        .where('dateTaken', isEqualTo: today)
+        .where('photographerName', isEqualTo: 'name')
+        .where('imgUrl', isEqualTo: img.imgUrl)
+        .limit(1) //limit documents to 1
+        .getDocuments()
+        .then((val) {
+      Firestore.instance.runTransaction((transaction) async {
+        //update the info in the document in database
+        DocumentSnapshot freshSnap = await transaction.get(val.documents[0]
+            .reference); //get the reference  to our document we want to update
+        await transaction.update(freshSnap.reference, {
+          'totalVotes': freshSnap['totalVotes'] +
+              1, //plus one to the totalVotes in database
+        });
+      });
+    });
   }
 }
