@@ -60,7 +60,7 @@ class PlayerVotingState extends State<PlayerVoting> {
   bool valuesOnce = true;
 
   // DEBUG USER
-  User fakeUser = new User("Sportacus", false);
+  User fakeUser = new User("Sportacus", '',false);
 
   @override
   Widget build(BuildContext context) {
