@@ -14,16 +14,23 @@ class PictureCardList extends StatefulWidget {
 
 class _PictureCardListState extends State<PictureCardList> {
   bool pictureCardsLoaded = false;
+  String today;
+
   @override
   void initState() {
     super.initState();
+    today = DateFormat("dd-MM-yyyy")
+        .format(DateTime.now())
+        .toString(); //today's date
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream:
-          Firestore.instance.collection('imagesForBestImageVoting').snapshots(),
+      stream: Firestore.instance
+          .collection('imagesForBestImageVoting')
+          .where('dateTaken', isEqualTo: today)//include pictures taken today
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.data == null) {
           return CircularProgressIndicator();
@@ -106,8 +113,7 @@ class _PictureCardListState extends State<PictureCardList> {
               alignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RaisedButton(
-                  child:
-                      Text('Joo', style: Theme.of(context).textTheme.body1),
+                  child: Text('Joo', style: Theme.of(context).textTheme.body1),
                   onPressed: () {
                     giveVoteToImage(img);
                     Navigator.of(context).pop(context);
@@ -228,9 +234,6 @@ class _PictureCardListState extends State<PictureCardList> {
 
   void giveVoteToImage(ImageFromDB img) async {
     //give one vote to image in database
-    String today = DateFormat("dd-MM-yyyy")
-        .format(DateTime.now())
-        .toString(); //today's date
 
     await Firestore.instance //get the document with the matching parameters
         .collection('imagesForBestImageVoting')
