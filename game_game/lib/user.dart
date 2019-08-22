@@ -1,12 +1,17 @@
+import 'package:flutter_testuu/Globals.dart';
+
 class User {
-  String Username;
+  String displayName;
+  String email;
   bool VIP;
   bool bannedFromChat;
   int watchedGames;
   int maxVotes, playerVotes, imageVotes;
+  List<VisitedGame> visitedGames = new List<VisitedGame>();
 
-  User(String username, bool vip) {
-    this.Username = username;
+  User(String username, String newEmail, bool vip) {
+    this.displayName = username;
+    this.email = email;
     this.VIP = vip;
     this.bannedFromChat = false;
     this.watchedGames = 0;

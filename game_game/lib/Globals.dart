@@ -39,6 +39,12 @@ class Global {
   }
 }
 
+class VisitedGame
+{
+  DateTime dayOfGame;
+  bool gameHasBeenVisited;
+}
+
 class Player {
   int id;
   int currentVotes;
