@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
 import '../Navigation.dart';
-import '../radialMenu.dart';
+import '../topBar.dart';
 
 class Activities extends StatefulWidget {
   @override
@@ -27,24 +27,7 @@ class _ActivitiesState extends State<Activities> {
         child: Scaffold(
           body: Column(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: <Widget>[
-                    RadialMenu(),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          'Aktiviteetit',
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              _topBar(),
               Expanded(
                 child: Container(
                   child: SingleChildScrollView(
