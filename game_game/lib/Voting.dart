@@ -110,7 +110,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                         )
                       ],
                     ),
-                    playersGot ? _playerSortingBar() : null,
+                    playersGot ? _playerSortingBar() : SizedBox.shrink(),
                   ],
                 ),
               ),
