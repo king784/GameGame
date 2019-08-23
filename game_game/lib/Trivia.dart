@@ -59,6 +59,7 @@ bool questionsLoaded = false;
 int timeLeft = 10;
 
 class Trivia extends StatefulWidget {
+  static bool reFetchQuestion = false;
   @override
   State<StatefulWidget> createState() {
     return new TriviaState();
@@ -80,7 +81,6 @@ class Trivia extends StatefulWidget {
 //    ..strokeWidth = 5.0
 //    ..strokeCap = StrokeCap.round
 //    ..style = PaintingStyle.stroke;
-
 
 //  canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
 //  paint.color = color;
@@ -119,264 +119,349 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     quizContents.add(Global.contents.split(";"));
     // TODO: implement build
     return !questionsLoaded
-        ? new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "Ladataan...",
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-              ),
-              CircularProgressIndicator(),
-            ],
-          )
-        : new WillPopScope(
+        ? WillPopScope(
+            onWillPop: () async => false,
             child: Theme(
               data: MasterTheme.mainTheme,
               child: Scaffold(
-                  bottomNavigationBar: BottomAppBar(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: FloatingActionButton(
-                              heroTag: 'backBtn7',
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Icon(
-                                      FontAwesomeIcons.arrowLeft,
-                                      color: MasterTheme.primaryColour,
-                                      size: 40,
-                                    ),
-                                  ),
-                                  Text("Luovuta",
-                                      style:
-                                          Theme.of(context).textTheme.subtitle),
-                                ],
+                body: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                            child: FloatingActionButton(
+                                heroTag: 'backBtn1',
+                                child: Icon(
+                                  FontAwesomeIcons.arrowLeft,
+                                  color: MasterTheme.accentColour,
+                                  size: 40,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                onPressed: () => Navigator.pop(context),
+                                elevation: 0),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                'Trivia',
+                                textAlign: TextAlign.right,
+                                style: Theme.of(context).textTheme.title,
                               ),
-                              backgroundColor: Colors.transparent,
-                              onPressed: () {
-                                questions.clear();
-                                questions.addAll(allQuestions);
-                                currentQuestion = questions.removeAt(
-                                    Random().nextInt(questions.length));
-                                questionNumber = 0;
-                                finalScore = 0;
-                                Navigation.openActivitiesPage(context);
-                                // Navigation.openPage(context, 'activities');
-                                questionsLoaded = true;
-                                customTimer.cancel();
-                                customTimer = null;
-                                timeLeft = 10;
-                              },
-                              elevation: 0),
-                        ),
-                        Expanded(
-                          child: Text(""),
-                        ),
-                      ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  body: new ListView(
-                    children: <Widget>[
-                      // Padding(
-                      //   padding: const EdgeInsets.all(10.0),
-                      //   child: new Text(
-                      //     "Aika: " + timeLeft.toString(),
-                      //     textAlign: TextAlign.center,
-                      //     style: Theme.of(context).textTheme.display2,
-                      //   ),
-                      // ),
-                      Card(
-                        margin: EdgeInsets.all(5.0),
-                        child: Column(
-                          children: <Widget>[
-                            //new Text(readFromFile,
-
-                            //new Text(quizContents[0][questionNumber],
-
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: new Text(
-                                currentQuestion.question,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.display3,
+                    Expanded(
+                      child: Container(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  "Ladataan...",
+                                  style: Theme.of(context).textTheme.subtitle,
+                                ),
                               ),
-                            ),
-
-                            Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                              child: nextImgLoaded
-                                  ? SizedBox(
-                                      height: 300,
-                                      child: nextImage,
-                                    )
-                                  :Text(""),
-                            ),
-
-                            new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-
-                              crossAxisAlignment: CrossAxisAlignment.center,
-
-                              children: <Widget>[
-                                //
-
-                                //Buttons
-
-                                //
-
-                                //Button1
-
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: new MaterialButton(
-                                      //padding: EdgeInsets.all(10),
-
-                                      //minWidth: buttonsWidth,
-
-                                      height: buttonHeight / 1.2,
-
-                                      color: Colors.green,
-
-                                      onPressed: () {
-                                        if (currentQuestion.correct == 0) {
-                                          finalScore++;
-                                        } else {}
-
-                                        GetNextQuestion();
-                                      },
-
-                                      child: new Text(
-                                        currentQuestion.choices[0],
-                                        style: new TextStyle(
-                                            fontSize: buttonsWidth / 7,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                //Button2
-
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: new MaterialButton(
-                                      //padding: EdgeInsets.all(10),
-
-                                      //minWidth: buttonsWidth,
-
-                                      height: buttonHeight / 1.2,
-
-                                      color: Colors.green,
-
-                                      onPressed: () {
-                                        if (currentQuestion.correct == 1) {
-                                          finalScore++;
-                                        } else {}
-
-                                        GetNextQuestion();
-                                      },
-
-                                      child: new Text(
-                                        currentQuestion.choices[1],
-                                        style: new TextStyle(
-                                            fontSize: buttonsWidth / 7,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-
-                              //),
-                            ),
-
-                            new Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                //Button3
-
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: new MaterialButton(
-                                      //padding: EdgeInsets.all(10),
-
-                                      //minWidth: buttonsWidth,
-
-                                      height: buttonHeight / 1.2,
-
-                                      color: Colors.green,
-
-                                      onPressed: () {
-                                        if (currentQuestion.correct == 2) {
-                                          finalScore++;
-                                        } else {}
-
-                                        GetNextQuestion();
-                                      },
-
-                                      child: new Text(
-                                        currentQuestion.choices[2],
-                                        style: new TextStyle(
-                                            fontSize: buttonsWidth / 7,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                //Button4
-
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: new MaterialButton(
-                                      //padding: EdgeInsets.all(10),
-
-                                      //minWidth: buttonsWidth,
-
-                                      height: buttonHeight / 1.2,
-
-                                      color: Colors.green,
-
-                                      onPressed: () {
-                                        if (currentQuestion.correct == 3) {
-                                          finalScore++;
-                                        } else {}
-
-                                        GetNextQuestion();
-                                      },
-
-                                      child: new Text(
-                                        currentQuestion.choices[3],
-                                        style: new TextStyle(
-                                            fontSize: buttonsWidth / 7,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            //],
-                          ],
+                              CircularProgressIndicator(),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            onWillPop: () async => false
-            //),
-            );
+          )
+        : WillPopScope(
+            onWillPop: () async => false,
+            child: Theme(
+              data: MasterTheme.mainTheme,
+              child: Scaffold(
+                body: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                            child: FloatingActionButton(
+                                heroTag: 'backBtn1',
+                                child: Icon(
+                                  FontAwesomeIcons.arrowLeft,
+                                  color: MasterTheme.accentColour,
+                                  size: 40,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                onPressed: () {
+                                  questions.clear();
+                                  questions.addAll(allQuestions);
+                                  currentQuestion = questions.removeAt(
+                                      Random().nextInt(questions.length));
+                                  questionNumber = 0;
+                                  finalScore = 0;
+                                  Navigation.openActivitiesPage(context);
+                                  // Navigation.openPage(context, 'activities');
+                                  questionsLoaded = true;
+                                  customTimer.cancel();
+                                  customTimer = null;
+                                  timeLeft = 10;
+                                  Navigator.pop(context);
+                                },
+                                elevation: 0),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                'Trivia',
+                                textAlign: TextAlign.right,
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(10.0),
+                                  //   child: new Text(
+                                  //     "Aika: " + timeLeft.toString(),
+                                  //     textAlign: TextAlign.center,
+                                  //     style: Theme.of(context).textTheme.display2,
+                                  //   ),
+                                  // ),
+                                  Card(
+                                    margin: EdgeInsets.all(5.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        //new Text(readFromFile,
+
+                                        //new Text(quizContents[0][questionNumber],
+
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: new Text(
+                                            currentQuestion.question,
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display3,
+                                          ),
+                                        ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              5.0, 0.0, 5.0, 0.0),
+                                          child: nextImgLoaded
+                                              ? SizedBox(
+                                                  height: 300,
+                                                  child: nextImage,
+                                                )
+                                              : Text(""),
+                                        ),
+
+                                        new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+
+                                          children: <Widget>[
+                                            //
+
+                                            //Buttons
+
+                                            //
+
+                                            //Button1
+
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: new MaterialButton(
+                                                  //padding: EdgeInsets.all(10),
+
+                                                  //minWidth: buttonsWidth,
+
+                                                  height: buttonHeight / 1.2,
+
+                                                  color: Colors.green,
+
+                                                  onPressed: () {
+                                                    if (currentQuestion
+                                                            .correct ==
+                                                        0) {
+                                                      finalScore++;
+                                                    } else {}
+
+                                                    GetNextQuestion();
+                                                  },
+
+                                                  child: new Text(
+                                                    currentQuestion.choices[0],
+                                                    style: new TextStyle(
+                                                        fontSize:
+                                                            buttonsWidth / 7,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            //Button2
+
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: new MaterialButton(
+                                                  //padding: EdgeInsets.all(10),
+
+                                                  //minWidth: buttonsWidth,
+
+                                                  height: buttonHeight / 1.2,
+
+                                                  color: Colors.green,
+
+                                                  onPressed: () {
+                                                    if (currentQuestion
+                                                            .correct ==
+                                                        1) {
+                                                      finalScore++;
+                                                    } else {}
+
+                                                    GetNextQuestion();
+                                                  },
+
+                                                  child: new Text(
+                                                    currentQuestion.choices[1],
+                                                    style: new TextStyle(
+                                                        fontSize:
+                                                            buttonsWidth / 7,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+
+                                          //),
+                                        ),
+
+                                        new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            //Button3
+
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: new MaterialButton(
+                                                  //padding: EdgeInsets.all(10),
+
+                                                  //minWidth: buttonsWidth,
+
+                                                  height: buttonHeight / 1.2,
+
+                                                  color: Colors.green,
+
+                                                  onPressed: () {
+                                                    if (currentQuestion
+                                                            .correct ==
+                                                        2) {
+                                                      finalScore++;
+                                                    } else {}
+
+                                                    GetNextQuestion();
+                                                  },
+
+                                                  child: new Text(
+                                                    currentQuestion.choices[2],
+                                                    style: new TextStyle(
+                                                        fontSize:
+                                                            buttonsWidth / 7,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            //Button4
+
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: new MaterialButton(
+                                                  //padding: EdgeInsets.all(10),
+
+                                                  //minWidth: buttonsWidth,
+
+                                                  height: buttonHeight / 1.2,
+
+                                                  color: Colors.green,
+
+                                                  onPressed: () {
+                                                    if (currentQuestion
+                                                            .correct ==
+                                                        3) {
+                                                      finalScore++;
+                                                    } else {}
+
+                                                    GetNextQuestion();
+                                                  },
+
+                                                  child: new Text(
+                                                    currentQuestion.choices[3],
+                                                    style: new TextStyle(
+                                                        fontSize:
+                                                            buttonsWidth / 7,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        //],
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   void Startade() async {
@@ -386,7 +471,14 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       await LoadQuestions();
       RandomizeQuestions();
       ReAddValues();
+      NextImage(currentQuestion.imagePath);
       firstRun = false;
+    }
+
+    if(Trivia.reFetchQuestion)
+    {
+      NextImage(currentQuestion.imagePath);
+      Trivia.reFetchQuestion = false;
     }
 
     // if(customTimer == null && Global.CURRENTROUTE == "/trivia")
@@ -399,19 +491,12 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     //   customTimer = null;
     //   timeLeft = 0;
     // }
-
-    if(!nextImgLoaded && currentQuestion != null)
-    {
-      NextImage(currentQuestion.imagePath);
-    }
   }
 
-  void TimerFunction()
-  {
+  void TimerFunction() {
     print(timeLeft);
-    timeLeft =  timeLeft - 1;
-    if(timeLeft == 0)
-    {
+    timeLeft = timeLeft - 1;
+    if (timeLeft == 0) {
       timeLeft = 10;
       GetNextQuestion();
     }
@@ -444,13 +529,15 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
   void NextImage(String nextUrl) async {
     nextImgLoaded = false;
-    final ref =
-        FirebaseStorage.instance.ref().child("Quizes/1/" + nextUrl + ".jpg");
-    var url = await ref.getDownloadURL();
+    if (nextUrl != "" && nextUrl != null) {
+      final ref =
+          FirebaseStorage.instance.ref().child("Quizes/1/" + nextUrl + ".jpg");
+      var url = await ref.getDownloadURL();
 
-    nextImage = Image.network(url);
-    nextImgLoaded = true;
-    setState(() {});
+      nextImage = Image.network(url);
+      nextImgLoaded = true;
+      setState(() {});
+    }
   }
 
   void _timer() async {
@@ -477,11 +564,17 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     setState(() {
       timeLeft = 10;
       if (questions.length <= 0) {
-        Navigation.openSummary(context); 
-      }
-      else {
+        Navigation.openSummary(context);
+      } else {
         currentQuestion = GetRandomQuestion();
         NextImage(currentQuestion.imagePath);
+        // if (currentQuestion.imagePath == "" ||
+        //     currentQuestion.imagePath == null) {
+        //   nextImage = null;
+        //   nextImgLoaded = false;
+        // } else {
+        //   NextImage(currentQuestion.imagePath);
+        // }
         setState(() {});
       }
     });
@@ -491,7 +584,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     setState(() {
       timeLeft = 10;
       if (questionNumber == Global.contents.split(";").length - 1) {
-        Navigation.openSummary(context); 
+        Navigation.openSummary(context);
       } else {
         questionNumber++;
         RandomizeQuestions();
@@ -544,92 +637,73 @@ class Summary extends StatelessWidget {
 
     // TODO: implement build
     return new WillPopScope(
-        child: Scaffold(
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
+        onWillPop: () async => false,
+        child: Theme(
+          data: MasterTheme.mainTheme,
+          child: Scaffold(
+            body: Column(
               children: <Widget>[
-                Expanded(
-                  child: FloatingActionButton(
-                      heroTag: 'backBtn5',
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                        child: FloatingActionButton(
+                            heroTag: 'backBtn5',
                             child: Icon(
                               FontAwesomeIcons.arrowLeft,
-                              color: MasterTheme.primaryColour,
+                              color: MasterTheme.accentColour,
                               size: 40,
                             ),
-                          ),
-                          Text("Palaa",
-                              style: Theme.of(context).textTheme.subtitle),
-                        ],
+                            backgroundColor: Colors.transparent,
+                            //onPressed: () => Navigation.openPage(context, 'activities'),
+                            onPressed: () {
+                              questions.clear();
+                              questions.addAll(allQuestions);
+                              currentQuestion = questions
+                                  .removeAt(Random().nextInt(questions.length));
+                              //NextImage(currentQuestion.imagePath);
+                              questionNumber = 0;
+                              finalScore = 0;
+                              Navigation.openActivitiesPage(context);
+                              // Navigation.openPage(context, 'activities');
+                              questionsLoaded = true;
+                              // customTimer.cancel();
+                              // customTimer = null;
+                              // timeLeft = 10;
+                            },
+                            elevation: 0),
                       ),
-                      backgroundColor: Colors.transparent,
-                      onPressed: () {
-                        questions.clear();
-                        questions.addAll(allQuestions);
-                        currentQuestion = questions
-                            .removeAt(Random().nextInt(questions.length));
-                        questionNumber = 0;
-                        finalScore = 0;
-                        Navigation.openActivitiesPage(context);
-                        // Navigation.openPage(context, 'activities');
-                        questionsLoaded = true;
-                        customTimer.cancel();
-                        customTimer = null;
-                        timeLeft = 10;
-                      },
-                      elevation: 0),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'Pelaajaäänestys',
+                            textAlign: TextAlign.right,
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Expanded(
-                  child: FloatingActionButton(
-                      heroTag: 'backBtn6',
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text("Yritä uudelleen",
-                              style: Theme.of(context).textTheme.subtitle),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Icon(
-                              FontAwesomeIcons.arrowRight,
-                              color: MasterTheme.primaryColour,
-                              size: 40,
-                            ),
-                          ),
-                        ],
-                      ),
-                      backgroundColor: Colors.transparent,
-                      onPressed: () {
-                        questions.clear();
-                        questions.addAll(allQuestions);
-                        currentQuestion = questions
-                            .removeAt(Random().nextInt(questions.length));
-                        questionNumber = 0;
-                        finalScore = 0;
-                        Navigation.openActivitiesPage(context);
-                        //Navigation.openPage(context, 'activities');
-                        questionsLoaded = true;
-                        customTimer.cancel();
-                        customTimer = null;
-                        timeLeft = 10;
-                      },
-                      elevation: 0),
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Text(scoreText(finalScore),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.display3),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Text(scoreText(finalScore),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.display3),
-            ],
-          ),
-        ),
-        onWillPop: () async => false);
+        ));
   }
 }
