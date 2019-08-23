@@ -351,12 +351,18 @@ class AdminState extends State<Admin> {
         .limit(1) //limits documents to one
         .getDocuments();
 
-    DateTime gameDay = DateTime(2019, 8, 17, 12);
+    final QuerySnapshot gamingDayDb = await Firestore.instance
+        .collection('gamingDay')
+        .limit(1) //limits documents to one
+        .getDocuments();
+
+    DateTime gameDay; // = DateTime(2019, 8, 17);
+    gameDay = gamingDayDb.documents[0]['activeDay'].toDate();
     DateTime lastSeen;
+
     lastSeen = result.documents[0]['lastSeen'].toDate();
 
-    //print("Game day: " + gameDay.toString() + " Last seen: " + lastSeen.toString());
-
+    //Checks if the game date time is equal to users last logged date time
     if (lastSeen.year == gameDay.year &&
         lastSeen.month == gameDay.month &&
         lastSeen.day == gameDay.day) {
@@ -369,15 +375,11 @@ class AdminState extends State<Admin> {
 
         var t = await Firestore.instance.collection("users").getDocuments();
         usersATM = t.documents.length.toString() + " aktiivista käyttäjää";
-        //t.asStream().length;
-
-      } else {
-        usersATM = "Ei aktiivisia käyttäjiä";
       }
+    } 
+    else {
+      usersATM = "Ei aktiivisia käyttäjiä";
     }
-
-    //print(lastSeen);
-
     setState(() {});
   }
 }

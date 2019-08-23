@@ -82,7 +82,7 @@ class AddGamedayFormState extends State<AddGamedayForm> {
                   onPressed: () {
                     DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      locale: LocaleType.en,
+                      locale: LocaleType.fi,
                       onConfirm: (date){
                         dayChanged = true;
                         setState(() {
@@ -116,7 +116,7 @@ class AddGamedayFormState extends State<AddGamedayForm> {
     DocumentReference gamesRef = await Firestore.instance
         .collection('gamingDay')
         .document('avwqyFO6PB4WeACjYC0K');
-    gamesRef.setData({"VotingStartTime": theDay});
+    gamesRef.setData({"activeDay": theDay});
     
     Navigator.pop(context);
   }
