@@ -376,7 +376,6 @@ class AdminState extends State<Admin> {
     else {
       usersATM = "Ei aktiivisia käyttäjiä";
     }
-
     setState(() {});
   }
 }

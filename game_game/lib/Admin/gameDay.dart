@@ -82,7 +82,7 @@ class AddGamedayFormState extends State<AddGamedayForm> {
                   onPressed: () {
                     DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      locale: LocaleType.en,
+                      locale: LocaleType.fi,
                       onConfirm: (date){
                         dayChanged = true;
                         setState(() {
