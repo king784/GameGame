@@ -50,7 +50,7 @@ class MasterTheme {
       subhead: TextStyle(
           fontFamily: semibold, fontSize: btnFontSize, color: accentColour),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: bgBoxColour),
+          fontFamily: light, fontSize: btnFontSize, color: primaryColour),
     ),
   );
 }
