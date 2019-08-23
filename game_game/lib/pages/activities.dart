@@ -75,13 +75,13 @@ class _ActivitiesState extends State<Activities> {
                                   ),
                                 ],
                               ),
-                              onPressed: () => Navigation.openTrivia(context),
+                              onPressed: () {
+                            Trivia.reFetchQuestion = true;
+                            Navigation.openTrivia(context);},
                               // onPressed: () => Navigation.openPage(context, 'trivia'),
                             ),
                           ),
-                          onPressed: () {
-                            Trivia.reFetchQuestion = true;
-                            Navigation.openTrivia(context);},
+                
                           // onPressed: () => Navigation.openPage(context, 'trivia'),
                         ),
                         Padding(
