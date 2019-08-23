@@ -1,13 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_testuu/Globals.dart';
 
 class User {
+  // instance of current user
+  User.userPrivate();
+  static final User _instance = User.userPrivate();
+  static User get instance {
+    return _instance;
+  }
+
   String displayName;
   String email;
+  String uid;
   bool VIP;
   bool bannedFromChat;
   int watchedGames;
   int maxVotes, playerVotes, imageVotes;
-  List<VisitedGame> visitedGames = new List<VisitedGame>();
+  List<DateTime> visitedGames = new List<DateTime>();
 
   User(String username, String newEmail, bool vip) {
     this.displayName = username;
@@ -36,8 +45,32 @@ class User {
     this.maxVotes = 1;
   }
 
-  void updateVotes(){
+  void updateVotes() {
     this.imageVotes = this.maxVotes;
     this.playerVotes = this.maxVotes;
+  }
+
+  void visitGame(DateTime newGameDate) async {
+    visitedGames.add(newGameDate);
+
+    await Firestore.instance //get the document with the matching parameters
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .limit(1) //limit documents to 1
+        .getDocuments()
+        .then((val) {
+      Firestore.instance.runTransaction((transaction) async {
+        await transaction.update(val.documents[0].reference, {
+          'visitedGames': visitedGames,
+        });
+        // //update the info in the document in database
+        // DocumentSnapshot freshSnap = await transaction.get(val.documents[0]
+        //     .reference); //get the reference  to our document we want to update
+        // await transaction.update(freshSnap.reference, {
+        //   'totalVotes': freshSnap
+        // });
+
+      });
+    });
   }
 }

@@ -33,17 +33,51 @@ class Global {
       2019, 07, 26, 00, 00, 00); //Year, month, day, hours, minutes, seconds
   static Color dateTimeColor = new Color.fromRGBO(0, mainColorValue, 0, 1);
 
+  static DateTime convertTimestampToDatetime(int msSinceEpoch)
+  {
+    DateTime convertedTime = DateTime.fromMillisecondsSinceEpoch(msSinceEpoch);
+    return convertedTime;
+
+    // how to use:
+    // DateTime convertedTime;
+    // gamesRef.get().then((DocumentSnapshot ds) {
+    //   homeTeam = ds['HomeTeam'];
+    //   awayTeam = ds['AwayTeam'];
+
+    //   convertedTime = DateTime.fromMillisecondsSinceEpoch(
+    //       ds['VotingStartTime'].millisecondsSinceEpoch);
+  }
+
   static void intializeValues(double height, double width) {
     SCREENWIDTH = width;
     SCREENHEIGHT = height;
   }
 }
 
-class VisitedGame
-{
-  DateTime dayOfGame;
-  bool gameHasBeenVisited;
-}
+// Can just check the date
+// class VisitedGame
+// {
+//   DateTime dayOfGame;
+//   bool gameHasBeenVisited;
+
+//   VisitedGame(this.dayOfGame, this.gameHasBeenVisited);
+
+//   VisitedGame.fromJson(Map<String, dynamic> json)
+//       : dayOfGame = json['dayOfGame'],
+//         gameHasBeenVisited = json['gameHasBeenVisited'];
+
+//   Map<String, dynamic> toJson() => {
+//         'dayOfGame': dayOfGame,
+//         'gameHasBeenVisited': gameHasBeenVisited
+//       };
+
+//   static List encodeToJson(List<VisitedGame> list)
+//   {
+//     List jsonList = List();
+//     list.map((item) => jsonList.add(item.toJson())).toList();
+//     return jsonList;
+//   }
+// }
 
 class Player {
   int id;

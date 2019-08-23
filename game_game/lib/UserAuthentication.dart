@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
+import 'package:flutter_testuu/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,8 +14,15 @@ import 'pages/main.dart';
 void main() => runApp(UserAuthentication());
 
 class UserAuthentication extends StatelessWidget {
+  bool firstTime = false;
+
   @override
   Widget build(BuildContext context) {
+    if(!firstTime)
+    {
+      User user = User.instance;
+      firstTime = true;
+    }
     // TODO: implement build
     return MaterialApp(
       title: "Kirjautuminen",
@@ -105,6 +113,10 @@ class AuthService {
 
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection("users").document(user.uid);
+
+    User.instance.displayName = user.displayName;
+    User.instance.email = googleUser.email;
+    User.instance.uid = user.uid;
 
     return ref.setData({
       'uid': user.uid,

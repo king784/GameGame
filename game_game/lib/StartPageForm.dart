@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Navigation.dart';
+import 'package:flutter_testuu/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -16,11 +17,15 @@ class StartPageForm extends StatefulWidget {
 class StartPageFormState extends State<StartPageForm> {
   final _formKey = GlobalKey<FormState>();
   String _currentGameCode;
+  DateTime startTime;
+  DateTime endTime;
+  DateTime todayDT;
 
   @override
   void initState() {
     super.initState();
 
+    getGamingDay();
     getCurrentGameCode();
   }
 
@@ -54,6 +59,11 @@ class StartPageFormState extends State<StartPageForm> {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';
                   } else if (value.toString() == _currentGameCode) {
+                    // User has visited game
+                    if (checkValidDay())
+                    {
+                      User.instance.visitGame(startTime);
+                    }
                     Navigation.openHomePage(context);
                     //Navigation.openPage(context, 'home');
                   }
@@ -103,8 +113,30 @@ class StartPageFormState extends State<StartPageForm> {
         .where('date', isEqualTo: today)
         .limit(1) //limits documents to one where the date is same
         .getDocuments();
-    String gameCode = result.documents[0]['code']; //get the code string from the first item in the collection, there should onbly be one document
+    String gameCode = result.documents[0][
+        'code']; //get the code string from the first item in the collection, there should onbly be one document
     //print("today: " + today + ", result: " + gameCode);
     _currentGameCode = gameCode;
+  }
+
+  bool checkValidDay()
+  {
+    todayDT = DateTime.now();
+    return (todayDT.isAfter(startTime) && todayDT.isBefore(endTime));
+  }
+
+  Future<void> getGamingDay() async {
+    Timestamp todayTS = Timestamp.now();
+    int today = DateTime.now().millisecondsSinceEpoch;
+    todayDT = DateTime.now();
+    final QuerySnapshot result = await Firestore
+        .instance //get collection of gamecodes where date is same today
+        .collection('gamingDay')
+        .where('activeDay', isLessThanOrEqualTo: todayTS)
+        .limit(1) //limits documents to one where the date is same
+        .getDocuments();
+    Timestamp day = result.documents[0]['activeDay'];
+    startTime = day.toDate();
+    endTime = startTime.add(Duration(hours: 3));
   }
 }
