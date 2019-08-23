@@ -16,7 +16,7 @@ class Start extends StatefulWidget {
 class _StartState extends State<Start> {
   UserLocation userLoc = new UserLocation();
   Timer locationUpdateTimer;
-  String messageAboutLocation;
+  String messageAboutLocation = "";
 
   @override
   void initState() {
