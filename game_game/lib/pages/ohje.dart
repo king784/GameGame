@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../radialMenu.dart';
 import 'package:flutter_testuu/Globals.dart';
 
+import '../topBar.dart';
+
 class Ohje extends StatefulWidget {
   @override
   _OhjeState createState() => _OhjeState();
@@ -25,24 +27,7 @@ class _OhjeState extends State<Ohje> {
         child: Scaffold(
           body: Column(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: <Widget>[
-                    RadialMenu(),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          'Apuja',
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              topBar(context, 'Apuja'),
               Expanded(
                 child: Container(
                   child: SingleChildScrollView(

@@ -4,6 +4,7 @@ import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
 import '../Globals.dart';
 import '../radialMenu.dart';
+import '../topBar.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,24 +33,7 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           body: Column(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  children: <Widget>[
-                    RadialMenu(),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          'Tilanne',
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+             topBar(context, 'Tilanne'),
               Expanded(
                 child: Container(
                   child: SingleChildScrollView(

@@ -27,7 +27,7 @@ class _ActivitiesState extends State<Activities> {
         child: Scaffold(
           body: Column(
             children: <Widget>[
-              _topBar(),
+              topBar(context, 'Aktiviteetit'),
               Expanded(
                 child: Container(
                   child: SingleChildScrollView(

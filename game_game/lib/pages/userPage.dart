@@ -4,6 +4,8 @@ import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import '../radialMenu.dart';
 import 'package:flutter_testuu/Globals.dart';
 
+import '../topBar.dart';
+
 class UserPage extends StatefulWidget {
   @override
   _UserPageState createState() => _UserPageState();
@@ -24,23 +26,7 @@ class _UserPageState extends State<UserPage> {
         child: Scaffold(
           body: Column(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RadialMenu(),
-                    Padding(
-                      padding: EdgeInsets.all(paddingVal),
-                      child: Text(
-                        'Käyttäjä',
-                        textAlign: TextAlign.right,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              topBar(context, 'Omat tilastot'),
               Expanded(
                 child: Container(
                   child: Column(
