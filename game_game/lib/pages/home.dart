@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: ListView(
+          body: Column(
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
@@ -50,129 +50,146 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Image.network(
-                        homeLogo,
-                        width: _logoSize,
-                        height: _logoSize,
-                      ),
-                    ),
-                    Container(
-                        width: 30,
-                        height: _logoSize + 50,
-                        //color: Colors.white,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/middleLine.png"),
-                            fit: BoxFit.contain,
+              Expanded(
+                child: Container(
+                  child: SingleChildScrollView(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        //gametime
+                        padding: EdgeInsets.all(20),
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: MasterTheme.primaryColour,
+                                  width: 2,
+                                  style: BorderStyle.solid)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                'Peliaika:',
+                                textAlign: TextAlign.left,
+                                style: Theme.of(context).textTheme.body1,
+                              ),
+                              Text(
+                                '00:00:00',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ],
                           ),
                         ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'vs',
-                            style: Theme.of(context).textTheme.body1,
-                            textAlign: TextAlign.center,
+                      ),
+                      Column(
+                        //current game score
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    'Koti',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.body1,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.body1,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Vieras',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.body1,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        )),
-                    Expanded(
-                      child: Image.network(
-                        opponentLogo,
-                        width: _logoSize,
-                        height: _logoSize,
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    '0',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headline,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '-',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headline,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '0',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Image.network(
+                              //home team logo
+                              homeLogo,
+                              width: _logoSize,
+                              height: _logoSize,
+                            ),
+                            Container(
+                                //middle graphic with line and vs text
+                                width: 30,
+                                height: _logoSize + 50,
+                                //color: Colors.white,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/middleLine.png"),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'vs',
+                                    style: Theme.of(context).textTheme.body1,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                            Image.network(
+                              opponentLogo, //away team logo
+                              width: _logoSize,
+                              height: _logoSize,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Koti',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Vieras',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        '0',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '-',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '0',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Peliä pelattu:',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        '00:00:00',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              )
             ],
           ),
         ),
