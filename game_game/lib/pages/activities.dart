@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/Trivia.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
@@ -71,7 +72,9 @@ class _ActivitiesState extends State<Activities> {
                               ),
                             ],
                           ),
-                          onPressed: () => Navigation.openTrivia(context),
+                          onPressed: () {
+                            Trivia.reFetchQuestion = true;
+                            Navigation.openTrivia(context);},
                           // onPressed: () => Navigation.openPage(context, 'trivia'),
                         ),
                       ),

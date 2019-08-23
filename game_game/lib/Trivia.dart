@@ -59,6 +59,7 @@ bool questionsLoaded = false;
 int timeLeft = 10;
 
 class Trivia extends StatefulWidget {
+  static bool reFetchQuestion = false;
   @override
   State<StatefulWidget> createState() {
     return new TriviaState();
@@ -470,7 +471,14 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       await LoadQuestions();
       RandomizeQuestions();
       ReAddValues();
+      NextImage(currentQuestion.imagePath);
       firstRun = false;
+    }
+
+    if(Trivia.reFetchQuestion)
+    {
+      NextImage(currentQuestion.imagePath);
+      Trivia.reFetchQuestion = false;
     }
 
     // if(customTimer == null && Global.CURRENTROUTE == "/trivia")
@@ -483,10 +491,6 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     //   customTimer = null;
     //   timeLeft = 0;
     // }
-
-    if (!nextImgLoaded && currentQuestion != null) {
-      NextImage(currentQuestion.imagePath);
-    }
   }
 
   void TimerFunction() {
@@ -515,11 +519,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
     currentQuestion = GetRandomQuestion();
 
     questionsLoaded = true;
-    if (currentQuestion.imagePath == "" || currentQuestion.imagePath == null) {
-      nextImage = null;
-    } else {
-      NextImage(currentQuestion.imagePath);
-    }
+    NextImage(currentQuestion.imagePath);
     setState(() {});
   }
 
@@ -529,13 +529,15 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
   void NextImage(String nextUrl) async {
     nextImgLoaded = false;
-    final ref =
-        FirebaseStorage.instance.ref().child("Quizes/1/" + nextUrl + ".jpg");
-    var url = await ref.getDownloadURL();
+    if (nextUrl != "" && nextUrl != null) {
+      final ref =
+          FirebaseStorage.instance.ref().child("Quizes/1/" + nextUrl + ".jpg");
+      var url = await ref.getDownloadURL();
 
-    nextImage = Image.network(url);
-    nextImgLoaded = true;
-    setState(() {});
+      nextImage = Image.network(url);
+      nextImgLoaded = true;
+      setState(() {});
+    }
   }
 
   void _timer() async {
@@ -566,6 +568,13 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       } else {
         currentQuestion = GetRandomQuestion();
         NextImage(currentQuestion.imagePath);
+        // if (currentQuestion.imagePath == "" ||
+        //     currentQuestion.imagePath == null) {
+        //   nextImage = null;
+        //   nextImgLoaded = false;
+        // } else {
+        //   NextImage(currentQuestion.imagePath);
+        // }
         setState(() {});
       }
     });
@@ -634,50 +643,62 @@ class Summary extends StatelessWidget {
           child: Scaffold(
             body: Column(
               children: <Widget>[
-                Expanded(
-                  child: FloatingActionButton(
-                      // JÄIT TÄHÄN
-                      heroTag: 'backBtn5',
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                        child: FloatingActionButton(
+                            heroTag: 'backBtn5',
                             child: Icon(
                               FontAwesomeIcons.arrowLeft,
-                              color: MasterTheme.primaryColour,
+                              color: MasterTheme.accentColour,
                               size: 40,
                             ),
-                          ),
-                          Text("Palaa",
-                              style: Theme.of(context).textTheme.subtitle),
-                        ],
+                            backgroundColor: Colors.transparent,
+                            //onPressed: () => Navigation.openPage(context, 'activities'),
+                            onPressed: () {
+                              questions.clear();
+                              questions.addAll(allQuestions);
+                              currentQuestion = questions
+                                  .removeAt(Random().nextInt(questions.length));
+                              //NextImage(currentQuestion.imagePath);
+                              questionNumber = 0;
+                              finalScore = 0;
+                              Navigation.openActivitiesPage(context);
+                              // Navigation.openPage(context, 'activities');
+                              questionsLoaded = true;
+                              // customTimer.cancel();
+                              // customTimer = null;
+                              // timeLeft = 10;
+                            },
+                            elevation: 0),
                       ),
-                      backgroundColor: Colors.transparent,
-                      onPressed: () {
-                        questions.clear();
-                        questions.addAll(allQuestions);
-                        currentQuestion = questions
-                            .removeAt(Random().nextInt(questions.length));
-                        questionNumber = 0;
-                        finalScore = 0;
-                        Navigation.openActivitiesPage(context);
-                        // Navigation.openPage(context, 'activities');
-                        questionsLoaded = true;
-                        customTimer.cancel();
-                        customTimer = null;
-                        timeLeft = 10;
-                      },
-                      elevation: 0),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'Pelaajaäänestys',
+                            textAlign: TextAlign.right,
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Text(scoreText(finalScore),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.display3),
-                    ],
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Text(scoreText(finalScore),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.display3),
+                      ],
+                    ),
                   ),
                 ),
               ],
