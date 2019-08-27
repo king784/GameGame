@@ -20,6 +20,8 @@ class StartPageFormState extends State<StartPageForm> {
   DateTime startTime;
   DateTime endTime;
   DateTime todayDT;
+  bool correctGameDay = false;
+  String waitText;
 
   @override
   void initState() {
@@ -58,10 +60,10 @@ class StartPageFormState extends State<StartPageForm> {
                   } else if (value.toString() != _currentGameCode) {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';
-                  } else if (value.toString() == _currentGameCode) {
+                  } else if (value.toString() == _currentGameCode &&
+                      correctGameDay) {
                     // User has visited game
-                    if (checkValidDay())
-                    {
+                    if (checkValidDay()) {
                       User.instance.visitGame(startTime);
                     }
                     Navigation.openHomePage(context);
@@ -76,9 +78,17 @@ class StartPageFormState extends State<StartPageForm> {
               child: MaterialButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
+                    if(!correctGameDay)
+                    {
+                      waitText = 'Tänään ei ole peliä.';
+                    }
+                    else
+                    {
+                      waitText = 'Odota. Luetaan...';
+                    }
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Odota. Luetaan...'),
+                        content: Text(waitText),
                       ),
                     );
                   }
@@ -119,8 +129,7 @@ class StartPageFormState extends State<StartPageForm> {
     _currentGameCode = gameCode;
   }
 
-  bool checkValidDay()
-  {
+  bool checkValidDay() {
     todayDT = DateTime.now();
     return (todayDT.isAfter(startTime) && todayDT.isBefore(endTime));
   }
@@ -135,8 +144,13 @@ class StartPageFormState extends State<StartPageForm> {
         .where('activeDay', isLessThanOrEqualTo: todayTS)
         .limit(1) //limits documents to one where the date is same
         .getDocuments();
-    Timestamp day = result.documents[0]['activeDay'];
-    startTime = day.toDate();
-    endTime = startTime.add(Duration(hours: 3));
+    if (result.documents.length <= 0) {
+      correctGameDay = false;
+    } else {
+      Timestamp day = result.documents[0]['activeDay'];
+      startTime = day.toDate();
+      endTime = startTime.add(Duration(hours: 3));
+      correctGameDay = true;
+    }
   }
 }
