@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
 import 'package:flutter_testuu/user.dart';
+import 'package:flutter_testuu/user.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -117,6 +118,7 @@ class AuthService {
     User.instance.displayName = user.displayName;
     User.instance.email = googleUser.email;
     User.instance.uid = user.uid;
+    User.instance.getVisitedGamesFromDB();
 
     return ref.setData({
       'uid': user.uid,

@@ -69,8 +69,39 @@ class User {
         // await transaction.update(freshSnap.reference, {
         //   'totalVotes': freshSnap
         // });
-
       });
     });
+  }
+
+  List<DateTime> GetVisitedGamesList(Map<String, dynamic> json)
+  {
+    var tempTimes = json['visitedGames'];
+
+    List<DateTime> tempTimesList = tempTimes.cast<DateTime>();
+    for (int i = 0; i < tempTimesList.length; i++) {
+      tempTimesList.add(tempTimesList[i]);
+    }
+
+    return tempTimesList;
+  }
+
+  void getVisitedGamesFromDB() async
+  {
+    QuerySnapshot querySnapshot =
+        await Firestore.instance.collection('players').reference().where('uid', isEqualTo: uid).limit(1).getDocuments();
+      visitedGames =  GetVisitedGamesList(querySnapshot.documents[0].data);
+      print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
+  }
+
+  User.fromJson(Map<String, dynamic> json) {
+    this.displayName = json['displayName'];
+    this.email = json['email'];
+    this.uid = json['uid'];
+    var visitedGamesFromJson = json['visitedGames'];
+
+    List<DateTime> visitedGamesList = visitedGamesFromJson.cast<DateTime>();
+    for (int i = 0; i < visitedGamesList.length; i++) {
+      this.visitedGames.add(visitedGamesList[i]);
+    }
   }
 }
