@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../Globals.dart';
 import '../Navigation.dart';
 import '../Themes/MasterTheme.dart';
+import 'deleteQuestion.dart';
 import 'gameDay.dart';
 
 void main() => runApp(AdminMain());
@@ -162,6 +163,24 @@ class AdminState extends State<Admin> {
                   ),
                   Text(timeText),
                   usersATM != null ? Text(usersATM) : Text("Odota hetki"),
+
+                  RaisedButton(
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Poista kysymys",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeleteQuestionForm()),
+                      );
+                      //AddQuestion();
+                      //print(DateTime.now().toString());
+                      setState(() {});
+                    },
+                  ),
                 ],
               ),
               // ADDING PLAYERS
