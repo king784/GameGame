@@ -16,6 +16,7 @@ class User {
   bool bannedFromChat;
   int watchedGames;
   int maxVotes, playerVotes, imageVotes;
+  int pictureWins;
   List<DateTime> visitedGames = new List<DateTime>();
 
   User(String username, String newEmail, bool vip) {
@@ -24,6 +25,7 @@ class User {
     this.VIP = vip;
     this.bannedFromChat = false;
     this.watchedGames = 0;
+    this.pictureWins = 0;
 
     if (VIP == true) {
       this.maxVotes = 5;
@@ -91,6 +93,13 @@ class User {
         await Firestore.instance.collection('players').reference().where('uid', isEqualTo: uid).limit(1).getDocuments();
       visitedGames =  GetVisitedGamesList(querySnapshot.documents[0].data);
       print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
+  }
+
+  void getPictureWins(DocumentReference dr)
+  {
+    dr.get().then((DocumentSnapshot ds) {
+      pictureWins = ds['pictureWins'];
+    });
   }
 
   User.fromJson(Map<String, dynamic> json) {

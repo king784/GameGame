@@ -119,6 +119,7 @@ class AuthService {
     User.instance.email = googleUser.email;
     User.instance.uid = user.uid;
     User.instance.getVisitedGamesFromDB();
+    User.instance.getPictureWins(ref);
 
     return ref.setData({
       'uid': user.uid,
