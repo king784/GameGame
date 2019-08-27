@@ -67,6 +67,7 @@ class PlayerVotingState extends State<PlayerVoting> {
   @override
   Widget build(BuildContext context) {
     if (valuesOnce) {
+      addFilterListener();
       getGameValues();
       valuesOnce = false;
     }
@@ -207,7 +208,7 @@ class PlayerVotingState extends State<PlayerVoting> {
               Padding(
                 padding: EdgeInsets.all(paddingVal),
                 child: Text(
-                  timeText + ' minuuttia.',
+                  timeText,
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.display4,
                 ),
@@ -458,6 +459,7 @@ class PlayerVotingState extends State<PlayerVoting> {
             searchIcon = new Icon(Icons.close);
           }
           searchText = filter.text;
+          print(searchText);
         });
       }
     });
@@ -528,7 +530,6 @@ class PlayerVotingState extends State<PlayerVoting> {
           playerWidgets = list;
           filteredPlayerWidgets = playerWidgets;
         });
-        addFilterListener();
       }
 
       return Column(
