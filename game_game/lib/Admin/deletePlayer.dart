@@ -26,13 +26,13 @@ class DeletePlayerForm extends StatefulWidget {
 }
 
 class DeletePlayerFormState extends State<DeletePlayerForm> {
-  final TextEditingController filter = new TextEditingController();
   var sortValue = "joopa";
-  Icon searchIcon = new Icon(Icons.search);
   List<String> allPlayers = new List<String>();
   List<Widget> theList = new List<Widget>();
   bool loaded = false;  
+  Icon searchIcon = new Icon(Icons.search);
   String searchText = "";
+  final TextEditingController filter = new TextEditingController();
   List<String> lisOfAllPlayers = new List<String>();
 
 
