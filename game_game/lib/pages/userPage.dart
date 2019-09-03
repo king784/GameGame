@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
-import '../radialMenu.dart';
 import 'package:flutter_testuu/Globals.dart';
 
 import '../topBar.dart';
@@ -25,67 +24,75 @@ class _UserPageState extends State<UserPage> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: Column(
-            children: <Widget>[
-              topBar(context, 'Omat tilastot'),
-              Expanded(
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        width: screenWidth,
-                        child: Card(
-                          child: Padding(
-                            padding: EdgeInsets.all(paddingVal),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Katsotut kotiottelut:',
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.body1,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                topBar(context, 'Omat tilastot'),
+                Expanded(
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: screenWidth,
+                            child: Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(paddingVal),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Katsotut kotiottelut:',
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context).textTheme.body1,
+                                    ),
+                                    Text(
+                                      User.instance.visitedGames.length > 0
+                                          ? User.instance.visitedGames.length
+                                              .toString()
+                                          : "0",
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context).textTheme.title,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  User.instance.visitedGames.length > 0 ? User.instance.visitedGames.length.toString() : "0",
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.title,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-
-                      SizedBox(
-                        width: screenWidth,
-                        child: Card(
-                          child: Padding(
-                            padding: EdgeInsets.all(paddingVal),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Voitetut kuvaäänestykset:',
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.body1,
+                          SizedBox(
+                            width: screenWidth,
+                            child: Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(paddingVal),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      'Voitetut kuvaäänestykset:',
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context).textTheme.body1,
+                                    ),
+                                    Text(
+                                      User.instance.pictureWins.toString(),
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context).textTheme.title,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  User.instance.pictureWins.toString(),
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.title,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

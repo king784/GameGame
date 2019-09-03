@@ -9,6 +9,8 @@ class UserLocation {
   bool locationOn = false;
   bool loadingLocation = true;
 
+  static bool userLocOkForMenu = false;//used only for menu, don't change. it works ok.
+
   GeolocationStatus geolocationStatus;
   //static StreamSubscription<Position> userPositionStream;
   double _distanceInMeters;
@@ -72,8 +74,10 @@ class UserLocation {
 
       if (_distanceInMeters < _radiusFromEvent) {
         userLocationOk = true;
+        userLocOkForMenu = true;
       } else {
         userLocationOk = false;
+        userLocOkForMenu = false;
       }
     }
 

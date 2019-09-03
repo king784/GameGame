@@ -25,116 +25,122 @@ class _ActivitiesState extends State<Activities> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: Column(
-            children: <Widget>[
-              topBar(context, 'Aktiviteetit'),
-              Expanded(
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
-                          child: SizedBox(
-                            width: buttonWidth,
-                            child: RaisedButton(
-                              color: MasterTheme.accentColour,
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      'Testaa tietosi',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.button,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                topBar(context, 'Aktiviteetit'),
+                Expanded(
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
+                            child: SizedBox(
+                              width: buttonWidth,
+                              child: RaisedButton(
+                                color: MasterTheme.accentColour,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        'Testaa tietosi',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Theme.of(context).textTheme.button,
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Icon(
-                                      FontAwesomeIcons.hatWizard,
-                                      size: iconSize,
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Icon(
+                                        FontAwesomeIcons.hatWizard,
+                                        size: iconSize,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Trivia.reFetchQuestion = true;
+                                  Navigation.openTrivia(context);
+                                },
+                                // onPressed: () => Navigation.openPage(context, 'trivia'),
                               ),
-                              onPressed: () {
-                            Trivia.reFetchQuestion = true;
-                            Navigation.openTrivia(context);},
-                              // onPressed: () => Navigation.openPage(context, 'trivia'),
+                            ),
+
+                            // onPressed: () => Navigation.openPage(context, 'trivia'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: SizedBox(
+                              width: buttonWidth,
+                              child: RaisedButton(
+                                color: MasterTheme.accentColour,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        'Päivän paras pelaaja',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Theme.of(context).textTheme.button,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Icon(
+                                        FontAwesomeIcons.star,
+                                        size: iconSize,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () =>
+                                    Navigation.openPlayervoting(context),
+                                // Navigation.openPage(context, 'playerVoting'),
+                              ),
                             ),
                           ),
-                
-                          // onPressed: () => Navigation.openPage(context, 'trivia'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: SizedBox(
-                            width: buttonWidth,
-                            child: RaisedButton(
-                              color: MasterTheme.accentColour,
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      'Päivän paras pelaaja',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.button,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: SizedBox(
+                              width: buttonWidth,
+                              child: RaisedButton(
+                                color: MasterTheme.accentColour,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        'Pelin paras kuva',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Theme.of(context).textTheme.button,
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Icon(
-                                      FontAwesomeIcons.star,
-                                      size: iconSize,
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Icon(
+                                        FontAwesomeIcons.image,
+                                        size: iconSize,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                onPressed: () =>
+                                    Navigation.openImageVoting(context),
+                                // Navigation.openPage(context, 'imageVoting'),
                               ),
-                              onPressed: () =>
-                                  Navigation.openPlayervoting(context),
-                              // Navigation.openPage(context, 'playerVoting'),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: SizedBox(
-                            width: buttonWidth,
-                            child: RaisedButton(
-                              color: MasterTheme.accentColour,
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      'Pelin paras kuva',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.button,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Icon(
-                                      FontAwesomeIcons.image,
-                                      size: iconSize,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              onPressed: () =>
-                                  Navigation.openImageVoting(context),
-                              // Navigation.openPage(context, 'imageVoting'),
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
