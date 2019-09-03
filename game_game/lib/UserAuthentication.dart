@@ -115,15 +115,36 @@ class AuthService {
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection("users").document(user.uid);
 
+    int imageVotes;
+    int playerVotes;
     User.instance.displayName = user.displayName;
     User.instance.email = googleUser.email;
     User.instance.uid = user.uid;
     User.instance.getVisitedGamesFromDB();
     User.instance.getPictureWins(ref);
 
-    return ref.setData({
+    ref.get().then((DocumentSnapshot ds) {
+      DateTime startOfToday = DateTime.now();
+      startOfToday = DateTime(startOfToday.year, startOfToday.month, startOfToday.day, 0, 0, 0, 0);
+      if(ds['lastSeen'] < startOfToday)
+      {
+        playerVotes = 1;
+        imageVotes = 1;
+        User.instance.playerVotes = 1;
+        User.instance.imageVotes = 1;
+      }
+      else
+      {
+        playerVotes = 0;
+        imageVotes = 0;
+        User.instance.playerVotes = 0;
+        User.instance.imageVotes = 0;
+      }
+      ref.setData({
       'uid': user.uid,
       'email': googleUser.email,
+      'playerVotes': playerVotes,
+      'imageVotes': imageVotes,
 
       //These may be unnecessary :D
       'photoUrl': user.photoUrl,
@@ -131,6 +152,7 @@ class AuthService {
       'lastSeen': DateTime.now(),
       'phoneNumber': user.phoneNumber
     }, merge: true);
+    });
   }
 
   void signOut() {

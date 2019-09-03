@@ -504,8 +504,13 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   }
 
   void LoadQuestions() async {
+    DateTime startOfToday = DateTime.now();
+    startOfToday = DateTime(startOfToday.year, startOfToday.month, startOfToday.day, 0, 0, 0, 0);
+    DateTime endOfToday = startOfToday;
+    endOfToday = DateTime(endOfToday.year, endOfToday.month, endOfToday.day, 23, 59, 59, 999);
+
     QuerySnapshot querySnapshot =
-        await Firestore.instance.collection('questions').getDocuments();
+        await Firestore.instance.collection('questions').where('questionTime', isLessThan: endOfToday).where('questionTime', isGreaterThan: startOfToday).getDocuments();
 
     List<DocumentSnapshot> questionSnapshot = new List<DocumentSnapshot>();
     questionSnapshot = querySnapshot.documents;
@@ -615,15 +620,25 @@ String scoreText(final int score) {
   String theText = "";
 
   if (percentage <= 15)
-    theText = "Harmillista. Sait vain $score pistettä.";
+  {
+    theText = "Harmillista. Sait vain $score" + "/" + allQuestions.length.toString() + " pistettä.";
+  }
   else if (percentage >= 16 && percentage <= 45)
+  {
     theText = "Noh.. Ainahan sitä voi vähän petrata. Pisteesi: $score";
+    theText += "/" + allQuestions.length.toString();
+  }
   else if (percentage >= 46 && percentage <= 94)
+  {
     theText = "Nyt alkaa näyttämään jo hyvältä. Pisteesi: $score";
+    theText += "/" + allQuestions.length.toString();
+  }
   else
+  {
     theText = "Hurraa!! Sait kaikki oikein. Pisteesi: $score";
-
-  theText += "/" + allQuestions.length.toString();
+    theText += "/" + allQuestions.length.toString();
+  }
+  
   return theText;
 }
 

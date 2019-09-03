@@ -59,9 +59,6 @@ class PlayerVotingState extends State<PlayerVoting> {
   bool playersGot = false;
   bool valuesOnce = true;
 
-  // DEBUG USER
-  User fakeUser = new User("Sportacus", "", false);
-
   double paddingVal = 10;
 
   @override
@@ -216,7 +213,7 @@ class PlayerVotingState extends State<PlayerVoting> {
               Padding(
                 padding: EdgeInsets.all(paddingVal),
                 child: Text(
-                  "Ääniä jäljellä: " + fakeUser.playerVotes.toString(),
+                  "Ääniä jäljellä: " + User.instance.playerVotes.toString(),
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.subtitle,
                 ),
@@ -693,7 +690,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        if (fakeUser.playerVotes > 0) {
+        if (User.instance.playerVotes > 0) {
           return Theme(
             data: MasterTheme.mainTheme,
             child: AlertDialog(
@@ -815,7 +812,7 @@ class PlayerVotingState extends State<PlayerVoting> {
             setState(
               () {
                 //allPlayers[i].currentVotes++;
-                fakeUser.playerVotes--;
+                User.instance.voteForPlayer();
               },
             );
           },
