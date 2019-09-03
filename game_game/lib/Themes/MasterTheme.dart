@@ -49,7 +49,7 @@ class MasterTheme {
       body2: TextStyle(fontFamily: regular, fontSize: body2Size),
       caption: TextStyle(fontFamily: regular, fontSize: body2Size, color: accentColour),
       subhead: TextStyle(fontFamily: semibold, fontSize: btnFontSize, color: accentColour),
-      button: TextStyle(fontFamily: light, fontSize: btnFontSize, color: primaryColour),
+      button: TextStyle(fontFamily: light, fontSize: btnFontSize, color: accentColour), //Konflikti? :D
     ),
   );
 }

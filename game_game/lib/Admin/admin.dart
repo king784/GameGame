@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../Globals.dart';
 import '../Navigation.dart';
 import '../Themes/MasterTheme.dart';
+import 'deletePlayer.dart';
 import 'deleteQuestion.dart';
 import 'gameDay.dart';
 
@@ -175,6 +176,23 @@ class AdminState extends State<Admin> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => DeleteQuestionForm()),
+                      );
+                      //AddQuestion();
+                      //print(DateTime.now().toString());
+                      setState(() {});
+                    },
+                  ),
+                  RaisedButton(
+                    color: MasterTheme.primaryColour,
+                    child: Text(
+                      "Poista pelaaja",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeletePlayerForm()),
                       );
                       //AddQuestion();
                       //print(DateTime.now().toString());
