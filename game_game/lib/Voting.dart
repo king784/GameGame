@@ -73,57 +73,59 @@ class PlayerVotingState extends State<PlayerVoting> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                          child: FloatingActionButton(
-                              heroTag: 'backBtn1',
-                              child: Icon(
-                                FontAwesomeIcons.arrowLeft,
-                                color: MasterTheme.accentColour,
-                                size: 40,
-                              ),
-                              backgroundColor: Colors.transparent,
-                              //onPressed: () => Navigation.openPage(context, 'activities'),
-                              onPressed: () =>
-                                  Navigation.openActivitiesPage(context),
-                              elevation: 0),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Pelaajaäänestys',
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.title,
-                            ),
+          body: SafeArea(
+                      child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                            child: FloatingActionButton(
+                                heroTag: 'backBtn1',
+                                child: Icon(
+                                  FontAwesomeIcons.arrowLeft,
+                                  color: MasterTheme.accentColour,
+                                  size: 40,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                //onPressed: () => Navigation.openPage(context, 'activities'),
+                                onPressed: () =>
+                                    Navigation.openActivitiesPage(context),
+                                elevation: 0),
                           ),
-                        )
-                      ],
-                    ),
-                    playersGot ? _playerSortingBar() : SizedBox.shrink(),
-                  ],
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                'Pelaajaäänestys',
+                                textAlign: TextAlign.right,
+                                style: Theme.of(context).textTheme.title,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      playersGot ? _playerSortingBar() : SizedBox.shrink(),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        _content(),
-                      ],
+                Expanded(
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          _content(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

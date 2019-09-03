@@ -51,42 +51,32 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         children: <Widget>[
           Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-              child: Container(
-                color: MasterTheme.accentColour,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(2, 10, 10, 10),
-                      child: FloatingActionButton(
-                          heroTag: 'backBtn2',
-                          child: Icon(
-                            FontAwesomeIcons.arrowLeft,
-                            color: MasterTheme.primaryColour,
-                            size: 40,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          onPressed: () =>
-                              Navigation.openActivitiesPage(context),
-                          // onPressed: () => Navigation.openPage(context, 'activities'),
-                          elevation: 0),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Kuvaäänestys',
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.title,
-                        ),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                  child: FloatingActionButton(
+                      heroTag: 'backBtn1',
+                      child: Icon(
+                        FontAwesomeIcons.arrowLeft,
+                        color: MasterTheme.accentColour,
+                        size: 40,
                       ),
-                    )
-                  ],
+                      backgroundColor: Colors.transparent,
+                      onPressed: () => Navigator.pop(context),
+                      elevation: 0),
                 ),
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'Kuvaäänestys',
+                      textAlign: TextAlign.right,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
           _addingPictureWidget(),
