@@ -26,6 +26,10 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
   List<String> allQuestions = new List<String>();
   List<Widget> theList = new List<Widget>();
   bool loaded = false;
+  Icon searchIcon = new Icon(Icons.search);
+  String searchText = "";
+  final TextEditingController filter = new TextEditingController();
+  List<String> lisOfAllQuestions = new List<String>();
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +89,13 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
                     SizedBox(
                       width: 150,
                       child: TextField(
-                          //controller: filter,
+                          controller: filter,
                           ),
                     ),
                     IconButton(
-                      icon: new Icon(Icons.search),
+                      icon: searchIcon,
                       onPressed: () {
-                        //searchPressed();
+                        searchPressed();
                       },
                     ),
                   ],
@@ -113,11 +117,14 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
   List<Widget> TheTexts() {
     theList.clear();
     if (!loaded) {
+      addFilterListener();
       loadQuestions();
       loaded = true;
     }
 
     for (int i = 0; i < allQuestions.length; i++) {
+      if(searchText == ""){
+
       theList.add(RaisedButton(
         child: Text(
           allQuestions[i],
@@ -129,7 +136,24 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
         },
         color: MasterTheme.primaryColour,
       ));
+      }
+      else if(allQuestions[i].toLowerCase().contains(searchText.toLowerCase())){
+        theList.add(RaisedButton(
+          child: Text(
+            allQuestions[i],
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () {
+            _deleteQuestion(i);
+          },
+          color: MasterTheme.primaryColour,
+        ));
+      }
     }
+    setState(() {
+      
+    });
     return theList;
   }
 
@@ -193,6 +217,39 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
             ),
           );
         });
+  }
+      void addFilterListener() {
+    filter.addListener(() {
+      if (filter.text.isEmpty) {
+        setState(() {
+          searchText = "";
+        lisOfAllQuestions = allQuestions;
+          if (searchIcon.icon == Icons.close) {
+            searchIcon = new Icon(Icons.search);
+          }
+        });
+      } else {
+        setState(() {
+          if (searchIcon.icon == Icons.search) {
+            searchIcon = new Icon(Icons.close);
+          }
+          searchText = filter.text;
+          print(searchText);
+        });
+      }
+    });
+  }
+    void searchPressed() {
+    setState(() {
+      print("search");
+      if (searchIcon.icon == Icons.search) {
+        searchIcon = new Icon(Icons.close);
+      } else {
+        searchIcon = new Icon(Icons.search);
+        lisOfAllQuestions = allQuestions;
+        filter.clear();
+      }
+    });
   }
   
 }
