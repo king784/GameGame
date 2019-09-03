@@ -37,7 +37,9 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       child: Theme(
         data: MasterTheme.mainTheme,
         child: Scaffold(
-          body: _content(),
+          body: SafeArea(
+            child: _content(),
+          ),
         ),
       ),
     );

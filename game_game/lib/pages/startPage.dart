@@ -40,20 +40,38 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-            body: ListView(children: <Widget>[
-              Card(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text('Odota, sijaintiasi päivitetään.',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.caption),
-                    )
-                  ],
-                ),
+            body: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Card(
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Text(
+                                        'Odota, sijaintiasi päivitetään.',
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ]),
+            ),
           ),
         ),
       );
@@ -67,45 +85,46 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-            body: ListView(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Text(messageAboutLocation,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.caption),
+            body: SafeArea(
+              child: ListView(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(messageAboutLocation,
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.caption),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Card(
+                      child: StartPageForm(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(40),
+                    child: MaterialButton(
+                      onPressed: () => Navigation.openUserPage(context),
+                      // Navigation.openPage(context, 'userPageWithoutMenu'),
+                      color: MasterTheme.bgBoxColour,
+                      padding: EdgeInsets.all(2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Näytä vain omat tietoni",
+                              style: Theme.of(context).textTheme.body1),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Card(
-                    child: StartPageForm(),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(40),
-                  child: MaterialButton(
-                    onPressed: () =>
-                        Navigation.openUserPageWithoutMenu(context),
-                    // Navigation.openPage(context, 'userPageWithoutMenu'),
-                    color: MasterTheme.bgBoxColour,
-                    padding: EdgeInsets.all(2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Näytä vain omat tietoni",
-                            style: Theme.of(context).textTheme.body1),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -127,63 +146,65 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-            body: ListView(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 100, 30, 5),
-                        child: Text(messageAboutLocation,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.caption),
-                      ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 5, 30, 5),
-                    child: MaterialButton(
-                      onPressed: () =>
-                          Navigation.openUserPageWithoutMenu(context),
-                      // Navigation.openPage(context, 'userPageWithoutMenu'),
-                      color: MasterTheme.bgBoxColour,
-                      padding: EdgeInsets.all(2),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Tarkista omat tiedot",
-                              style: Theme.of(context).textTheme.body1),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Icon(
-                              FontAwesomeIcons.arrowRight,
-                              size: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                MaterialButton(
-                  //heinous dev button for bypassing location
-                  onPressed: () => Navigation.openUserPage(context),
-                  // Navigation.openPage(context, 'userPageWithoutMenu'),
-                  color: MasterTheme.bgBoxColour,
-                  padding: EdgeInsets.all(2),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            body: SafeArea(
+              child: ListView(
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Text("DevBtn", style: Theme.of(context).textTheme.body1),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20, 100, 30, 5),
+                          child: Text(messageAboutLocation,
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.caption),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 5, 30, 5),
+                      child: MaterialButton(
+                        onPressed: () => Navigation.openUserPage(context),
+                        // Navigation.openPage(context, 'userPageWithoutMenu'),
+                        color: MasterTheme.bgBoxColour,
+                        padding: EdgeInsets.all(2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Tarkista omat tiedot",
+                                style: Theme.of(context).textTheme.body1),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Icon(
+                                FontAwesomeIcons.arrowRight,
+                                size: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  MaterialButton(
+                    //heinous dev button for bypassing location
+                    onPressed: () => Navigation.openUserPage(context),
+                    // Navigation.openPage(context, 'userPageWithoutMenu'),
+                    color: MasterTheme.bgBoxColour,
+                    padding: EdgeInsets.all(2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text("DevBtn",
+                            style: Theme.of(context).textTheme.body1),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
