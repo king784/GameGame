@@ -196,7 +196,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
   choosePictureToAdd() async {
     //use the image picker to choose a file from phone's gallery and wait until it's done
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.gallery); //needs null check
 
     //for debugging
     print(image.path);
@@ -204,47 +205,50 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
   _createImagePopUpDialog(BuildContext context) async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Lisää kuva'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                SizedBox(
-                  width: Global.SCREENWIDTH * .9,
-                  child: Image.file(image),
+    return image == null
+        ? SizedBox.shrink()
+        : showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Lisää kuva'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      SizedBox(
+                        width: Global.SCREENWIDTH * .9,
+                        child: Image.file(image),
+                      ),
+                      ButtonBar(
+                        alignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RaisedButton(
+                            child: Text('Lähetä',
+                                style: Theme.of(context).textTheme.body1),
+                            onPressed: () {
+                              _addFileToDatabase(
+                                  image); //add the image to database
+                              Navigator.of(context).pop(context);
+                            },
+                            color: Theme.of(context).accentColor,
+                          ),
+                          RaisedButton(
+                            child: Text('Ei sittenkään',
+                                style: Theme.of(context).textTheme.body1),
+                            onPressed: () {
+                              Navigator.of(context).pop(context);
+                            }, //close popup
+                            color: MasterTheme.awayTeamColour,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                ButtonBar(
-                  alignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('Lähetä',
-                          style: Theme.of(context).textTheme.body1),
-                      onPressed: () {
-                        _addFileToDatabase(image); //add the image to database
-                        Navigator.of(context).pop(context);
-                      },
-                      color: Theme.of(context).accentColor,
-                    ),
-                    RaisedButton(
-                      child: Text('Ei sittenkään',
-                          style: Theme.of(context).textTheme.body1),
-                      onPressed: () {
-                        Navigator.of(context).pop(context);
-                      }, //close popup
-                      color: MasterTheme.awayTeamColour,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
   }
 
   _addFileToDatabase(File img) async {
