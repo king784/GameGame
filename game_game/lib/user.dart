@@ -122,6 +122,26 @@ class User {
     );
   }
 
+  void voteForImage() async
+  {
+    imageVotes--;
+    QuerySnapshot userQuery = await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .getDocuments();
+    final DocumentReference userRef = Firestore.instance
+        .collection('users')
+        .document(userQuery.documents[0].documentID);
+    Firestore.instance.runTransaction(
+      (transaction) async {
+        DocumentSnapshot freshSnap = await transaction.get(userRef);
+        await transaction.update(freshSnap.reference, {
+          'imageVotes': freshSnap['imageVotes'] - 1,
+        });
+      },
+    );
+  }
+
   User.fromJson(Map<String, dynamic> json) {
     this.displayName = json['displayName'];
     this.email = json['email'];

@@ -87,7 +87,7 @@ class AdminState extends State<Admin> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Aloita 3 minuutin ajastin",
                       style: Theme.of(context).textTheme.button,
@@ -100,7 +100,7 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Kerro paljon aikaa",
                       style: Theme.of(context).textTheme.button,
@@ -112,7 +112,7 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Lisää kysymys",
                       style: Theme.of(context).textTheme.button,
@@ -129,7 +129,7 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Lisää pelaaja",
                       style: Theme.of(context).textTheme.button,
@@ -146,7 +146,7 @@ class AdminState extends State<Admin> {
                     },
                   ),
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Lisää pelipäivä",
                       style: Theme.of(context).textTheme.button,
@@ -166,7 +166,7 @@ class AdminState extends State<Admin> {
                   usersATM != null ? Text(usersATM) : Text("Odota hetki"),
 
                   RaisedButton(
-                    color: MasterTheme.accentColour,
+                    color: MasterTheme.primaryColour,
                     child: Text(
                       "Poista kysymys",
                       style: Theme.of(context).textTheme.button,
