@@ -797,6 +797,7 @@ class PlayerVotingState extends State<PlayerVoting> {
 
     //print(allPlayers[i].firstName + " " + allPlayers[i].lastName + " " + allPlayers[i].id.toString());
 
+    User.instance.voteForPlayer();
     QuerySnapshot playersQuery = await Firestore.instance
         .collection('players')
         .where('ID', isEqualTo: allPlayers[i].id)
@@ -813,8 +814,6 @@ class PlayerVotingState extends State<PlayerVoting> {
           (data) {
             setState(
               () {
-                //allPlayers[i].currentVotes++;
-                User.instance.voteForPlayer();
               },
             );
           },
