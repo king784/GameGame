@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_testuu/radialMenu.dart';
+import 'package:flutter_testuu/mainMenuAtTop.dart';
 
 topBar(BuildContext context, String pageTitle) {
   return Align(
@@ -9,7 +9,7 @@ topBar(BuildContext context, String pageTitle) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          RadialMenu(),
+          NavBar(),
           Text(
             pageTitle,
             textAlign: TextAlign.right,
