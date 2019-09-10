@@ -36,6 +36,8 @@ class AdminState extends State<Admin> {
   String timeText = "";
   DateTime votingEndTime = null;
   Timer customTimer;
+  double wantedWidth = 0.7;
+  bool firstTime = true;
 
   var usersATM;
 
@@ -43,6 +45,11 @@ class AdminState extends State<Admin> {
 
   @override
   Widget build(BuildContext context) {
+    if (firstTime) {
+      Global.intializeValues(
+          MediaQuery.of(context).size.width, MediaQuery.of(context).size.width);
+      firstTime = false;
+    }
     userCounter();
     return WillPopScope(
       onWillPop: () async => false,
@@ -84,143 +91,162 @@ class AdminState extends State<Admin> {
               ),
 
               Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Aloita 3 minuutin ajastin",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                                      child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Aloita 3 minuutin ajastin",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        setVotingStartTime();
+                        //getVotingStartTime();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      setVotingStartTime();
-                      //getVotingStartTime();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Kerro paljon aikaa",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                    child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Kerro paljon aikaa",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        getVotingStartTime();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      getVotingStartTime();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Lisää kysymys",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                    child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Lisää kysymys",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddQuestionForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddQuestionForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Lisää pelaaja",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                    child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Lisää pelaaja",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPlayerForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddPlayerForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Lisää pelipäivä",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                                      child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Lisää pelipäivä",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddGamedayForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddGamedayForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Lisää pelikoodi",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                                      child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Lisää pelikoodi",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddGameCodeForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddGameCodeForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
                   Text(timeText),
                   usersATM != null ? Text(usersATM) : Text("Odota hetki"),
-
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Poista kysymys",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                                      child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Poista kysymys",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeleteQuestionForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DeleteQuestionForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Poista pelaaja",
-                      style: Theme.of(context).textTheme.button,
+                  SizedBox(
+                    width: Global.SCREENWIDTH * 0.7,
+                                      child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      child: Text(
+                        "Poista pelaaja",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeletePlayerForm()),
+                        );
+                        //AddQuestion();
+                        //print(DateTime.now().toString());
+                        setState(() {});
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DeletePlayerForm()),
-                      );
-                      //AddQuestion();
-                      //print(DateTime.now().toString());
-                      setState(() {});
-                    },
                   ),
                 ],
               ),
@@ -436,8 +462,7 @@ class AdminState extends State<Admin> {
         var t = await Firestore.instance.collection("users").getDocuments();
         usersATM = t.documents.length.toString() + " aktiivista käyttäjää";
       }
-    } 
-    else {
+    } else {
       usersATM = "Ei aktiivisia käyttäjiä";
     }
     setState(() {});

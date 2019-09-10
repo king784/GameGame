@@ -190,8 +190,8 @@ class AddGameCodeFormState extends State<AddGameCodeForm> {
     );
   }
 
-  void AddCodeToDB() async{
-    var docsRef = await Firestore.instance.collection('gameCodes').document('mUSUqJIe93zVNOZZkbwT');
+  void AddCodeToDB() {
+    var docsRef = Firestore.instance.collection('gameCodes').document('mUSUqJIe93zVNOZZkbwT');
 
     docsRef.setData({
       'code': gameCode,
