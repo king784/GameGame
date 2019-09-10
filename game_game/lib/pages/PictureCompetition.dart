@@ -63,7 +63,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                         size: 40,
                       ),
                       backgroundColor: Colors.transparent,
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigation.openActivitiesPage(context),
                       elevation: 0),
                 ),
                 Expanded(

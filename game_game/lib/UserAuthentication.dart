@@ -115,6 +115,20 @@ class AuthService {
   void updateUserData(FirebaseUser user) async {
     DocumentReference ref = _db.collection("users").document(user.uid);
 
+    // Need to check if user already exists. If not, set picture wins to 0
+    final QuerySnapshot result = await Firestore.instance
+    .collection('users')
+    .where('uid', isEqualTo: user.uid)
+    .limit(1)
+    .getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    if(documents.length <= 0)
+    {
+      ref.setData({
+      'pictureWins': 0,
+    }, merge: true);
+    }
+
     int imageVotes;
     int playerVotes;
     User.instance.displayName = user.displayName;
