@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/StartPageForm.dart';
 import 'package:flutter_testuu/UserAndLocation.dart';
+import 'package:flutter_testuu/mainMenuAtTop.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
@@ -17,7 +18,7 @@ class Start extends StatefulWidget {
 class _StartState extends State<Start> {
   UserLocation userLoc = new UserLocation();
   Timer locationUpdateTimer;
-  String messageAboutLocation = "";
+  String messageAboutLocation = 'Odota, sijaintiasi päivitetään.';
 
   @override
   void initState() {
@@ -50,20 +51,11 @@ class _StartState extends State<Start> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Card(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Text(
-                                        'Odota, sijaintiasi päivitetään.',
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
-                                  )
-                                ],
-                              ),
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Text(messageAboutLocation,
+                                  textAlign: TextAlign.left,
+                                  style: Theme.of(context).textTheme.caption),
                             ),
                           ],
                         ),
@@ -110,7 +102,11 @@ class _StartState extends State<Start> {
                   Padding(
                     padding: EdgeInsets.all(40),
                     child: MaterialButton(
-                      onPressed: () => Navigation.openUserPage(context),
+                      //go to user statistics
+                      onPressed: () {
+                        NavBarState.activeIndex = 0;
+                        Navigation.openUserPage(context);
+                      },
                       // Navigation.openPage(context, 'userPageWithoutMenu'),
                       color: MasterTheme.bgBoxColour,
                       padding: EdgeInsets.all(2),
@@ -167,7 +163,10 @@ class _StartState extends State<Start> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 5, 30, 5),
                       child: MaterialButton(
-                        onPressed: () => Navigation.openUserPage(context),
+                        onPressed: () {
+                          NavBarState.activeIndex = 0;
+                          Navigation.openUserPage(context);
+                        }, //open up the user page  when no games are ongoing to enable looking at user's own statistics
                         // Navigation.openPage(context, 'userPageWithoutMenu'),
                         color: MasterTheme.bgBoxColour,
                         padding: EdgeInsets.all(2),
@@ -191,7 +190,10 @@ class _StartState extends State<Start> {
                   ),
                   MaterialButton(
                     //heinous dev button for bypassing location
-                    onPressed: () => Navigation.openUserPage(context),
+                    onPressed: () {
+                      NavBarState.activeIndex = 0;
+                      Navigation.openUserPage(context);
+                    },
                     // Navigation.openPage(context, 'userPageWithoutMenu'),
                     color: MasterTheme.bgBoxColour,
                     padding: EdgeInsets.all(2),
@@ -223,13 +225,19 @@ class _StartState extends State<Start> {
     //check for location data at the start
     await userLoc.checkGeolocationPermissionStatus();
     var geolocator = Geolocator();
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
-    // locationUpdateTimer =
-    //     Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
-    StreamSubscription<Position> positionStream = geolocator.getPositionStream(locationOptions).listen(
-    (Position position) {
-        print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
-        checkUserLocation();
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+    locationUpdateTimer =
+        Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
+    StreamSubscription<Position> positionStream = geolocator
+        .getPositionStream(locationOptions)
+        .listen((Position position) {
+      print(position == null
+          ? 'Unknown'
+          : position.latitude.toString() +
+              ', ' +
+              position.longitude.toString());
+      checkUserLocation();
     });
 
     checkUserLocation();

@@ -1,8 +1,6 @@
 // Global variables
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ansicolor/ansicolor.dart';
 
 class Global {
@@ -11,6 +9,9 @@ class Global {
   static String CURRENTROUTE = "";
   // Trivia timer
   static bool TIMERSTARTED = false;
+
+  //bool for checking if user gave the right gamecode at the start, used for validating disabled routes
+  static bool gameCodeCorrect = false;
 
   // Example:
   // print(Global.pen("ADDING"));

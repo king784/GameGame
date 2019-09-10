@@ -1,24 +1,14 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_testuu/Timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'Navigation.dart';
 import 'Themes/MasterTheme.dart';
-import 'pages/main.dart';
-//import 'mainTrivia.dart';
 import 'Globals.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:async' show Future;
-import 'package:path/path.dart' as p;
-import "dart:io";
-import 'package:path_provider/path_provider.dart';
 
 class ktpQuiz {
   //var questions = ["Mikä rakennus näkyy kuvassa?", "Mikä on Larry poundsin jäädytetyn pelipaidan numero?", ]
@@ -140,7 +130,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     size: 40,
                                   ),
                                   backgroundColor: Colors.transparent,
-                                  onPressed: () => Navigation.openActivitiesPage(context),
+                                  onPressed: () => Navigator.pop(context),
                                   elevation: 0),
                             ),
                             Expanded(
@@ -169,10 +159,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     style: Theme.of(context).textTheme.subtitle,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: CircularProgressIndicator(),
-                                ),
+                                CircularProgressIndicator(),
                               ],
                             ),
                           ),
@@ -216,7 +203,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     Navigation.openActivitiesPage(context);
                                     // Navigation.openPage(context, 'activities');
                                     questionsLoaded = true;
-                                    //customTimer.cancel();
+                                    customTimer.cancel();
                                     customTimer = null;
                                     timeLeft = 10;
                                     Navigator.pop(context);
@@ -236,259 +223,236 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                          Expanded(
-                              child: Container(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Column(
+                      Expanded(
+                        child: Container(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(10.0),
+                                    //   child: new Text(
+                                    //     "Aika: " + timeLeft.toString(),
+                                    //     textAlign: TextAlign.center,
+                                    //     style: Theme.of(context).textTheme.display2,
+                                    //   ),
+                                    // ),
+                                    Card(
+                                      margin: EdgeInsets.all(5.0),
+                                      child: Column(
                                         children: <Widget>[
-                                          // Padding(
-                                          //   padding: const EdgeInsets.all(10.0),
-                                          //   child: new Text(
-                                          //     "Aika: " + timeLeft.toString(),
-                                          //     textAlign: TextAlign.center,
-                                          //     style: Theme.of(context).textTheme.display2,
-                                          //   ),
-                                          // ),
-                                          Card(
-                                            margin: EdgeInsets.all(5.0),
-                                            child: Column(
-                                              children: <Widget>[
-                                                //new Text(readFromFile,
+                                          //new Text(readFromFile,
 
-                                                //new Text(quizContents[0][questionNumber],
+                                          //new Text(quizContents[0][questionNumber],
 
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: new Text(
-                                                    currentQuestion.question,
-                                                    textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .display3,
-                                                  ),
-                                                ),
-
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          5.0, 0.0, 5.0, 0.0),
-                                                  child: nextImgLoaded
-                                                      ? SizedBox(
-                                                          height: 300,
-                                                          child: nextImage,
-                                                        )
-                                                      : Text(""),
-                                                ),
-
-                                                new Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-
-                                                  children: <Widget>[
-                                                    //
-
-                                                    //Buttons
-
-                                                    //
-
-                                                    //Button1
-
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child:
-                                                            new MaterialButton(
-                                                          //padding: EdgeInsets.all(10),
-
-                                                          //minWidth: buttonsWidth,
-
-                                                          height: buttonHeight /
-                                                              1.2,
-
-                                                          color: Colors.green,
-
-                                                          onPressed: () {
-                                                            if (currentQuestion
-                                                                    .correct ==
-                                                                0) {
-                                                              finalScore++;
-                                                            } else {}
-
-                                                            GetNextQuestion();
-                                                          },
-
-                                                          child: new Text(
-                                                            currentQuestion
-                                                                .choices[0],
-                                                            style: new TextStyle(
-                                                                fontSize:
-                                                                    buttonsWidth /
-                                                                        7,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    //Button2
-
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child:
-                                                            new MaterialButton(
-                                                          //padding: EdgeInsets.all(10),
-
-                                                          //minWidth: buttonsWidth,
-
-                                                          height: buttonHeight /
-                                                              1.2,
-
-                                                          color: Colors.green,
-
-                                                          onPressed: () {
-                                                            if (currentQuestion
-                                                                    .correct ==
-                                                                1) {
-                                                              finalScore++;
-                                                            } else {}
-
-                                                            GetNextQuestion();
-                                                          },
-
-                                                          child: new Text(
-                                                            currentQuestion
-                                                                .choices[1],
-                                                            style: new TextStyle(
-                                                                fontSize:
-                                                                    buttonsWidth /
-                                                                        7,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-
-                                                  //),
-                                                ),
-
-                                                new Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    //Button3
-
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child:
-                                                            new MaterialButton(
-                                                          //padding: EdgeInsets.all(10),
-
-                                                          //minWidth: buttonsWidth,
-
-                                                          height: buttonHeight /
-                                                              1.2,
-
-                                                          color: Colors.green,
-
-                                                          onPressed: () {
-                                                            if (currentQuestion
-                                                                    .correct ==
-                                                                2) {
-                                                              finalScore++;
-                                                            } else {}
-
-                                                            GetNextQuestion();
-                                                          },
-
-                                                          child: new Text(
-                                                            currentQuestion
-                                                                .choices[2],
-                                                            style: new TextStyle(
-                                                                fontSize:
-                                                                    buttonsWidth /
-                                                                        7,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    //Button4
-
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child:
-                                                            new MaterialButton(
-                                                          //padding: EdgeInsets.all(10),
-
-                                                          //minWidth: buttonsWidth,
-
-                                                          height: buttonHeight /
-                                                              1.2,
-
-                                                          color: Colors.green,
-
-                                                          onPressed: () {
-                                                            if (currentQuestion
-                                                                    .correct ==
-                                                                3) {
-                                                              finalScore++;
-                                                            } else {}
-
-                                                            GetNextQuestion();
-                                                          },
-
-                                                          child: new Text(
-                                                            currentQuestion
-                                                                .choices[3],
-                                                            style: new TextStyle(
-                                                                fontSize:
-                                                                    buttonsWidth /
-                                                                        7,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                //],
-                                              ],
+                                          Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: new Text(
+                                              currentQuestion.question,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .display3,
                                             ),
                                           ),
+
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5.0, 0.0, 5.0, 0.0),
+                                            child: nextImgLoaded
+                                                ? SizedBox(
+                                                    height: 300,
+                                                    child: nextImage,
+                                                  )
+                                                : Text(""),
+                                          ),
+
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+
+                                            children: <Widget>[
+                                              //
+
+                                              //Buttons
+
+                                              //
+
+                                              //Button1
+
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: new MaterialButton(
+                                                    //padding: EdgeInsets.all(10),
+
+                                                    //minWidth: buttonsWidth,
+
+                                                    height: buttonHeight / 1.2,
+
+                                                    color: Colors.green,
+
+                                                    onPressed: () {
+                                                      if (currentQuestion
+                                                              .correct ==
+                                                          0) {
+                                                        finalScore++;
+                                                      } else {}
+
+                                                      GetNextQuestion();
+                                                    },
+
+                                                    child: new Text(
+                                                      currentQuestion
+                                                          .choices[0],
+                                                      style: new TextStyle(
+                                                          fontSize:
+                                                              buttonsWidth / 7,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+
+                                              //Button2
+
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: new MaterialButton(
+                                                    //padding: EdgeInsets.all(10),
+
+                                                    //minWidth: buttonsWidth,
+
+                                                    height: buttonHeight / 1.2,
+
+                                                    color: Colors.green,
+
+                                                    onPressed: () {
+                                                      if (currentQuestion
+                                                              .correct ==
+                                                          1) {
+                                                        finalScore++;
+                                                      } else {}
+
+                                                      GetNextQuestion();
+                                                    },
+
+                                                    child: new Text(
+                                                      currentQuestion
+                                                          .choices[1],
+                                                      style: new TextStyle(
+                                                          fontSize:
+                                                              buttonsWidth / 7,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+
+                                            //),
+                                          ),
+
+                                          new Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              //Button3
+
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: new MaterialButton(
+                                                    //padding: EdgeInsets.all(10),
+
+                                                    //minWidth: buttonsWidth,
+
+                                                    height: buttonHeight / 1.2,
+
+                                                    color: Colors.green,
+
+                                                    onPressed: () {
+                                                      if (currentQuestion
+                                                              .correct ==
+                                                          2) {
+                                                        finalScore++;
+                                                      } else {}
+
+                                                      GetNextQuestion();
+                                                    },
+
+                                                    child: new Text(
+                                                      currentQuestion
+                                                          .choices[2],
+                                                      style: new TextStyle(
+                                                          fontSize:
+                                                              buttonsWidth / 7,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+
+                                              //Button4
+
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: new MaterialButton(
+                                                    //padding: EdgeInsets.all(10),
+
+                                                    //minWidth: buttonsWidth,
+
+                                                    height: buttonHeight / 1.2,
+
+                                                    color: Colors.green,
+
+                                                    onPressed: () {
+                                                      if (currentQuestion
+                                                              .correct ==
+                                                          3) {
+                                                        finalScore++;
+                                                      } else {}
+
+                                                      GetNextQuestion();
+                                                    },
+
+                                                    child: new Text(
+                                                      currentQuestion
+                                                          .choices[3],
+                                                      style: new TextStyle(
+                                                          fontSize:
+                                                              buttonsWidth / 7,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          //],
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -557,20 +521,11 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       allQuestions.add(tempQuestion);
     });
 
-    if(allQuestions.length <= 0)
-    {
-      return;
-    }
-    else
-    {
-      questions.addAll(allQuestions);
-      currentQuestion = GetRandomQuestion();
+    questions.addAll(allQuestions);
+    currentQuestion = GetRandomQuestion();
 
-      questionsLoaded = true;
-      NextImage(currentQuestion.imagePath);
-    }
-
-
+    questionsLoaded = true;
+    NextImage(currentQuestion.imagePath);
     setState(() {});
   }
 
@@ -698,67 +653,69 @@ class Summary extends StatelessWidget {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-            body: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                        child: FloatingActionButton(
-                            heroTag: 'backBtn5',
-                            child: Icon(
-                              FontAwesomeIcons.arrowLeft,
-                              color: MasterTheme.accentColour,
-                              size: 40,
-                            ),
-                            backgroundColor: Colors.transparent,
-                            //onPressed: () => Navigation.openPage(context, 'activities'),
-                            onPressed: () {
-                              questions.clear();
-                              questions.addAll(allQuestions);
-                              currentQuestion = questions
-                                  .removeAt(Random().nextInt(questions.length));
-                              //NextImage(currentQuestion.imagePath);
-                              questionNumber = 0;
-                              finalScore = 0;
-                              Navigation.openActivitiesPage(context);
-                              // Navigation.openPage(context, 'activities');
-                              //questionsLoaded = true;
-                              // customTimer.cancel();
-                              // customTimer = null;
-                              // timeLeft = 10;
-                            },
-                            elevation: 0),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'Pelaajaäänestys',
-                            textAlign: TextAlign.right,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+            body: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
                       children: <Widget>[
-                        new Text(scoreText(finalScore),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.display3),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                          child: FloatingActionButton(
+                              heroTag: 'backBtn5',
+                              child: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: MasterTheme.accentColour,
+                                size: 40,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              //onPressed: () => Navigation.openPage(context, 'activities'),
+                              onPressed: () {
+                                questions.clear();
+                                questions.addAll(allQuestions);
+                                currentQuestion = questions.removeAt(
+                                    Random().nextInt(questions.length));
+                                //NextImage(currentQuestion.imagePath);
+                                questionNumber = 0;
+                                finalScore = 0;
+                                Navigation.openActivitiesPage(context);
+                                // Navigation.openPage(context, 'activities');
+                                questionsLoaded = true;
+                                // customTimer.cancel();
+                                // customTimer = null;
+                                // timeLeft = 10;
+                              },
+                              elevation: 0),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Pelaajaäänestys',
+                              textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(scoreText(finalScore),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.display3),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ));
