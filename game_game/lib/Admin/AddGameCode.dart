@@ -190,19 +190,18 @@ class AddGameCodeFormState extends State<AddGameCodeForm> {
     );
   }
 
-  void AddCodeToDB() {
-    CollectionReference dbCollectionRef =
-        Firestore.instance.collection('gameCodes');
-    Firestore.instance.runTransaction((Transaction tx) async {
-      var result = await dbCollectionRef.add({'code': gameCode,
+  void AddCodeToDB() async{
+    var docsRef = await Firestore.instance.collection('gameCodes').document('mUSUqJIe93zVNOZZkbwT');
+
+    docsRef.setData({
+      'code': gameCode,
       'date': DateFormat("dd-MM-yyyy").format(codeDate).toString()
-      });
     });
 
     print(Global.greenPen("DONE"));
 
     Fluttertoast.showToast(
-      msg: 'Koodin lisätty',
+      msg: 'Koodi lisätty.',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 2,
