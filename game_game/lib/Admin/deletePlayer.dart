@@ -139,7 +139,7 @@ class DeletePlayerFormState extends State<DeletePlayerForm> {
           onPressed: () {
             _deletePlayer(i);
           },
-          color: MasterTheme.primaryColour,
+          color: MasterTheme.accentColour,
         ));
       }
       else if (allPlayers[i].toLowerCase().contains(searchText.toLowerCase()))
@@ -153,7 +153,7 @@ class DeletePlayerFormState extends State<DeletePlayerForm> {
           onPressed: () {
             _deletePlayer(i);
           },
-          color: MasterTheme.primaryColour,
+          color: MasterTheme.accentColour,
         ));
       }
     }
