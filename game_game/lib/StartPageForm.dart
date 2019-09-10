@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/Navigation.dart';
 import 'package:flutter_testuu/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,6 +27,7 @@ class StartPageFormState extends State<StartPageForm> {
   @override
   void initState() {
     super.initState();
+    Global.gameCodeCorrect = false;
 
     getGamingDay();
     getCurrentGameCode();
@@ -66,8 +68,8 @@ class StartPageFormState extends State<StartPageForm> {
                     if (checkValidDay()) {
                       User.instance.visitGame(startTime);
                     }
-                    Navigation.openHomePage(context);
-                    //Navigation.openPage(context, 'home');
+                    Global.gameCodeCorrect = true;
+                    Navigation.openHelpPage(context);
                   }
                   return null;
                 },
@@ -78,12 +80,9 @@ class StartPageFormState extends State<StartPageForm> {
               child: MaterialButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    if(!correctGameDay)
-                    {
+                    if (!correctGameDay) {
                       waitText = 'Tänään ei ole peliä.';
-                    }
-                    else
-                    {
+                    } else {
                       waitText = 'Odota. Luetaan...';
                     }
                     Scaffold.of(context).showSnackBar(

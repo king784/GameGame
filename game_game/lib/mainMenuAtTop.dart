@@ -20,7 +20,8 @@ class NavBar extends StatefulWidget {
 }
 
 class NavBarState extends State<NavBar> {
-  static int activeIndex = 0;
+  static int activeIndex =
+      3; //page that is active at the start, starts from help page so 3
 
   List items = [
     MenuItem(
@@ -116,7 +117,7 @@ class NavBarState extends State<NavBar> {
           iconSize: 40,
           color: Colors.transparent,
           //if user location is ok button has function if not function is null and button will be disabled
-          onPressed: UserLocation.userLocOkForMenu
+          onPressed: UserLocation.userLocOkForMenu && Global.gameCodeCorrect
               ? () {
                   setState(() {
                     active = item;
