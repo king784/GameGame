@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import '../Globals.dart';
 import '../Navigation.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Start extends StatefulWidget {
   @override
@@ -221,8 +222,15 @@ class _StartState extends State<Start> {
   void initialiseUserLocationAtStart() async {
     //check for location data at the start
     await userLoc.checkGeolocationPermissionStatus();
-    locationUpdateTimer =
-        Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
+    var geolocator = Geolocator();
+    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+    // locationUpdateTimer =
+    //     Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
+    StreamSubscription<Position> positionStream = geolocator.getPositionStream(locationOptions).listen(
+    (Position position) {
+        print(position == null ? 'Unknown' : position.latitude.toString() + ', ' + position.longitude.toString());
+        checkUserLocation();
+    });
 
     checkUserLocation();
   }
