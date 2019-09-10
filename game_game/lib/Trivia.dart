@@ -1,24 +1,14 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_testuu/Timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'Navigation.dart';
 import 'Themes/MasterTheme.dart';
-import 'pages/main.dart';
-//import 'mainTrivia.dart';
 import 'Globals.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:async' show Future;
-import 'package:path/path.dart' as p;
-import "dart:io";
-import 'package:path_provider/path_provider.dart';
 
 class ktpQuiz {
   //var questions = ["Mikä rakennus näkyy kuvassa?", "Mikä on Larry poundsin jäädytetyn pelipaidan numero?", ]
@@ -663,67 +653,69 @@ class Summary extends StatelessWidget {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
-            body: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                        child: FloatingActionButton(
-                            heroTag: 'backBtn5',
-                            child: Icon(
-                              FontAwesomeIcons.arrowLeft,
-                              color: MasterTheme.accentColour,
-                              size: 40,
-                            ),
-                            backgroundColor: Colors.transparent,
-                            //onPressed: () => Navigation.openPage(context, 'activities'),
-                            onPressed: () {
-                              questions.clear();
-                              questions.addAll(allQuestions);
-                              currentQuestion = questions
-                                  .removeAt(Random().nextInt(questions.length));
-                              //NextImage(currentQuestion.imagePath);
-                              questionNumber = 0;
-                              finalScore = 0;
-                              Navigation.openActivitiesPage(context);
-                              // Navigation.openPage(context, 'activities');
-                              questionsLoaded = true;
-                              // customTimer.cancel();
-                              // customTimer = null;
-                              // timeLeft = 10;
-                            },
-                            elevation: 0),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            'Pelaajaäänestys',
-                            textAlign: TextAlign.right,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+            body: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
                       children: <Widget>[
-                        new Text(scoreText(finalScore),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.display3),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                          child: FloatingActionButton(
+                              heroTag: 'backBtn5',
+                              child: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: MasterTheme.accentColour,
+                                size: 40,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              //onPressed: () => Navigation.openPage(context, 'activities'),
+                              onPressed: () {
+                                questions.clear();
+                                questions.addAll(allQuestions);
+                                currentQuestion = questions.removeAt(
+                                    Random().nextInt(questions.length));
+                                //NextImage(currentQuestion.imagePath);
+                                questionNumber = 0;
+                                finalScore = 0;
+                                Navigation.openActivitiesPage(context);
+                                // Navigation.openPage(context, 'activities');
+                                questionsLoaded = true;
+                                // customTimer.cancel();
+                                // customTimer = null;
+                                // timeLeft = 10;
+                              },
+                              elevation: 0),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'Pelaajaäänestys',
+                              textAlign: TextAlign.right,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(scoreText(finalScore),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.display3),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ));
