@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_testuu/StartPageForm.dart';
 import 'package:flutter_testuu/Admin/AddQuestions.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
@@ -28,6 +27,8 @@ class RouteGenerator {
         Global.CURRENTROUTE = "/home";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(
+                isInitialRoute: true), //stops the transition animation
             builder: (_) => Home(),
           );
         }
@@ -37,6 +38,7 @@ class RouteGenerator {
         Global.CURRENTROUTE = "/activities";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => Activities(),
           );
         }
@@ -46,6 +48,7 @@ class RouteGenerator {
         Global.CURRENTROUTE = "/help";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => Ohje(),
           );
         }
@@ -55,68 +58,76 @@ class RouteGenerator {
         Global.CURRENTROUTE = "/userPage";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => UserPage(),
           );
         }
         return _errorRoute();
 
-        case '/userPageWithoutMenu':
+      case '/userPageWithoutMenu':
         Global.CURRENTROUTE = "/userPageWithoutMenu";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => UserPageWithoutMenu(),
           );
         }
         return _errorRoute();
 
-        case '/imageVoting':
+      case '/imageVoting':
         Global.CURRENTROUTE = "/imageVoting";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => PictureCompetition(),
           );
         }
         return _errorRoute();
 
-        case '/playerVoting':
+      case '/playerVoting':
         Global.CURRENTROUTE = "/playerVoting";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => PlayerVoting(),
           );
         }
         return _errorRoute();
 
-        case '/trivia':
+      case '/trivia':
         Global.CURRENTROUTE = "/trivia";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => Trivia(),
           );
         }
         return _errorRoute();
 
-        case '/addQuestions':
+      case '/addQuestions':
         Global.CURRENTROUTE = "/addQuestions";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => AddQuestionForm(),
           );
         }
         return _errorRoute();
 
-         case '/summary':
+      case '/summary':
         Global.CURRENTROUTE = "/summary";
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => Summary(),
           );
         }
         return _errorRoute();
 
-        case '/userAuthentication':
+      case '/userAuthentication':
         if (args is String) {
           return MaterialPageRoute(
+            settings: RouteSettings(isInitialRoute: true),
             builder: (_) => UserAuthentication(),
           );
         }
@@ -128,15 +139,17 @@ class RouteGenerator {
   }
 
   static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('Error\n:)'),
-        ),
-      );
-    });
+    return MaterialPageRoute(
+        settings: RouteSettings(isInitialRoute: true),
+        builder: (_) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Error'),
+            ),
+            body: Center(
+              child: Text('Error\n:)'),
+            ),
+          );
+        });
   }
 }
