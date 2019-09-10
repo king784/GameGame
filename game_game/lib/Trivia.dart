@@ -203,7 +203,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     Navigation.openActivitiesPage(context);
                                     // Navigation.openPage(context, 'activities');
                                     questionsLoaded = true;
-                                    customTimer.cancel();
+                                    // customTimer.cancel();
                                     customTimer = null;
                                     timeLeft = 10;
                                     Navigator.pop(context);
