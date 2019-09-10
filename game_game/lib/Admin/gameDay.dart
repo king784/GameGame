@@ -79,6 +79,7 @@ class AddGamedayFormState extends State<AddGamedayForm> {
 
               // Date picker
               RaisedButton(
+                color: MasterTheme.accentColour,
                   onPressed: () {
                     DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
@@ -98,6 +99,7 @@ class AddGamedayFormState extends State<AddGamedayForm> {
 
               // Image for quiz
               RaisedButton(
+                color: MasterTheme.accentColour,
                 child: Text("Hyväksy"),
                 onPressed: () {
                   createGameDay();

@@ -134,7 +134,7 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
         onPressed: () {
           _deleteQuestion(i);
         },
-        color: MasterTheme.primaryColour,
+        color: MasterTheme.accentColour,
       ));
       }
       else if(allQuestions[i].toLowerCase().contains(searchText.toLowerCase())){
@@ -147,7 +147,7 @@ class DeleteQuestionFormState extends State<DeleteQuestionForm> {
           onPressed: () {
             _deleteQuestion(i);
           },
-          color: MasterTheme.primaryColour,
+          color: MasterTheme.accentColour,
         ));
       }
     }

@@ -274,7 +274,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: RaisedButton(
-                                  color: MasterTheme.primaryColour,
+                                  color: MasterTheme.accentColour,
                                   onPressed: () {
                                     DatePicker.showDatePicker(context,
                                         showTitleActions: true,
@@ -314,7 +314,7 @@ class AddQuestionFormState extends State<AddQuestionForm> {
                             padding: const EdgeInsets.all(10.0),
                             child: Center(
                               child: RaisedButton(
-                                color: MasterTheme.primaryColour,
+                                color: MasterTheme.accentColour,
                                 child: Text(
                                   "Lisää kuva",
                                   style: Theme.of(context).textTheme.button,
