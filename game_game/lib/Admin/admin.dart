@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
@@ -5,8 +6,11 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_testuu/Admin/AddPlayer.dart';
 import 'package:flutter_testuu/Admin/AddQuestions.dart';
+import 'package:flutter_testuu/Admin/addBestPic.dart';
+import 'package:flutter_testuu/imageFromDB.dart';
 import 'package:flutter_testuu/route_generator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../Globals.dart';
 import '../Navigation.dart';
@@ -42,6 +46,10 @@ class AdminState extends State<Admin> {
   var usersATM;
 
   final formKey = GlobalKey<FormState>();
+
+  
+  FirebaseStorage _storage = FirebaseStorage.instance;
+  String deletingText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +255,18 @@ class AdminState extends State<Admin> {
                         setState(() {});
                       },
                     ),
+                  ),                  
+                  RaisedButton(
+                    color: MasterTheme.accentColour,
+                    child: Text(
+                      "Säilytä voittaja kuva",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                    onPressed: () {
+                      safeWinner();
+                    },
                   ),
+                  Text(deletingText),
                 ],
               ),
               // ADDING PLAYERS
@@ -466,5 +485,78 @@ class AdminState extends State<Admin> {
       usersATM = "Ei aktiivisia käyttäjiä";
     }
     setState(() {});
+  }
+
+    void safeWinner() async {
+    //DIIBADAABA...
+    setState(() {
+      deletingText = "Siirretään voitto kuvaa talteen";
+    });
+
+      final QuerySnapshot imgRef = await Firestore.instance
+          .collection('imagesForBestImageVoting').orderBy("totalVotes", descending: true).getDocuments();
+
+        int bestVotes = imgRef.documents[0]['totalVotes'];
+
+        List<ImageFromDB> bestImages = new List<ImageFromDB>();
+
+        for(int i = 0; i < imgRef.documents.length; i++)
+        {
+          if(imgRef.documents[i]['totalVotes'] == bestVotes)
+          {
+            bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
+            bestImages[i].isWinning = true;
+          }
+        }
+
+        if (bestVotes <= 0){
+          return;
+        }
+
+        String todayInString = DateFormat("dd-MM-yyyy").format(DateTime.now()).toString();
+
+        FirebaseStorage storage = FirebaseStorage.instance;
+        var refToImg;
+        StorageReference reference;
+        List<String> tempString = new List<String>();
+        // Add images which won to the database
+        for(int i = 0; i < bestImages.length; i++)
+        {
+          tempString.clear();
+          tempString = bestImages[i].imgUrl.split('/');
+          
+          // image
+          // refToImg = FirebaseStorage.instance.ref().child(bestImages[i].imgUrl);
+          // var url = await refToImg.getDownloadURL();
+          // Image img = Image.network(url);
+          
+          // reference =
+          //   _storage.ref().child('VictoryPictures/').child(todayInString).child(tempString[1]);
+          //   StorageUploadTask uploadTask = reference.putFile(imgFile);
+
+            DocumentReference bestImagesRef = Firestore.instance.collection("WinningImagesForImageVoting").document();
+            bestImagesRef.get().then((DocumentSnapshot ds) {
+            bestImagesRef.setData({
+            'dateTaken': bestImages[i].dateTaken,
+            'downloadUrl': bestImages[i].downloadUrl,
+            'imgUrl': bestImages[i].imgUrl,
+            'photographerName': bestImages[i].photographerName,
+            'totalVotes': bestImages[i].totalVotes,
+            'isWinning': bestImages[i].isWinning
+          }, merge: true);
+          });
+
+
+
+        }
+
+    //StorageUploadTask uploadTask = ref.putFile()
+    deletePictures();
+  }
+
+  void deletePictures() {
+    setState(() {
+      deletingText = "Poistetaan kuvia";
+    });
   }
 }
