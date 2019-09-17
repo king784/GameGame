@@ -19,6 +19,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   bool competitionStatusChecked = false;
   bool competitionIsOn = false;
   String isCompetitionOnInfo = "Kilpailu ei ole käynnissä.";
+  String deletingText;
 
   @override
   void initState() {
@@ -203,10 +204,28 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
 
   }
 
-  void deleteOldImages() 
+  void deleteOldImages() async
   {
     setState(() {
       deletingText = "Poistetaan kuvia";
     });
+
+    final QuerySnapshot imgRef = await Firestore.instance
+          .collection('WinningImagesForImageVoting').getDocuments();
+
+        List<ImageFromDB> bestImages = new List<ImageFromDB>();
+
+        for(int i = 0; i < imgRef.documents.length; i++)
+        {
+          bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data)); 
+        }
+
+        // Loop and delete images which are not winning images.
+
+        if (bestVotes <= 0){
+          return;
+        }
+
   }
+}
 }
