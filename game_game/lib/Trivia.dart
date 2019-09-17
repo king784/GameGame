@@ -90,6 +90,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
   // Question variables
   Image nextImage;
   bool nextImgLoaded = false;
+  bool noQuestionsNow = false;
   int questionIndex = 0;
 
   Timer customTimer;
@@ -107,7 +108,70 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
 
     List<List<String>> quizContents = new List<List<String>>();
     quizContents.add(Global.contents.split(";"));
-    return !questionsLoaded
+    return noQuestionsNow ? WillPopScope(
+            onWillPop: () async => false,
+            child: Theme(
+              data: MasterTheme.mainTheme,
+              child: Scaffold(
+                body: SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              child: FloatingActionButton(
+                                  heroTag: 'backBtn1',
+                                  child: Icon(
+                                    FontAwesomeIcons.arrowLeft,
+                                    color: MasterTheme.accentColour,
+                                    size: 40,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  onPressed: () => Navigation.openActivitiesPage(context),
+                                  elevation: 0),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Text(
+                                  'Trivia',
+                                  textAlign: TextAlign.right,
+                                  style: Theme.of(context).textTheme.title,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Ei kysymyksiä tänään.",
+                                    style: Theme.of(context).textTheme.subtitle,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ) : 
+    
+    !questionsLoaded
         ? WillPopScope(
             onWillPop: () async => false,
             child: Theme(
@@ -130,7 +194,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     size: 40,
                                   ),
                                   backgroundColor: Colors.transparent,
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () => Navigation.openActivitiesPage(context),
                                   elevation: 0),
                             ),
                             Expanded(
@@ -206,7 +270,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                     // customTimer.cancel();
                                     customTimer = null;
                                     timeLeft = 10;
-                                    Navigator.pop(context);
+                                    Navigation.openActivitiesPage(context);
                                   },
                                   elevation: 0),
                             ),
@@ -466,15 +530,27 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       //loadQuestions();
       //await loadQuestions();
       await LoadQuestions();
-      RandomizeQuestions();
-      ReAddValues();
-      NextImage(currentQuestion.imagePath);
-      firstRun = false;
+      if(noQuestionsNow)
+      {
+        return;
+      }
+      else
+      {
+        RandomizeQuestions();
+        ReAddValues();
+        NextImage(currentQuestion.imagePath);
+        firstRun = false;
+      }
+      
     }
 
-    if (Trivia.reFetchQuestion) {
-      NextImage(currentQuestion.imagePath);
-      Trivia.reFetchQuestion = false;
+    if(!noQuestionsNow)
+    {
+      if (Trivia.reFetchQuestion) 
+      {
+        NextImage(currentQuestion.imagePath);
+        Trivia.reFetchQuestion = false;
+      }
     }
 
     // if(customTimer == null && Global.CURRENTROUTE == "/trivia")
@@ -521,12 +597,22 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
       allQuestions.add(tempQuestion);
     });
 
-    questions.addAll(allQuestions);
-    currentQuestion = GetRandomQuestion();
+    if(allQuestions.length <= 0)
+    {
+      Global.greenPen("ffs");
+      setState(() {
+        noQuestionsNow = true;
+      });
+    }
+    else
+    {
+      questions.addAll(allQuestions);
+      currentQuestion = GetRandomQuestion();
 
-    questionsLoaded = true;
-    NextImage(currentQuestion.imagePath);
-    setState(() {});
+      questionsLoaded = true;
+      NextImage(currentQuestion.imagePath);
+      setState(() {});
+    }
   }
 
   Question GetRandomQuestion() {
@@ -672,19 +758,22 @@ class Summary extends StatelessWidget {
                               backgroundColor: Colors.transparent,
                               //onPressed: () => Navigation.openPage(context, 'activities'),
                               onPressed: () {
-                                questions.clear();
-                                questions.addAll(allQuestions);
-                                currentQuestion = questions.removeAt(
-                                    Random().nextInt(questions.length));
-                                //NextImage(currentQuestion.imagePath);
-                                questionNumber = 0;
-                                finalScore = 0;
-                                Navigation.openActivitiesPage(context);
-                                // Navigation.openPage(context, 'activities');
-                                questionsLoaded = true;
-                                // customTimer.cancel();
-                                // customTimer = null;
-                                // timeLeft = 10;
+                                if(allQuestions.length > 0)
+                                {
+                                  questions.clear();
+                                  questions.addAll(allQuestions);
+                                  currentQuestion = questions.removeAt(
+                                      Random().nextInt(questions.length));
+                                  //NextImage(currentQuestion.imagePath);
+                                  questionNumber = 0;
+                                  finalScore = 0;
+                                  questionsLoaded = true;
+                                  Navigation.openActivitiesPage(context);
+                                  // Navigation.openPage(context, 'activities');
+                                  // customTimer.cancel();
+                                  // customTimer = null;
+                                  // timeLeft = 10;
+                                }
                               },
                               elevation: 0),
                         ),
