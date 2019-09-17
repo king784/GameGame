@@ -45,7 +45,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
                 ButtonTheme.bar(
                   child: ButtonBar(
                     children: <Widget>[
-                      competitionIsOn ? _startBtn() : _turnOffBtn(),
+                      competitionIsOn ? _turnOffBtn() : _startBtn(),
                     ],
                   ),
                 ),
@@ -109,7 +109,10 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 2,
     );
-    setState(() {});
+    setState(() {
+      competitionIsOn = true;
+      getIscompetitionOn();
+    });
   }
 
   void competitionOff() {
@@ -129,7 +132,10 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 2,
     );
-    setState(() {});
+    setState(() {
+      competitionIsOn = false;
+      getIscompetitionOn();
+    });
   }
 
   void getBestImageWinners() {}
