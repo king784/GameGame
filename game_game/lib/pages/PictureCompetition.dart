@@ -270,12 +270,17 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     }).then((onValue) async {
       //when the download url has been gotten
       //add picture to database document with the needed voting parameters
+      String photographerName = User.instance.displayName;
+      if (photographerName == null || photographerName == '') {
+        photographerName = 'Anon';
+      }
+
       await Firestore.instance
           .collection('imagesForBestImageVoting')
           .document()
           .setData({
         'photographerName':
-            User.instance.displayName, //this should be the user's name
+            photographerName, //this should be the user's name. User.instance.displayName
         'imgUrl': 'bestPictureCompetition/' + imgName,
         'downloadUrl': downloadUrl,
         'totalVotes': 0,
