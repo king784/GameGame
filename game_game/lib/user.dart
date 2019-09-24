@@ -91,7 +91,10 @@ class User {
   {
     QuerySnapshot querySnapshot =
         await Firestore.instance.collection('players').reference().where('uid', isEqualTo: uid).limit(1).getDocuments();
-      visitedGames =  GetVisitedGamesList(querySnapshot.documents[0].data);
+        if(querySnapshot.documents.length <= 0){
+          return;
+        }
+      visitedGames = GetVisitedGamesList(querySnapshot.documents[0].data);
       print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
   }
 

@@ -128,7 +128,7 @@ class AuthService {
       'pictureWins': 0,
     }, merge: true);
     }
-
+    
     int imageVotes;
     int playerVotes;
     User.instance.displayName = user.displayName;
@@ -138,9 +138,14 @@ class AuthService {
     User.instance.getPictureWins(ref);
 
     ref.get().then((DocumentSnapshot ds) {
+      Timestamp lastSeenFromDataBase = ds['lastSeen'];
+
       DateTime startOfToday = DateTime.now();
       startOfToday = DateTime(startOfToday.year, startOfToday.month, startOfToday.day, 0, 0, 0, 0);
-      if(ds['lastSeen'] < startOfToday)
+      DateTime lastSeen = lastSeenFromDataBase.toDate();
+      print("lastSeen: " + lastSeen.toString());
+
+      if(startOfToday.isAfter(lastSeen))
       {
         playerVotes = 1;
         imageVotes = 1;
