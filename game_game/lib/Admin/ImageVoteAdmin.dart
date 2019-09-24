@@ -188,6 +188,11 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
         .orderBy("totalVotes", descending: true)
         .getDocuments();
 
+    if(imgRef.documents.length <= 0)
+    {
+      return;
+    }
+
     int bestVotes = imgRef.documents[0]['totalVotes'];
 
     List<ImageFromDB> bestImages = new List<ImageFromDB>();
@@ -257,7 +262,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
     }
 
-    // Loop and delete images which are not winning images.
+   // Loop and delete images which are not winning images.
     var imagesRef = await Firestore.instance
         .collection('imagesForBestImageVoting')
         .getDocuments();
@@ -267,7 +272,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       if (imagesRef.documents[i]['totalVotes'] != bestVotes) {
         FirebaseStorage.instance
             .ref()
-            .child(imagesRef.documents[i]['downloadUrl'])
+            .child(imagesRef.documents[i]['imgUrl'])
             .delete()
             .then((_) => print('Successfully deleted item'));
       }
