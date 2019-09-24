@@ -132,6 +132,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   }
 
   void competitionOn() {
+    isCompetitionOnInfo = "Kilpailu on käynnissä";
     var documentRef = Firestore.instance
         .collection('bestPictureCompetitionOn')
         .document('jtw6KDaWln290FeHit9x');
@@ -155,6 +156,8 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   }
 
   void competitionOff() {
+    isCompetitionOnInfo = "Kilpailu ei ole käynnissä.";
+    
     var documentRef = Firestore.instance
         .collection('bestPictureCompetitionOn')
         .document('jtw6KDaWln290FeHit9x');
@@ -187,6 +190,11 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
         .collection('imagesForBestImageVoting')
         .orderBy("totalVotes", descending: true)
         .getDocuments();
+
+    if(imgRef.documents.length <= 0)
+    {
+      return;
+    }
 
     int bestVotes = imgRef.documents[0]['totalVotes'];
 
@@ -257,7 +265,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
     }
 
-    // Loop and delete images which are not winning images.
+   // Loop and delete images which are not winning images.
     var imagesRef = await Firestore.instance
         .collection('imagesForBestImageVoting')
         .getDocuments();
@@ -267,7 +275,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       if (imagesRef.documents[i]['totalVotes'] != bestVotes) {
         FirebaseStorage.instance
             .ref()
-            .child(imagesRef.documents[i]['downloadUrl'])
+            .child(imagesRef.documents[i]['imgUrl'])
             .delete()
             .then((_) => print('Successfully deleted item'));
       }
