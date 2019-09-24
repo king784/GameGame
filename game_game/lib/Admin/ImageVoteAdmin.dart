@@ -53,6 +53,21 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
                     ],
                   ),
                 ),
+                (!competitionIsOn)
+                    ? ListTile(
+                        leading: Icon(FontAwesomeIcons.solidImage),
+                        title: Text('Hae voittajakuvat'),
+                        subtitle: Text(
+                            'Tästä voit tallentaa voittajakuvan tietokantaan, kun kilpailu on suljettu.'),
+                      )
+                    : SizedBox.shrink(),
+                (!competitionIsOn)
+                    ? ButtonTheme.bar(
+                        child: ButtonBar(
+                          children: <Widget>[_winnerImgBtn()],
+                        ),
+                      )
+                    : SizedBox.shrink(),
               ],
             ),
           )
@@ -78,6 +93,26 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
           style: Theme.of(context).textTheme.subtitle),
       onPressed: () {
         competitionOff();
+      },
+      color: Theme.of(context).accentColor,
+    );
+  }
+
+  _imgInfo() {
+    return ListTile(
+      leading: Icon(FontAwesomeIcons.solidImage),
+      title: Text('Kuvakilpailu'),
+      subtitle: Text('Tästä voit laittaa kilpailun käyntiin ja sulkea sen.'),
+    );
+  }
+
+  _winnerImgBtn() {
+    return RaisedButton(
+      child: Text('Hae voittajakuva.',
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.subtitle),
+      onPressed: () {
+        getBestImageWinners();
       },
       color: Theme.of(context).accentColor,
     );
@@ -204,41 +239,46 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       });
     }
 
-    void deleteOldImages() async {
-      setState(() {
-        deletingText = "Poistetaan kuvia";
+    deleteOldImages(bestVotes);
+  }
+
+  void deleteOldImages(int bestVotes) async {
+    setState(() {
+      deletingText = "Poistetaan kuvia";
+    });
+
+    final QuerySnapshot imgRef = await Firestore.instance
+        .collection('WinningImagesForImageVoting')
+        .getDocuments();
+
+    List<ImageFromDB> bestImages = new List<ImageFromDB>();
+
+    for (int i = 0; i < imgRef.documents.length; i++) {
+      bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
+    }
+
+    // Loop and delete images which are not winning images.
+    var imagesRef = await Firestore.instance
+        .collection('imagesForBestImageVoting')
+        .getDocuments();
+
+    // Delete values from database. Also delete the image if it is not a winning image.
+    for (int i = 0; i < imagesRef.documents.length; i++) {
+      if (imagesRef.documents[i]['totalVotes'] != bestVotes) {
+        FirebaseStorage.instance
+            .ref()
+            .child(imagesRef.documents[i]['downloadUrl'])
+            .delete()
+            .then((_) => print('Successfully deleted item'));
+      }
+      await Firestore.instance
+          .runTransaction((Transaction myTransaction) async {
+        await myTransaction.delete(imagesRef.documents[i].reference);
       });
+    }
 
-      final QuerySnapshot imgRef = await Firestore.instance
-          .collection('WinningImagesForImageVoting')
-          .getDocuments();
-
-      List<ImageFromDB> bestImages = new List<ImageFromDB>();
-
-      for (int i = 0; i < imgRef.documents.length; i++) {
-        bestImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
-      }
-
-      // Loop and delete images which are not winning images.
-      var imagesRef = await Firestore.instance
-          .collection('imagesForBestImageVoting')
-          .getDocuments();
-
-      // Delete values from database. Also delete the image if it is not a winning image.
-      for (int i = 0; i < imagesRef.documents.length; i++) {
-        if(!imagesRef.documents[i]['isWinning'])
-        {
-          FirebaseStorage.instance.ref().child(imagesRef.documents[i]['downloadUrl']).delete().then((_) => print('Successfully deleted item'));
-        }
-        await Firestore.instance
-            .runTransaction((Transaction myTransaction) async {
-          await myTransaction.delete(imagesRef.documents[i].reference);
-        });
-      }
-
-      if (bestVotes <= 0) {
-        return;
-      }
+    if (bestVotes <= 0) {
+      return;
     }
   }
 }
