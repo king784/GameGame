@@ -132,6 +132,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   }
 
   void competitionOn() {
+    isCompetitionOnInfo = "Kilpailu on käynnissä";
     var documentRef = Firestore.instance
         .collection('bestPictureCompetitionOn')
         .document('jtw6KDaWln290FeHit9x');
@@ -155,6 +156,8 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   }
 
   void competitionOff() {
+    isCompetitionOnInfo = "Kilpailu ei ole käynnissä.";
+    
     var documentRef = Firestore.instance
         .collection('bestPictureCompetitionOn')
         .document('jtw6KDaWln290FeHit9x');
