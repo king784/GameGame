@@ -226,7 +226,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
 
       // Delete values from database. Also delete the image if it is not a winning image.
       for (int i = 0; i < imagesRef.documents.length; i++) {
-        if(imagesRef.documents[i]['isWinning'])
+        if(!imagesRef.documents[i]['isWinning'])
         {
           FirebaseStorage.instance.ref().child(imagesRef.documents[i]['downloadUrl']).delete().then((_) => print('Successfully deleted item'));
         }
