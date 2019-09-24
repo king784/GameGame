@@ -157,7 +157,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
 
   void competitionOff() {
     isCompetitionOnInfo = "Kilpailu ei ole käynnissä.";
-    
+
     var documentRef = Firestore.instance
         .collection('bestPictureCompetitionOn')
         .document('jtw6KDaWln290FeHit9x');
@@ -279,6 +279,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
             .delete()
             .then((_) => print('Successfully deleted item'));
       }
+      // This doesnt delete images, remake
       await Firestore.instance
           .runTransaction((Transaction myTransaction) async {
         await myTransaction.delete(imagesRef.documents[i].reference);
