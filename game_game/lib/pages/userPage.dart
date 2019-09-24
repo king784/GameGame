@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_testuu/ImageVoteAdmin.dart';
+import 'package:flutter_testuu/Admin/ImageVoteAdmin.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
 import 'package:flutter_testuu/Globals.dart';
