@@ -141,6 +141,7 @@ class _PictureCardListState extends State<PictureCardList> {
   }
 
   _cardWithPic(ImageFromDB dbImage) {
+    print("data given to card with pic: " + dbImage.toString());
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
