@@ -126,6 +126,7 @@ class AuthService {
     {
       ref.setData({
       'pictureWins': 0,
+      'lastSeen': DateTime.now(),
     }, merge: true);
     }
     
@@ -145,7 +146,7 @@ class AuthService {
       DateTime lastSeen = lastSeenFromDataBase.toDate();
       print("lastSeen: " + lastSeen.toString());
 
-      if(startOfToday.isAfter(lastSeen))
+      if(lastSeen.isAfter(startOfToday))
       {
         playerVotes = 1;
         imageVotes = 1;

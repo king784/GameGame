@@ -253,7 +253,7 @@ class _PictureCardListState extends State<PictureCardList> {
     await Firestore.instance //get the document with the matching parameters
         .collection('imagesForBestImageVoting')
         .where('dateTaken', isEqualTo: today)
-        .where('photographerName', isEqualTo: 'name')
+        .where('photographerName', isEqualTo: User.instance.displayName)
         .where('imgUrl', isEqualTo: img.imgUrl)
         .limit(1) //limit documents to 1
         .getDocuments()
