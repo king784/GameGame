@@ -63,10 +63,6 @@ class NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    print("gameday has been checked: " +
-        gameDayHasBeenChecked.toString() +
-        ", gameday: " +
-        gameDay.toString());
     if (!gameDayHasBeenChecked) {
       //check if today is a gaming day, but only once
       getCompetitionDay();
@@ -115,35 +111,95 @@ class NavBarState extends State<NavBar> {
   }
 
   Widget _menuButton(MenuItem item, {Function() function}) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        0,
-        10,
-        0,
-        10,
-      ),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: IconButton(
-          iconSize: 40,
-          color: Colors.transparent,
-          //if user location is ok and today is a game day button has function if not function is null and button will be disabled
-          onPressed:
-              UserLocation.userLocOkForMenu && Global.gameCodeCorrect && gameDay
-                  ? () {
-                      setState(() {
-                        active = item;
-                      });
-                      function();
-                    }
-                  : () {},
-          icon: Icon(
-            item.icon,
-            color: item.color,
+    if (gameDay) {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(
+          0,
+          10,
+          0,
+          10,
+        ),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: IconButton(
+            iconSize: 40,
+            color: Colors.transparent,
+            //if user location is ok and today is a game day button has function if not function is null and button will be disabled
+            onPressed: UserLocation.userLocOkForMenu && Global.gameCodeCorrect
+                ? () {
+                    setState(() {
+                      active = item;
+                    });
+                    function();
+                  }
+                : () {},
+            icon: Icon(
+              item.icon,
+              color: item.color,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else if (item.name == "user" && !gameDay) {
+      //users should be able to see their own profiles even when there's no game day
+      return Padding(
+        padding: EdgeInsets.fromLTRB(
+          0,
+          10,
+          0,
+          10,
+        ),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: IconButton(
+            iconSize: 40,
+            color: Colors.transparent,
+            //if user location is ok and today is a game day button has function if not function is null and button will be disabled
+            onPressed: () {
+              setState(() {
+                active = item;
+              });
+              function();
+            },
+            icon: Icon(
+              item.icon,
+              color: item.color,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(
+          0,
+          10,
+          0,
+          10,
+        ),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: IconButton(
+            iconSize: 40,
+            color: Colors.transparent,
+            //if user location is ok and today is a game day button has function if not function is null and button will be disabled
+            onPressed: UserLocation.userLocOkForMenu &&
+                    Global.gameCodeCorrect &&
+                    gameDay
+                ? () {
+                    setState(() {
+                      active = item;
+                    });
+                    function();
+                  }
+                : () {},
+            icon: Icon(
+              item.icon,
+              color: item.color,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   //check if today's a game day
@@ -154,7 +210,8 @@ class NavBarState extends State<NavBar> {
             .collection('gamingDay')
             .limit(1) //limits documents to one
             .getDocuments();
-    Timestamp gamingDay = result.documents[0]['activeDay']; //convert the gotten value to date
+    Timestamp gamingDay =
+        result.documents[0]['activeDay']; //convert the gotten value to date
     //print("Game day: " +gamingDay.toDate().toString() +", today is: " + DateTime.now().toString());
 
     if (areDatesSame(gamingDay.toDate(), DateTime.now())) {
