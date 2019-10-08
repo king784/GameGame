@@ -22,6 +22,8 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
   String isCompetitionOnInfo = "Kilpailu ei ole käynnissä.";
   String deletingText;
 
+  List<ImageFromDB> bestImages = new List<ImageFromDB>();
+
   @override
   void initState() {
     super.initState();
@@ -144,7 +146,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
     print(Global.greenPen("DONE"));
 
     Fluttertoast.showToast(
-      msg: 'kilpailu käynnissä.',
+      msg: 'Kilpailu käynnissä.',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 2,
@@ -195,10 +197,11 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
         .orderBy("totalVotes", descending: true)
         .getDocuments();
 
+      bestImages.clear();
+
     if (imgRef.documents.length > 0) {
       int bestVotes = imgRef.documents[0]['totalVotes'];
       // List of winning images in the current voting.
-      List<ImageFromDB> bestImages = new List<ImageFromDB>();
 
       for (int i = 0; i < imgRef.documents.length; i++) {
         currentImages.add(new ImageFromDB.fromJson(imgRef.documents[i].data));
@@ -242,16 +245,18 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
             'downloadUrl': bestImages[i].downloadUrl,
             'imgUrl': bestImages[i].imgUrl,
             'photographerName': bestImages[i].photographerName,
+            'photographerID': bestImages[i].photographerID,
             'totalVotes': bestImages[i].totalVotes,
             'isWinning': bestImages[i].isWinning
           }, merge: true);
         });
       }
-      deleteOldImages(bestVotes, bestImages);
+      deleteOldImages(bestVotes);
     }
   }
 
-  void GivePointToUser(int bestVotes, List<ImageFromDB> bestImages) {
+  void GivePointToUser() {
+    print("Going to give points!");
     // Get list of all users
     var usersRef =
         Firestore.instance.collection("users").getDocuments().then((val) {
@@ -276,7 +281,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
     });
   }
 
-  void deleteOldImages(int bestVotes, List<ImageFromDB> bestImages) async {
+  void deleteOldImages(int bestVotes) async {
     setState(() {
       deletingText = "Poistetaan kuvia";
     });
@@ -296,7 +301,7 @@ class _ImageVotingAdminState extends State<ImageVotingAdmin> {
       imageNames.add(bestImages[i].imgUrl);
     }
 
-    GivePointToUser(bestVotes, bestImages);
+    GivePointToUser();
 
     // Loop and delete images which are not winning images.
     var imagesRef = await Firestore.instance
