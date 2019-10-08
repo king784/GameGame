@@ -46,6 +46,7 @@ class dontUseMe {
       data.documentChanges.forEach((change) {
         tempImg = new ImageFromDB(
             change.document['photographerName'],
+            change.document['photographerID'],
             change.document['downloadUrl'],
             change.document['imgUrl'],
             change.document['totalVotes'],
@@ -85,6 +86,7 @@ class dontUseMe {
       //go through all the documents we got from firestore
       allimages.add(new ImageFromDB(
           result.documents[i]['photographerName'],
+          result.documents[i]['photographerID'],
           result.documents[i]['downloadUrl'],
           result.documents[i]['imgUrl'],
           result.documents[i]['totalVotes'],
