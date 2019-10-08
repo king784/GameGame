@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
@@ -22,6 +23,8 @@ class NavBar extends StatefulWidget {
 class NavBarState extends State<NavBar> {
   static int activeIndex =
       3; //page that is active at the start, starts from help page so 3
+  bool gameDay = false;
+  bool gameDayHasBeenChecked = false;
 
   List items = [
     MenuItem(
@@ -60,6 +63,14 @@ class NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    print("gameday has been checked: " +
+        gameDayHasBeenChecked.toString() +
+        ", gameday: " +
+        gameDay.toString());
+    if (!gameDayHasBeenChecked) {
+      //check if today is a gaming day, but only once
+      getCompetitionDay();
+    }
     return Container(
       height: 80,
       child: Stack(
@@ -116,15 +127,16 @@ class NavBarState extends State<NavBar> {
         child: IconButton(
           iconSize: 40,
           color: Colors.transparent,
-          //if user location is ok button has function if not function is null and button will be disabled
-          onPressed: UserLocation.userLocOkForMenu && Global.gameCodeCorrect
-              ? () {
-                  setState(() {
-                    active = item;
-                  });
-                  function();
-                }
-              : () {},
+          //if user location is ok and today is a game day button has function if not function is null and button will be disabled
+          onPressed:
+              UserLocation.userLocOkForMenu && Global.gameCodeCorrect && gameDay
+                  ? () {
+                      setState(() {
+                        active = item;
+                      });
+                      function();
+                    }
+                  : () {},
           icon: Icon(
             item.icon,
             color: item.color,
@@ -132,5 +144,36 @@ class NavBarState extends State<NavBar> {
         ),
       ),
     );
+  }
+
+  //check if today's a game day
+  Future<void> getCompetitionDay() async {
+    //check if the competition is on
+    final QuerySnapshot result =
+        await Firestore.instance //get the gaing day collection from firebase
+            .collection('gamingDay')
+            .limit(1) //limits documents to one
+            .getDocuments();
+    Timestamp gamingDay = result.documents[0]['activeDay']; //convert the gotten value to date
+    //print("Game day: " +gamingDay.toDate().toString() +", today is: " + DateTime.now().toString());
+
+    if (areDatesSame(gamingDay.toDate(), DateTime.now())) {
+      //check agains today
+      gameDay = true;
+    }
+
+    gameDayHasBeenChecked = true;
+    setState(() {});
+  }
+
+  bool areDatesSame(DateTime first, DateTime second) {
+    if (first.year == second.year) {
+      if (first.month == second.month) {
+        if (first.day == second.day) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
