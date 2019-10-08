@@ -253,9 +253,28 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     String imgName = img.path.split('/').last;
     print('image name: ' + imgName);
 
+    var imagesRef = await Firestore.instance
+        .collection('imagesForBestImageVoting')
+        .where('imgUrl', isEqualTo:("bestPictureCompetition/" + imgName))
+        .limit(1)
+        .getDocuments();
+
+    // Number to add to name
+    int indexAddon = 0;
+    do {
+      imgName = indexAddon.toString() + imgName;
+      indexAddon++;
+      imagesRef = await Firestore.instance
+        .collection('imagesForBestImageVoting')
+        .where('imgUrl', isEqualTo:("bestPictureCompetition/" + imgName))
+        .limit(1)
+        .getDocuments();
+    } while (imagesRef.documents.length > 0);
+
     //reference to the location/file folder in firestorage
     StorageReference reference =
         _storage.ref().child('bestPictureCompetition/').child(imgName);
+
 
     //print('Reference: ' + reference.toString());
 

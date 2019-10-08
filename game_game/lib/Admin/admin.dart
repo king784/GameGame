@@ -89,7 +89,7 @@ class AdminState extends State<Admin> {
                       child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          'Pelaajaäänestys',
+                          'Admin',
                           textAlign: TextAlign.right,
                           style: Theme.of(context).textTheme.title,
                         ),
@@ -257,16 +257,7 @@ class AdminState extends State<Admin> {
                       },
                     ),
                   ),                  
-                  RaisedButton(
-                    color: MasterTheme.accentColour,
-                    child: Text(
-                      "Säilytä voittaja kuva",
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                    onPressed: () {
-                      safeWinner();
-                    },
-                  ),
+                  
                   Text(deletingText),
                   ImageVotingAdmin(),
                 ],
@@ -473,12 +464,12 @@ class AdminState extends State<Admin> {
     if (lastSeen.year == gameDay.year &&
         lastSeen.month == gameDay.month &&
         lastSeen.day == gameDay.day) {
-      print("Today is a game day. Game time: " +
-          gameDay.hour.toString() +
-          " to " +
-          (gameDay.hour + 3).toString());
+      // print("Today is a game day. Game time: " +
+      //     gameDay.hour.toString() +
+      //     " to " +
+      //     (gameDay.hour + 3).toString());
       if (lastSeen.hour >= gameDay.hour && lastSeen.hour <= gameDay.hour + 3) {
-        print("Player active");
+        // print("Player active");
 
         var t = await Firestore.instance.collection("users").getDocuments();
         usersATM = t.documents.length.toString() + " aktiivista käyttäjää";
