@@ -255,6 +255,7 @@ class _PictureCardListState extends State<PictureCardList> {
         .collection('imagesForBestImageVoting')
         .where('dateTaken', isEqualTo: today)
          .where('photographerName', isEqualTo: User.instance.displayName)
+         .where('photographerID', isEqualTo: User.instance.uid)
         .where('imgUrl', isEqualTo: img.imgUrl)
         .limit(1) //limit documents to 1
         .getDocuments()

@@ -255,7 +255,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
     var imagesRef = await Firestore.instance
         .collection('imagesForBestImageVoting')
-        .where('imgUrl', isEqualTo:("bestPictureCompetition/" + imgName))
+        .where('imgUrl', isEqualTo: ("bestPictureCompetition/" + imgName))
         .limit(1)
         .getDocuments();
 
@@ -265,16 +265,15 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       imgName = indexAddon.toString() + imgName;
       indexAddon++;
       imagesRef = await Firestore.instance
-        .collection('imagesForBestImageVoting')
-        .where('imgUrl', isEqualTo:("bestPictureCompetition/" + imgName))
-        .limit(1)
-        .getDocuments();
+          .collection('imagesForBestImageVoting')
+          .where('imgUrl', isEqualTo: ("bestPictureCompetition/" + imgName))
+          .limit(1)
+          .getDocuments();
     } while (imagesRef.documents.length > 0);
 
     //reference to the location/file folder in firestorage
     StorageReference reference =
         _storage.ref().child('bestPictureCompetition/').child(imgName);
-
 
     //print('Reference: ' + reference.toString());
 
@@ -291,15 +290,16 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       //add picture to database document with the needed voting parameters
       String photographerName = User.instance.displayName;
       if (photographerName == null || photographerName == '') {
-        photographerName = 'Anon';
+        photographerName = 'MIA';
       }
 
       await Firestore.instance
           .collection('imagesForBestImageVoting')
           .document()
           .setData({
-        'photographerName':
-            photographerName, //this should be the user's name. User.instance.displayName
+        'photographerName': User.instance
+            .displayName, //this should be the user's name. User.instance.displayName
+        'photographerID': User.instance.uid,
         'imgUrl': 'bestPictureCompetition/' + imgName,
         'downloadUrl': downloadUrl,
         'totalVotes': 0,
