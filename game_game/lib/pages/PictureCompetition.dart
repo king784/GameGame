@@ -29,6 +29,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
   void initState() {
     super.initState();
     getIscompetitionOn();
+    getIsPictureAdded();
   }
 
   @override
