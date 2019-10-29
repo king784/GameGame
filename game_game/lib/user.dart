@@ -77,38 +77,39 @@ class User {
     });
   }
 
-  List<DateTime> GetVisitedGamesList(Map<String, dynamic> json)
-  {
-    var tempTimes = json['visitedGames'];
-
-    List<DateTime> tempTimesList = tempTimes.cast<DateTime>();
-    for (int i = 0; i < tempTimesList.length; i++) {
-      tempTimesList.add(tempTimesList[i]);
+  List<DateTime> GetVisitedGamesList(List<dynamic> temp) {
+    //should you change this all suffering and the demise is on your shoulders
+    List<DateTime> tempTimesList = new List<DateTime>();
+    for (int i = 0; i < temp.length; i++) {
+      Timestamp tempTimestamp = temp[i] as Timestamp;
+      tempTimesList.add(tempTimestamp.toDate());
     }
-
     return tempTimesList;
   }
 
-  void getVisitedGamesFromDB() async
-  {
-    QuerySnapshot querySnapshot =
-        await Firestore.instance.collection('users').where('uid', isEqualTo: uid).limit(1).getDocuments();
-        if(querySnapshot.documents.length <= 0){
-          return;
-        }
-      visitedGames = GetVisitedGamesList(querySnapshot.documents[0].data);
-      print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
+  void getVisitedGamesFromDB() async {
+    print("GetVisitedGamesFromDB Start");
+    QuerySnapshot querySnapshot = await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .limit(1)
+        .getDocuments();
+    if (querySnapshot.documents.length <= 0) {
+      return;
+    }
+    visitedGames =
+        GetVisitedGamesList(querySnapshot.documents[0]['visitedGames']);
+    print(Global.greenPen(
+        "VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
   }
 
-  void getPictureWins(DocumentReference dr)
-  {
+  void getPictureWins(DocumentReference dr) {
     dr.get().then((DocumentSnapshot ds) {
       pictureWins = ds['pictureWins'];
     });
   }
 
-  void voteForPlayer() async
-  {
+  void voteForPlayer() async {
     playerVotes--;
     QuerySnapshot userQuery = await Firestore.instance
         .collection('users')
@@ -127,8 +128,7 @@ class User {
     );
   }
 
-  void voteForImage() async
-  {
+  void voteForImage() async {
     imageVotes--;
     QuerySnapshot userQuery = await Firestore.instance
         .collection('users')
