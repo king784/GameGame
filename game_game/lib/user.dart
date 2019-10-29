@@ -92,7 +92,7 @@ class User {
   void getVisitedGamesFromDB() async
   {
     QuerySnapshot querySnapshot =
-        await Firestore.instance.collection('users').reference().where('uid', isEqualTo: uid).limit(1).getDocuments();
+        await Firestore.instance.collection('users').where('uid', isEqualTo: uid).limit(1).getDocuments();
         if(querySnapshot.documents.length <= 0){
           return;
         }
