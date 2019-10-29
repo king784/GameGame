@@ -22,7 +22,7 @@ class PictureCompetition extends StatefulWidget {
 class _PictureCompetitionState extends State<PictureCompetition> {
   bool competitionStatusChecked = false;
   bool competitionIsOn = false; //get this from database
-  bool pictureAdded; //get this from the user
+  bool pictureAdded = true; //get this from the user
   bool pictureAddedCheck = false;
 
   @override
