@@ -14,6 +14,7 @@ class User {
   String uid;
   bool VIP;
   bool bannedFromChat;
+  bool pictureAddedForCompetition;
   int watchedGames;
   int maxVotes, playerVotes, imageVotes;
   int pictureWins;
@@ -26,6 +27,7 @@ class User {
     this.bannedFromChat = false;
     this.watchedGames = 0;
     this.pictureWins = 0;
+    this.pictureAddedForCompetition = false;
 
     if (VIP == true) {
       this.maxVotes = 5;
