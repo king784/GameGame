@@ -140,7 +140,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
             ),
           ),
         );
-      } else if (competitionIsOn && !pictureAddedCheck) {
+      } else if (!pictureAddedCheck) {
         return SizedBox.shrink();
       } else {
         return Card(
@@ -263,6 +263,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
 
   updatePictureAdded(bool b) async {
     pictureAdded = b;
+    User.instance.pictureAddedForCompetition = b;
     //database as well
     await Firestore.instance
         .collection('users')
@@ -279,6 +280,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         });
       });
     });
+
+    setState(() {});
   }
 
   _addFileToDatabase(File img) async {
