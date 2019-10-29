@@ -32,7 +32,7 @@ class _PictureCardListState extends State<PictureCardList> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('imagesForBestImageVoting')
-          .where('dateTaken', isEqualTo: today)//include pictures taken today
+          .where('dateTaken', isEqualTo: today) //include pictures taken today
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.data == null) {
@@ -223,12 +223,10 @@ class _PictureCardListState extends State<PictureCardList> {
                         FontAwesomeIcons.plus,
                       ),
                       onPressed: () {
-                        if(User.instance.imageVotes > 0)
-                        {
+                        print("User instance :" + User.instance.toString());
+                        if (User.instance.imageVotes > 0) {
                           _createImagePopUpDialog(context, dbImage);
-                        }
-                        else
-                        {
+                        } else {
                           Fluttertoast.showToast(
                             msg: 'Ei ääniä jäljellä.',
                             toastLength: prefix0.Toast.LENGTH_SHORT,
@@ -255,8 +253,8 @@ class _PictureCardListState extends State<PictureCardList> {
     await Firestore.instance //get the document with the matching parameters
         .collection('imagesForBestImageVoting')
         .where('dateTaken', isEqualTo: today)
-         .where('photographerName', isEqualTo: User.instance.displayName)
-         .where('photographerID', isEqualTo: User.instance.uid)
+        .where('photographerName', isEqualTo: User.instance.displayName)
+        .where('photographerID', isEqualTo: User.instance.uid)
         .where('imgUrl', isEqualTo: img.imgUrl)
         .limit(1) //limit documents to 1
         .getDocuments()
@@ -266,7 +264,8 @@ class _PictureCardListState extends State<PictureCardList> {
         DocumentSnapshot freshSnap = await transaction.get(val.documents[0]
             .reference); //get the reference  to our document we want to update
         await transaction.update(freshSnap.reference, {
-          'totalVotes': freshSnap['totalVotes'] + 1, //plus one to the totalVotes in database
+          'totalVotes': freshSnap['totalVotes'] +
+              1, //plus one to the totalVotes in database
         });
       });
     });
