@@ -202,7 +202,7 @@ class UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    print(_profile);
+    //print(_profile);
     return Column(children: <Widget>[
       Container(
           padding: EdgeInsets.all(20),

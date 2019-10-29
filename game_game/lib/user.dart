@@ -88,7 +88,7 @@ class User {
   }
 
   void getVisitedGamesFromDB() async {
-    print("GetVisitedGamesFromDB Start");
+    //print("GetVisitedGamesFromDB Start");
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection('users')
         .where('uid', isEqualTo: uid)
@@ -99,8 +99,7 @@ class User {
     }
     visitedGames =
         GetVisitedGamesList(querySnapshot.documents[0]['visitedGames']);
-    print(Global.greenPen(
-        "VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
+    //print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
   }
 
   void getPictureWins(DocumentReference dr) {
