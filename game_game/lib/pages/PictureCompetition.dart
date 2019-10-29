@@ -22,7 +22,8 @@ class PictureCompetition extends StatefulWidget {
 class _PictureCompetitionState extends State<PictureCompetition> {
   bool competitionStatusChecked = false;
   bool competitionIsOn = false; //get this from database
-  bool pictureAdded = false; //get this from the user
+  bool pictureAdded; //get this from the user
+  bool pictureAddedCheck = false;
 
   @override
   void initState() {
@@ -112,9 +113,9 @@ class _PictureCompetitionState extends State<PictureCompetition> {
   _addingPictureWidget() {
     //let user add their own pic if they haven't done it yet
     if (!competitionIsOn) {
-      return Text("");
+      return SizedBox.shrink();
     } else {
-      if (!pictureAdded) {
+      if (!pictureAdded && pictureAddedCheck) {
         return Padding(
           padding: const EdgeInsets.all(15),
           child: SizedBox(
@@ -138,6 +139,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
             ),
           ),
         );
+      } else if (competitionIsOn && !pictureAddedCheck) {
+        return SizedBox.shrink();
       } else {
         return Card(
           child: Padding(
@@ -183,6 +186,20 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     setState(() {});
   }
 
+  Future<void> getIsPictureAdded() async {
+    //check if the competition is on
+    final QuerySnapshot result = await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: User.instance.uid)
+        .limit(1)
+        .getDocuments();
+    pictureAdded = result.documents[0]['picturesAddedForCompetition'];
+    //print(result.documents[0]['competitionIsOn'].toString());
+    pictureAddedCheck = true;
+
+    setState(() {});
+  }
+
 //help from here https://youtu.be/7uqmY6le4xk
 
   choosePictureToAdd() async {
@@ -218,8 +235,9 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                             child: Text('Lähetä',
                                 style: Theme.of(context).textTheme.body1),
                             onPressed: () {
-                              _addFileToDatabase(
-                                  image); //add the image to database
+                              //add the image to database
+                              _addFileToDatabase(image);
+                              updatePictureAdded(true);
                               Navigator.of(context).pop(context);
                             },
                             color: Theme.of(context).accentColor,
@@ -240,6 +258,26 @@ class _PictureCompetitionState extends State<PictureCompetition> {
               );
             },
           );
+  }
+
+  updatePictureAdded(bool b) async {
+    pictureAdded = b;
+    //database as well
+    await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: (User.instance.uid))
+        .limit(1)
+        .getDocuments()
+        .then((val) {
+      Firestore.instance.runTransaction((transaction) async {
+        //update the info in the document in database
+        DocumentSnapshot freshSnap = await transaction.get(val.documents[0]
+            .reference); //get the reference  to our document we want to update
+        await transaction.update(freshSnap.reference, {
+          'picturesAddedForCompetition': b,
+        });
+      });
+    });
   }
 
   _addFileToDatabase(File img) async {

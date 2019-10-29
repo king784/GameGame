@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_testuu/Navigation.dart';
-import 'package:flutter_testuu/pages/startPage.dart';
 import 'package:flutter_testuu/user.dart';
-import 'package:flutter_testuu/user.dart' as prefix0;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,7 +21,6 @@ class UserAuthentication extends StatelessWidget {
       User user = User.instance;
       firstTime = true;
     }
-    // TODO: implement build
     return MaterialApp(
       title: "Kirjautuminen",
       theme: MasterTheme.mainTheme,
@@ -130,8 +126,8 @@ class AuthService {
     }, merge: true);
     }
     
-    int imageVotes;
-    int playerVotes;
+    int imageVotes;//probably old code
+    int playerVotes;//also probably old
     User.instance.displayName = user.displayName;
     User.instance.email = googleUser.email;
     User.instance.uid = user.uid;
@@ -150,6 +146,7 @@ class AuthService {
       {
         playerVotes = 1;
         imageVotes = 1;
+        User.instance.pictureAddedForCompetition = false;
         User.instance.playerVotes = 1;
         User.instance.imageVotes = 1;
       }
@@ -157,6 +154,7 @@ class AuthService {
       {
         playerVotes = 0;
         imageVotes = 0;
+        User.instance.pictureAddedForCompetition = true;
         User.instance.playerVotes = 0;
         User.instance.imageVotes = 0;
       }
@@ -165,6 +163,7 @@ class AuthService {
       'email': googleUser.email,
       'playerVotes': playerVotes,
       'imageVotes': imageVotes,
+      'picturesAddedForCompetition': false,
 
       //These may be unnecessary :D
       'photoUrl': user.photoUrl,
@@ -229,7 +228,6 @@ class UserProfileState extends State<UserProfile> {
 class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
           return StreamBuilder(
         stream: authService.user,
         builder: (context, snapshot) {
