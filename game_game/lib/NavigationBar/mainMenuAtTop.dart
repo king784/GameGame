@@ -82,7 +82,7 @@ class NavBarState extends State<NavBar> {
                 }),
                 _menuButton(items[1], function: () {
                   activeIndex = 1;
-                  Navigation.openHomePage(context);
+                  Navigation.openGameLiveViewPage(context);
                 }),
                 _menuButton(items[2], function: () {
                   activeIndex = 2;

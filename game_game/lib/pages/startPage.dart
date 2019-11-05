@@ -229,16 +229,16 @@ class _StartState extends State<Start> {
         LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
     locationUpdateTimer =
         Timer.periodic(Duration(seconds: 5), (Timer t) => checkUserLocation());
-    StreamSubscription<Position> positionStream = geolocator
-        .getPositionStream(locationOptions)
-        .listen((Position position) {
-      print(position == null
-          ? 'Unknown'
-          : position.latitude.toString() +
-              ', ' +
-              position.longitude.toString());
-      checkUserLocation();
-    });
+    // StreamSubscription<Position> positionStream = geolocator
+    //     .getPositionStream(locationOptions)
+    //     .listen((Position position) {
+    //   print(position == null
+    //       ? 'Unknown'
+    //       : position.latitude.toString() +
+    //           ', ' +
+    //           position.longitude.toString());
+    //   checkUserLocation();
+    // });
 
     checkUserLocation();
   }

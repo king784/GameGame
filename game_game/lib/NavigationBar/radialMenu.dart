@@ -90,7 +90,7 @@ class RadialAnimation extends StatelessWidget {
               _buildButton(15,
                   color: MasterTheme.btnColours[1],
                   icon: FontAwesomeIcons.basketballBall,
-                  function: () => Navigation.openHomePage(context)),
+                  function: () => Navigation.openGameLiveViewPage(context)),
                   // function: () => Navigation.openPage(context, 'home')),
 
                   //open activities page
