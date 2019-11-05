@@ -55,7 +55,10 @@ class User {
   }
 
   void visitGame(DateTime newGameDate) async {
-    visitedGames.add(newGameDate);
+    if(!visitedGames.contains(newGameDate))
+    {
+      visitedGames.add(newGameDate);
+    }
 
     await Firestore.instance //get the document with the matching parameters
         .collection('users')
