@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'Navigation.dart';
+import 'NavigationBar/Navigation.dart';
 import 'Themes/MasterTheme.dart';
 import 'Globals.dart';
 import 'dart:math';

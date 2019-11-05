@@ -4,8 +4,8 @@ import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../UserAndLocation.dart';
 import 'Navigation.dart';
-import 'UserAndLocation.dart';
 
 class MenuItem {
   final String name;

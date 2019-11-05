@@ -1,18 +1,16 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_testuu/Globals.dart';
+import 'package:flutter_testuu/NavigationBar/Navigation.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/pages/pictureCard.dart';
 import 'package:flutter_testuu/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
-import '../Navigation.dart';
 
 class PictureCompetition extends StatefulWidget {
   @override

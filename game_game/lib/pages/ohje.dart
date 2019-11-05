@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_testuu/Globals.dart';
-
-import '../topBar.dart';
 
 class Ohje extends StatefulWidget {
   @override

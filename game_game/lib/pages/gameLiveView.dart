@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 
 import '../Globals.dart';
-import '../topBar.dart';
 
-class Home extends StatefulWidget {
+class GameLiveView extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _GameLiveViewState createState() => _GameLiveViewState();
 }
 
-class _HomeState extends State<Home> {
+class _GameLiveViewState extends State<GameLiveView> {
   int homePoints = 0, opponentPoints = 0;
   String homeLogo, opponentLogo, homeTeamName, opponentTeamName;
   double _logoSize = 100;

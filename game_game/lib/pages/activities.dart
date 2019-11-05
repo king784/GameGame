@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_testuu/NavigationBar/Navigation.dart';
+import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../Globals.dart';
-import '../Navigation.dart';
-import '../topBar.dart';
 
 class Activities extends StatefulWidget {
   @override

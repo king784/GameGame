@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_testuu/Admin/ImageVoteAdmin.dart';
+import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
-
 import 'package:flutter_testuu/Globals.dart';
-
-import '../topBar.dart';
 import '../user.dart';
 
 class UserPage extends StatefulWidget {

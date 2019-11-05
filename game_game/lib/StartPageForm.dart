@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Globals.dart';
-import 'package:flutter_testuu/Navigation.dart';
 import 'package:flutter_testuu/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+import 'NavigationBar/Navigation.dart';
 import 'Themes/MasterTheme.dart';
 
 class StartPageForm extends StatefulWidget {

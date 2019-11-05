@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/NavigationBar/Navigation.dart';
+import 'package:flutter_testuu/NavigationBar/mainMenuAtTop.dart';
 import 'package:flutter_testuu/StartPageForm.dart';
 import 'package:flutter_testuu/UserAndLocation.dart';
-import 'package:flutter_testuu/mainMenuAtTop.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import '../Globals.dart';
-import '../Navigation.dart';
 import 'package:geolocator/geolocator.dart';
 
 class Start extends StatefulWidget {

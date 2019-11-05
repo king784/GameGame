@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Admin/AddQuestions.dart';
 import 'package:flutter_testuu/Trivia.dart';
 import 'package:flutter_testuu/Voting.dart';
-import 'Globals.dart';
+import 'package:flutter_testuu/pages/gameLiveView.dart';
 import 'package:flutter_testuu/pages/PictureCompetition.dart';
-//import 'package:routing_prep/main.dart';
 
 import 'package:flutter_testuu/pages/activities.dart';
 import 'package:flutter_testuu/pages/ohje.dart';
 import 'package:flutter_testuu/pages/startPage.dart';
-import 'package:flutter_testuu/pages/userPageNoMenu.dart';
-import './pages/home.dart';
-import './pages/userPage.dart';
-import 'UserAuthentication.dart';
+import 'package:flutter_testuu/pages/userPage.dart';
+
+import '../Globals.dart';
+import '../UserAuthentication.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,13 +22,13 @@ class RouteGenerator {
         Global.CURRENTROUTE = "/startPage";
         return MaterialPageRoute(builder: (_) => Start());
 
-      case '/home':
-        Global.CURRENTROUTE = "/home";
+      case '/gameLiveView':
+        Global.CURRENTROUTE = "/gameLiveView";
         if (args is String) {
           return MaterialPageRoute(
             settings: RouteSettings(
                 isInitialRoute: true), //stops the transition animation
-            builder: (_) => Home(),
+            builder: (_) => GameLiveView(),
           );
         }
         return _errorRoute();
@@ -60,16 +59,6 @@ class RouteGenerator {
           return MaterialPageRoute(
             settings: RouteSettings(isInitialRoute: true),
             builder: (_) => UserPage(),
-          );
-        }
-        return _errorRoute();
-
-      case '/userPageWithoutMenu':
-        Global.CURRENTROUTE = "/userPageWithoutMenu";
-        if (args is String) {
-          return MaterialPageRoute(
-            settings: RouteSettings(isInitialRoute: true),
-            builder: (_) => UserPageWithoutMenu(),
           );
         }
         return _errorRoute();

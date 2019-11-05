@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'dart:math';
 import 'Globals.dart';
-import 'Navigation.dart';
+import 'NavigationBar/Navigation.dart';
 import 'Themes/MasterTheme.dart';
 import 'user.dart';
 
