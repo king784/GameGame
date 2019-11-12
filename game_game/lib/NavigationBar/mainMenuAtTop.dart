@@ -36,7 +36,7 @@ class NavBarState extends State<NavBar> {
     ),
     MenuItem(
       x: -0.33,
-      name: 'home',
+      name: 'gameLiveView',
       color: MasterTheme.btnColours[1],
       icon: FontAwesomeIcons.basketballBall,
     ),

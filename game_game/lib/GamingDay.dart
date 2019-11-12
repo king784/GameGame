@@ -15,6 +15,7 @@ class GamingDay {
   bool gameDay = false;
   bool gameDayHasBeenChecked = false;
 
+  // If gameday hasn't been checked, this function checks it.
   void IsGameDay()
   {
     if(!gameDayHasBeenChecked)
