@@ -9,7 +9,7 @@ class User {
     return _instance;
   }
 
-  String displayName;
+  String displayName = "";
   String email;
   String uid;
   bool VIP;

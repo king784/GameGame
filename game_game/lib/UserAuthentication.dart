@@ -4,6 +4,7 @@ import 'package:flutter_testuu/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
+//import 'package:';
 
 import 'Themes/MasterTheme.dart';
 import 'StartPageForm.dart';
@@ -174,8 +175,12 @@ class AuthService {
     });
   }
 
-  void signOut() {
-    _auth.signOut();
+  void signOut() async{
+    // Firebase sign out
+    await _auth.signOut();
+
+    // Google sign out
+    await _googleSignIn.signOut();
   }
 }
 
@@ -221,7 +226,8 @@ class UserProfileState extends State<UserProfile> {
     if(_profile.toString() == "{}")
       return "Et ole vielä kirjautunut sisään.";
     else
-      return "Kirjauduttu käyttäjällä:\n" + _profile.toString();
+      return "Kirjauduttu käyttäjällä:\n" + User.instance.displayName;
+
   }
 }
 

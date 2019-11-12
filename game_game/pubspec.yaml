@@ -48,7 +48,7 @@ dependencies:
   overlay_support: ^1.0.0
   ansicolor: ^1.0.2
   fluttertoast: ^3.1.0
-
+  shared_preferences: ^0.5.4
 
 
   # The following adds the Cupertino Icons font to your application.
