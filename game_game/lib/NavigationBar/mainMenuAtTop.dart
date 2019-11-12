@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/GamingDay.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -63,9 +64,9 @@ class NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    if (!gameDayHasBeenChecked) {
+    if (!GamingDay.instance.gameDayHasBeenChecked) {
       //check if today is a gaming day, but only once
-      getCompetitionDay();
+      GamingDay.instance.IsGameDay();
     }
     return Container(
       height: 80,
@@ -200,37 +201,5 @@ class NavBarState extends State<NavBar> {
         ),
       );
     }
-  }
-
-  //check if today's a game day
-  Future<void> getCompetitionDay() async {
-    //check if the competition is on
-    final QuerySnapshot result =
-        await Firestore.instance //get the gaing day collection from firebase
-            .collection('gamingDay')
-            .limit(1) //limits documents to one
-            .getDocuments();
-    Timestamp gamingDay =
-        result.documents[0]['activeDay']; //convert the gotten value to date
-    //print("Game day: " +gamingDay.toDate().toString() +", today is: " + DateTime.now().toString());
-
-    if (areDatesSame(gamingDay.toDate(), DateTime.now())) {
-      //check agains today
-      gameDay = true;
-    }
-
-    gameDayHasBeenChecked = true;
-    setState(() {});
-  }
-
-  bool areDatesSame(DateTime first, DateTime second) {
-    if (first.year == second.year) {
-      if (first.month == second.month) {
-        if (first.day == second.day) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 }

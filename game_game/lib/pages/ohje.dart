@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/NavigationBar/Navigation.dart';
+import 'package:flutter_testuu/NavigationBar/mainMenuAtTop.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_testuu/Globals.dart';
+import 'package:flutter_testuu/GamingDay.dart';
 
 class Ohje extends StatefulWidget {
   @override
@@ -16,6 +19,12 @@ class _OhjeState extends State<Ohje> {
 
   @override
   Widget build(BuildContext context) {
+    if(GamingDay.gamingDayPrivate() == null)
+    {
+      GamingDay gd = GamingDay.instance;
+      GamingDay.instance.IsGameDay();
+    }
+
     return WillPopScope(
       //onwill popscope disables the use of the android back button
       onWillPop: () async => false,
@@ -59,7 +68,10 @@ class _OhjeState extends State<Ohje> {
                                   padding: EdgeInsets.all(paddingVal),
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.user),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      NavBarState.activeIndex = 0;
+                                      Navigation.openUserPage(context);
+                                    },
                                     color: MasterTheme.btnColours[0],
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,
@@ -91,7 +103,13 @@ class _OhjeState extends State<Ohje> {
                                   padding: EdgeInsets.all(paddingVal),
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.basketballBall),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if(GamingDay.instance.gameDay)
+                                      {
+                                        NavBarState.activeIndex = 1;
+                                        Navigation.openGameLiveViewPage(context);
+                                      }
+                                    },
                                     color: MasterTheme.btnColours[1],
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,
@@ -126,7 +144,13 @@ class _OhjeState extends State<Ohje> {
                                   padding: EdgeInsets.all(paddingVal),
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.gamepad),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if(GamingDay.instance.gameDay)
+                                      {
+                                        NavBarState.activeIndex = 2;
+                                        Navigation.openActivitiesPage(context);
+                                      }
+                                    },
                                     color: MasterTheme.btnColours[2],
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,

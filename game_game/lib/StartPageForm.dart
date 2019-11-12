@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/GamingDay.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +30,7 @@ class StartPageFormState extends State<StartPageForm> {
     super.initState();
     Global.gameCodeCorrect = false;
 
-    getGamingDay();
+    GamingDay.instance.IsGameDay();
     getCurrentGameCode();
   }
 
@@ -63,9 +64,9 @@ class StartPageFormState extends State<StartPageForm> {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';
                   } else if (value.toString() == _currentGameCode &&
-                      correctGameDay) {
+                      GamingDay.instance.gameDay) {
                     // User has visited game
-                    if (checkValidDay()) {
+                    if (GamingDay.instance.gameDay) {
                       User.instance.visitGame(startTime);
                     }
                     Global.gameCodeCorrect = true;
@@ -80,7 +81,7 @@ class StartPageFormState extends State<StartPageForm> {
               child: MaterialButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    if (!correctGameDay) {
+                    if (!GamingDay.instance.gameDay) {
                       waitText = 'Tänään ei ole peliä.';
                     } else {
                       waitText = 'Odota. Luetaan...';
@@ -128,28 +129,28 @@ class StartPageFormState extends State<StartPageForm> {
     _currentGameCode = gameCode;
   }
 
-  bool checkValidDay() {
-    todayDT = DateTime.now();
-    return (todayDT.isAfter(startTime) && todayDT.isBefore(endTime));
-  }
+  // bool checkValidDay() {
+  //   todayDT = DateTime.now();
+  //   return (todayDT.isAfter(startTime) && todayDT.isBefore(endTime));
+  // }
 
-  Future<void> getGamingDay() async {
-    Timestamp todayTS = Timestamp.now();
-    int today = DateTime.now().millisecondsSinceEpoch;
-    todayDT = DateTime.now();
-    final QuerySnapshot result = await Firestore
-        .instance //get collection of gamecodes where date is same today
-        .collection('gamingDay')
-        .where('activeDay', isLessThanOrEqualTo: todayTS)
-        .limit(1) //limits documents to one where the date is same
-        .getDocuments();
-    if (result.documents.length <= 0) {
-      correctGameDay = false;
-    } else {
-      Timestamp day = result.documents[0]['activeDay'];
-      startTime = day.toDate();
-      endTime = startTime.add(Duration(hours: 3));
-      correctGameDay = true;
-    }
-  }
+  // Future<void> getGamingDay() async {
+  //   Timestamp todayTS = Timestamp.now();
+  //   int today = DateTime.now().millisecondsSinceEpoch;
+  //   todayDT = DateTime.now();
+  //   final QuerySnapshot result = await Firestore
+  //       .instance //get collection of gamecodes where date is same today
+  //       .collection('gamingDay')
+  //       .where('activeDay', isLessThanOrEqualTo: todayTS)
+  //       .limit(1) //limits documents to one where the date is same
+  //       .getDocuments();
+  //   if (result.documents.length <= 0) {
+  //     correctGameDay = false;
+  //   } else {
+  //     Timestamp day = result.documents[0]['activeDay'];
+  //     startTime = day.toDate();
+  //     endTime = startTime.add(Duration(hours: 3));
+  //     correctGameDay = true;
+  //   }
+  // }
 }
