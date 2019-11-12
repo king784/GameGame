@@ -27,7 +27,7 @@ class NavBarState extends State<NavBar> {
   bool gameDay = false;
   bool gameDayHasBeenChecked = false;
 
-  List items = [
+  static List items = [
     MenuItem(
       x: -1.0,
       name: 'user',
@@ -54,7 +54,7 @@ class NavBarState extends State<NavBar> {
     ),
   ];
 
-  MenuItem active;
+  static MenuItem active;
 
   @override
   void initState() {

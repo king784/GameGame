@@ -3,6 +3,7 @@ import 'package:flutter_testuu/NavigationBar/Navigation.dart';
 import 'package:flutter_testuu/NavigationBar/mainMenuAtTop.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/UserAndLocation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/GamingDay.dart';
@@ -70,6 +71,7 @@ class _OhjeState extends State<Ohje> {
                                     icon: Icon(FontAwesomeIcons.user),
                                     onPressed: () {
                                       NavBarState.activeIndex = 0;
+                                      NavBarState.active = NavBarState.items[0];
                                       Navigation.openUserPage(context);
                                     },
                                     color: MasterTheme.btnColours[0],
@@ -104,9 +106,10 @@ class _OhjeState extends State<Ohje> {
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.basketballBall),
                                     onPressed: () {
-                                      if(GamingDay.instance.gameDay)
+                                      if(GamingDay.instance.gameDay && UserLocation.userLocOkForMenu && Global.gameCodeCorrect)
                                       {
                                         NavBarState.activeIndex = 1;
+                                        NavBarState.active = NavBarState.items[1];
                                         Navigation.openGameLiveViewPage(context);
                                       }
                                     },
@@ -145,9 +148,10 @@ class _OhjeState extends State<Ohje> {
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.gamepad),
                                     onPressed: () {
-                                      if(GamingDay.instance.gameDay)
+                                      if(GamingDay.instance.gameDay && UserLocation.userLocOkForMenu && Global.gameCodeCorrect)
                                       {
                                         NavBarState.activeIndex = 2;
+                                        NavBarState.active = NavBarState.items[2];
                                         Navigation.openActivitiesPage(context);
                                       }
                                     },
