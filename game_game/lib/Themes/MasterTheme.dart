@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MasterTheme {
-  static Brightness brightness = Brightness.dark;
-  static Color primaryColour = Colors.white;
-  static Color accentColour = Color.fromARGB(255, 0, 127, 0);
+  static Brightness brightness = Brightness.light;
+  static Color ktpGreen = Color.fromARGB(255, 0, 127, 0);
   static Color bgBoxColour = Color.fromARGB(175, 65, 68, 68);
-  static Color awayTeamColour = Colors.red;
   static Color disabledColor = Colors.grey;
 
   static String regular = 'Quicksand-Regular';
@@ -35,8 +33,8 @@ class MasterTheme {
 
   static ThemeData mainTheme = new ThemeData(
     brightness: brightness,
-    primaryColor: primaryColour,
-    accentColor: accentColour,
+    primaryColor: ktpGreen,
+    accentColor: Colors.black,
     disabledColor: disabledColor,
     fontFamily: regular,
     textTheme: TextTheme(
@@ -44,22 +42,50 @@ class MasterTheme {
       title: TextStyle(fontFamily: semibold, fontSize: titleSize),
       subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
       display1: TextStyle(
-          fontFamily: medium, fontSize: display1Size, color: accentColour),
+          fontFamily: medium, fontSize: display1Size, color: ktpGreen),
       display2: TextStyle(
-          fontFamily: medium, fontSize: display2Size, color: accentColour),
+          fontFamily: medium, fontSize: display2Size, color: Colors.black),
       display3: TextStyle(
-          fontFamily: bold, fontSize: display3Size, color: accentColour),
+          fontFamily: bold, fontSize: display3Size, color: Colors.black),
       display4: TextStyle(
-          fontFamily: bold, fontSize: display4Size, color: accentColour),
-      body1: TextStyle(
-          fontFamily: regular, fontSize: body1Size, color: primaryColour),
-      body2: TextStyle(fontFamily: regular, fontSize: body2Size),
+          fontFamily: bold, fontSize: display4Size, color: ktpGreen),
+      body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: Colors.black),
+      body2: TextStyle(fontFamily: regular, fontSize: body2Size, color: Colors.black),
       caption: TextStyle(
-          fontFamily: regular, fontSize: body2Size, color: accentColour),
+          fontFamily: regular, fontSize: body2Size, color: Colors.black),
       subhead: TextStyle(
-          fontFamily: semibold, fontSize: btnFontSize, color: accentColour),
+          fontFamily: semibold, fontSize: btnFontSize, color: Colors.black),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: primaryColour),
+          fontFamily: light, fontSize: btnFontSize, color: ktpGreen),
+    ),
+  );
+
+  static ThemeData playerVotingTheme = new ThemeData(
+    brightness: brightness,
+    primaryColor: ktpGreen,
+    accentColor: Colors.black,
+    disabledColor: disabledColor,
+    fontFamily: regular,
+    textTheme: TextTheme(
+      headline: TextStyle(fontFamily: bold, fontSize: headlineSize),
+      title: TextStyle(fontFamily: semibold, fontSize: titleSize),
+      subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
+      display1: TextStyle(
+          fontFamily: medium, fontSize: 70, color: ktpGreen),
+      display2: TextStyle(
+          fontFamily: medium, fontSize: 60, color: Colors.black),
+      display3: TextStyle(
+          fontFamily: bold, fontSize: 50, color: Colors.black),
+      display4: TextStyle(
+          fontFamily: bold, fontSize: 40, color: ktpGreen),
+      body1: TextStyle(fontFamily: regular, fontSize: 25, color: ktpGreen),
+      body2: TextStyle(fontFamily: regular, fontSize: 25, color: Colors.black),
+      caption: TextStyle(
+          fontFamily: regular, fontSize: 20, color: Colors.black),
+      subhead: TextStyle(
+          fontFamily: semibold, fontSize: 30, color: Colors.black),
+      button: TextStyle(
+          fontFamily: light, fontSize: btnFontSize, color: ktpGreen),
     ),
   );
 }
