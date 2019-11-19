@@ -64,6 +64,9 @@ class PlayerVotingState extends State<PlayerVoting> {
   @override
   Widget build(BuildContext context) {
     if (valuesOnce) {
+      // DEBUG
+      User.CreateDebugUser();
+      // END DEBUG
       addFilterListener();
       getGameValues();
       valuesOnce = false;
@@ -74,7 +77,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         data: MasterTheme.mainTheme,
         child: Scaffold(
           body: SafeArea(
-                      child: Column(
+            child: Column(
               children: <Widget>[
                 Align(
                   alignment: Alignment.topCenter,
@@ -245,7 +248,8 @@ class PlayerVotingState extends State<PlayerVoting> {
                 items: sortValues.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value,
+                    child: Text(
+                      value,
                       style: Theme.of(context).textTheme.caption,
                     ),
                   );
@@ -507,22 +511,9 @@ class PlayerVotingState extends State<PlayerVoting> {
         for (int i = 0; i < allPlayers.length; i++) {
           list.add(ListTile(
             onTap: () {
-              giveVote(i);
+              giveVote(allPlayers[i]);
             },
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                    style: setTeamColors(i),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(allPlayers[i].currentVotes.toString()),
-                ),
-              ],
-            ),
+            title: playerCard(context, allPlayers[i]),
           ));
         }
         setState(() {
@@ -573,23 +564,9 @@ class PlayerVotingState extends State<PlayerVoting> {
           //dense: true,
           onTap: () {
             //giveVote(i);
-            showVotePopup(i);
+            showVotePopup(allPlayers[i]);
           },
-          title: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                  style: setTeamColors(i),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(allPlayers[i].currentVotes.toString()),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
+          title: playerCard(context, allPlayers[i]),
         ));
       }
       setState(() {
@@ -610,22 +587,9 @@ class PlayerVotingState extends State<PlayerVoting> {
           list.add(ListTile(
             onTap: () {
               //giveVote(i);
-              showVotePopup(i);
+              showVotePopup(allPlayers[i]);
             },
-            title: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    allPlayers[i].firstName + ' ' + allPlayers[i].lastName,
-                    style: setTeamColors(i),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(filteredPlayers[i].currentVotes.toString()),
-                ),
-              ],
-            ),
+            title: playerCard(context, allPlayers[i]),
           ));
         }
       }
@@ -675,6 +639,107 @@ class PlayerVotingState extends State<PlayerVoting> {
     );
   }
 
+  Widget playerCard(BuildContext context, Player player) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          // Team name
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  player.team,
+                  style: Theme.of(context).textTheme.display4,
+                ),
+              ),
+            ],
+          ),
+
+          // Player name
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(player.lastName),
+                        Text(player.firstName),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 8.0, 0.0),
+                  child: Text(
+                    player.playerNumber.toString(),
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                )),
+                Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        player.currentVotes.toString(),
+                        style: Theme.of(context).textTheme.display4,
+                      ),
+                    ),
+                      ],
+                    ),
+                    
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        (User.instance.playerVotes > 0)
+                            ? FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                child: Icon(FontAwesomeIcons.plus,
+                                    color: getTeamColor(player.team)),
+                                onPressed: () {
+                                  showVotePopup(player);
+                                },
+                              )
+                            : SizedBox.shrink(),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Row(
+  //           children: <Widget>[
+  //             Expanded(
+  //               child: Text(
+  //                 player.firstName + ' ' + player.lastName + ' ' + player.playerNumber.toString(),
+  //                 style: setTeamColorsByName(player.team),
+  //               ),
+  //             ),
+  //             Container(
+  //               padding: const EdgeInsets.all(10.0),
+  //               child: Text(player.currentVotes.toString()),
+  //             ),
+  //           ],
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         ),
+
   TextStyle setTeamColors(int i) {
     if (allPlayers[i].team == "KTP") {
       return TextStyle(
@@ -688,7 +753,28 @@ class PlayerVotingState extends State<PlayerVoting> {
     }
   }
 
-  void showVotePopup(int i) {
+  TextStyle setTeamColorsByName(String teamName) {
+    if (teamName == "KTP") {
+      return TextStyle(
+        color: MasterTheme.accentColour,
+        //background: Paint()..color = Colors.white,
+      );
+    } else {
+      return TextStyle(
+        color: MasterTheme.awayTeamColour,
+      );
+    }
+  }
+
+  Color getTeamColor(String teamName) {
+    if (teamName == "KTP") {
+      return MasterTheme.accentColour;
+    } else {
+      return Color(0);
+    }
+  }
+
+  void showVotePopup(Player player) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -697,14 +783,14 @@ class PlayerVotingState extends State<PlayerVoting> {
             data: MasterTheme.mainTheme,
             child: AlertDialog(
               title: new Text("Annatko äänen pelaajalle " +
-                  allPlayers[i].firstName +
+                  player.firstName +
                   " " +
-                  allPlayers[i].lastName),
+                  player.lastName),
               actions: <Widget>[
                 new FlatButton(
                   child: new Text("Kyllä"),
                   onPressed: () {
-                    giveVote(i);
+                    giveVote(player);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -761,7 +847,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     );
   }
 
-  void giveVote(int i) async {
+  void giveVote(Player player) async {
     // allPlayers[i].currentVotes++;
     // DocumentReference gamesRef = await Firestore.instance
     //     .collection('players')
@@ -800,7 +886,7 @@ class PlayerVotingState extends State<PlayerVoting> {
     User.instance.voteForPlayer();
     QuerySnapshot playersQuery = await Firestore.instance
         .collection('players')
-        .where('ID', isEqualTo: allPlayers[i].id)
+        .where('ID', isEqualTo: player.id)
         .getDocuments();
     final DocumentReference playerRef = Firestore.instance
         .collection('players')
@@ -813,8 +899,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         }).then(
           (data) {
             setState(
-              () {
-              },
+              () {},
             );
           },
         );
