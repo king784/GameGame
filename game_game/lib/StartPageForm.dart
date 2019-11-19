@@ -92,7 +92,7 @@ class StartPageFormState extends State<StartPageForm> {
                     );
                   }
                 },
-                color: MasterTheme.accentColour,
+                color: MasterTheme.ktpGreen,
                 padding: EdgeInsets.all(5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -100,11 +100,15 @@ class StartPageFormState extends State<StartPageForm> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: Text("Tarkista"),
+                      child: Text("Tarkista",
+                          style: Theme.of(context).textTheme.button),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: Icon(FontAwesomeIcons.arrowRight),
+                      child: Icon(
+                        FontAwesomeIcons.arrowRight,
+                        color: MasterTheme.primaryColour,
+                      ),
                     ),
                   ],
                 ),

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class MasterTheme {
   static Brightness brightness = Brightness.light;
   
-  static Color accentColour =Colors.black;
-  static Color primaryColour =Colors.white;
+  static Color accentColour = Colors.black;
   static Color awayTeamColour = Colors.black;
   static Color ktpGreen = Color.fromARGB(255, 0, 127, 0);
-  static Color bgBoxColour = Color.fromARGB(175, 65, 68, 68);
+  static Color bgBoxColour = Color.fromARGB(70, 0, 0, 0);
+  static Color opaqueWhite = Color.fromARGB(175, 255, 255, 255);
+  static Color primaryColour = Colors.white;
   static Color disabledColor = Colors.grey;
 
   static String regular = 'Quicksand-Regular';
@@ -54,13 +55,13 @@ class MasterTheme {
       display4: TextStyle(
           fontFamily: bold, fontSize: display4Size, color: ktpGreen),
       body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: Colors.black),
-      body2: TextStyle(fontFamily: regular, fontSize: body2Size, color: Colors.black),
+      body2: TextStyle(fontFamily: regular, fontSize: body2Size, color:primaryColour),
       caption: TextStyle(
-          fontFamily: regular, fontSize: body2Size, color: Colors.black),
+          fontFamily: regular, fontSize: body2Size, color: primaryColour),
       subhead: TextStyle(
           fontFamily: semibold, fontSize: btnFontSize, color: Colors.black),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: ktpGreen),
+          fontFamily: light, fontSize: btnFontSize, color: primaryColour),
     ),
   );
 

@@ -42,6 +42,7 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
+            backgroundColor: MasterTheme.ktpGreen,
             body: SafeArea(
               child: Column(
                 children: <Widget>[
@@ -78,46 +79,56 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
+            backgroundColor: MasterTheme.ktpGreen,
             body: SafeArea(
-              child: ListView(
+              child: Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(messageAboutLocation,
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.caption),
+                  Expanded(
+                    child: Container(
+                      height: Global.SCREENHEIGHT,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Text(messageAboutLocation,
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Card(
+                                color: MasterTheme.primaryColour,
+                                child: StartPageForm(),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Card(
-                      child: StartPageForm(),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(40),
-                    child: MaterialButton(
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: RaisedButton(
                       //go to user statistics
                       onPressed: () {
                         NavBarState.activeIndex = 0;
                         Navigation.openUserPage(context);
                       },
                       // Navigation.openPage(context, 'userPageWithoutMenu'),
-                      color: MasterTheme.bgBoxColour,
-                      padding: EdgeInsets.all(2),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Näytä vain omat tietoni",
-                              style: Theme.of(context).textTheme.body1),
-                        ],
-                      ),
+                      color: MasterTheme.accentColour,
+                      padding: EdgeInsets.all(10),
+                      child: Text("Näytä vain omat tietoni",
+                      textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.button),
                     ),
                   ),
                 ],
@@ -143,6 +154,7 @@ class _StartState extends State<Start> {
         child: Theme(
           data: MasterTheme.mainTheme,
           child: Scaffold(
+            backgroundColor: MasterTheme.ktpGreen,
             body: SafeArea(
               child: ListView(
                 children: <Widget>[

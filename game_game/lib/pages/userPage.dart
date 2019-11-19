@@ -94,27 +94,18 @@ class _UserPageState extends State<UserPage> {
                 ),
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: Global.SCREENWIDTH / 2,
-                      child: RaisedButton(
-                        color: MasterTheme.awayTeamColour,
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: Text(
-                                'Poista käyttäjä',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.button,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          signOut();
-                          print("Tilisi poistettu äksdee :D");
-                        },
+                    child: RaisedButton(
+                      color: MasterTheme.accentColour,
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'Poista käyttäjä',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.button,
                       ),
+                      onPressed: () {
+                        signOut();
+                        print("Tilisi poistettu äksdee :D");
+                      },
                     )),
               ],
             ),
