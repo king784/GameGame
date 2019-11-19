@@ -11,6 +11,17 @@ class User {
     return _instance;
   }
 
+  static void CreateDebugUser()
+  {
+    User user = User.instance;
+    User.instance.displayName = "yee";
+    User.instance.email = "email";
+    User.instance.uid = "1234";
+    User.instance.pictureAddedForCompetition = false;
+    User.instance.playerVotes = 1;
+    User.instance.imageVotes = 1;
+  }
+
   String displayName = "";
   String email;
   String uid;
