@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class MasterTheme {
   static Brightness brightness = Brightness.light;
+  
+  static Color accentColour =Colors.black;
+  static Color primaryColour =Colors.white;
   static Color ktpGreen = Color.fromARGB(255, 0, 127, 0);
   static Color bgBoxColour = Color.fromARGB(175, 65, 68, 68);
   static Color disabledColor = Colors.grey;
