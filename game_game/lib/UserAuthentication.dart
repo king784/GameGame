@@ -88,6 +88,7 @@ class AuthService {
     try
     {
       googleUser = await _googleSignIn.signIn();
+      User.instance.googleSignIn = googleUser;
     } catch(error)
     {
       print(error);
@@ -104,6 +105,7 @@ class AuthService {
     print("AuthCred done");
 
     final FirebaseUser user = await _auth.signInWithCredential(credential);
+    User.instance.firebaseAuth = _auth;
     print("signed in " + user.displayName);
 
     updateUserData(user);
@@ -173,6 +175,7 @@ class AuthService {
       'phoneNumber': user.phoneNumber
     }, merge: true);
     });
+
   }
 
   void signOut() async{

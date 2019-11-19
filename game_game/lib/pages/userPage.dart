@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
 import '../user.dart';
+import 'package:flutter_testuu/UserAuthentication.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -28,6 +30,7 @@ class _UserPageState extends State<UserPage> {
                 topBar(context, 'Omat tilastot'),
                 Expanded(
                   child: Container(
+                    height: Global.SCREENHEIGHT,
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
@@ -89,6 +92,30 @@ class _UserPageState extends State<UserPage> {
                     ),
                   ),
                 ),
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: Global.SCREENWIDTH / 2,
+                      child: RaisedButton(
+                        color: MasterTheme.awayTeamColour,
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: Text(
+                                'Poista käyttäjä',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.button,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          signOut();
+                          print("Tilisi poistettu äksdee :D");
+                        },
+                      ),
+                    )),
               ],
             ),
           ),
@@ -99,5 +126,17 @@ class _UserPageState extends State<UserPage> {
 
   void getSeenGames() {
     this.watchedGames = 0;
+  }
+
+  void signOut() async {
+    User.instance.firebaseAuth.signOut();
+    print("Firebase authenticator sign out");
+    User.instance.googleSignIn.signOut();
+    print("Google sign out");
+
+    //Delete!!
+    //Tyhjennä databeis
+
+    User.instance.user.delete();
   }
 }

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_testuu/Globals.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class User {
   // instance of current user
@@ -19,6 +21,10 @@ class User {
   int maxVotes, playerVotes, imageVotes;
   int pictureWins;
   List<DateTime> visitedGames = new List<DateTime>();
+
+  FirebaseAuth firebaseAuth;
+  GoogleSignIn googleSignIn;
+  FirebaseUser user;
 
   User(String username, String newEmail, bool vip) {
     this.displayName = username;
