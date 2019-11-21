@@ -187,7 +187,7 @@ class _StartState extends State<Start> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text("Tarkista omat tiedot",
-                                style: Theme.of(context).textTheme.body1),
+                                style: Theme.of(context).textTheme.button),
                             Padding(
                               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Icon(
@@ -200,24 +200,24 @@ class _StartState extends State<Start> {
                       ),
                     ),
                   ),
-                  MaterialButton(
-                    //heinous dev button for bypassing location
-                    onPressed: () {
-                      NavBarState.activeIndex = 0;
-                      Navigation.openUserPage(context);
-                    },
-                    // Navigation.openPage(context, 'userPageWithoutMenu'),
-                    color: MasterTheme.bgBoxColour,
-                    padding: EdgeInsets.all(2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text("DevBtn",
-                            style: Theme.of(context).textTheme.body1),
-                      ],
-                    ),
-                  ),
+                  // MaterialButton(
+                  //   //heinous dev button for bypassing location
+                  //   onPressed: () {
+                  //     NavBarState.activeIndex = 0;
+                  //     Navigation.openUserPage(context);
+                  //   },
+                  //   // Navigation.openPage(context, 'userPageWithoutMenu'),
+                  //   color: MasterTheme.bgBoxColour,
+                  //   padding: EdgeInsets.all(2),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: <Widget>[
+                  //       Text("DevBtn",
+                  //           style: Theme.of(context).textTheme.body1),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

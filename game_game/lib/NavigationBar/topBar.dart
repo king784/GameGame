@@ -9,7 +9,7 @@ topBar(BuildContext context, String pageTitle) {
       NavBar(),
       Padding(
         padding: EdgeInsets.all(10),
-        child: Text(
+        child: Text(//the page title for example "Help"
           pageTitle,
           textAlign: TextAlign.right,
           style: Theme.of(context).textTheme.title,

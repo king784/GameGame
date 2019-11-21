@@ -48,7 +48,7 @@ class _GameLiveViewState extends State<GameLiveView> {
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: MasterTheme.primaryColour,
+                                    color: MasterTheme.ktpGreen,
                                     width: 2,
                                     style: BorderStyle.solid)),
                             child: Row(
