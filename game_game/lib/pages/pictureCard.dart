@@ -221,6 +221,7 @@ class _PictureCardListState extends State<PictureCardList> {
                     child: RaisedButton(
                       child: Icon(
                         FontAwesomeIcons.plus,
+                        color: MasterTheme.primaryColour,
                       ),
                       onPressed: () {
                         print("User instance :" + User.instance.toString());

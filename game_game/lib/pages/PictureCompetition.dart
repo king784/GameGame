@@ -124,12 +124,13 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                 children: <Widget>[
                   Expanded(
                     child: Text('Lisää tästä oma kuvasi kisaan',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.subtitle),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.button),
                   ),
                   Icon(
                     FontAwesomeIcons.solidImage,
                     size: 50,
+                    color: MasterTheme.primaryColour,
                   ),
                 ],
               ),
@@ -235,22 +236,22 @@ class _PictureCompetitionState extends State<PictureCompetition> {
                         children: <Widget>[
                           RaisedButton(
                             child: Text('Lähetä',
-                                style: Theme.of(context).textTheme.body1),
+                                style: Theme.of(context).textTheme.button),
                             onPressed: () {
                               //add the image to database
                               _addFileToDatabase(image);
                               updatePictureAdded(true);
                               Navigator.of(context).pop(context);
                             },
-                            color: Theme.of(context).accentColor,
+                            color: MasterTheme.ktpGreen,
                           ),
                           RaisedButton(
                             child: Text('Ei sittenkään',
-                                style: Theme.of(context).textTheme.body1),
+                                style: Theme.of(context).textTheme.button),
                             onPressed: () {
                               Navigator.of(context).pop(context);
                             }, //close popup
-                            color: MasterTheme.awayTeamColour,
+                            color: MasterTheme.accentColour,
                           ),
                         ],
                       ),
