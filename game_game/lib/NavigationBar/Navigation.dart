@@ -66,4 +66,10 @@ class Navigation {
     // Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
     Navigator.of(context).pushReplacementNamed('/addQuestions', arguments: 'addQuestions');
   }
+
+  static void openUserAuthentication(BuildContext context) {
+    // Navigator.pop(context);
+    // Navigator.of(context).pushNamed('/trivia', arguments: 'trivia');
+    Navigator.of(context).pushReplacementNamed('/userAuthentication', arguments: 'userAuthentication');
+  }
 }

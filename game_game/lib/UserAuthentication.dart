@@ -17,8 +17,7 @@ class UserAuthentication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(!firstTime)
-    {
+    if (!firstTime) {
       User user = User.instance;
       firstTime = true;
     }
@@ -85,15 +84,13 @@ class AuthService {
 
   Future<FirebaseUser> googleSignIn() async {
     loading.add(true);
-    try
-    {
+    try {
       googleUser = await _googleSignIn.signIn();
       User.instance.googleSignIn = googleUser;
-    } catch(error)
-    {
+    } catch (error) {
       print(error);
     }
-    
+
     print("SignIn done");
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     print("Auth done");
@@ -116,21 +113,20 @@ class AuthService {
 
     // Need to check if user already exists. If not, set picture wins to 0
     final QuerySnapshot result = await Firestore.instance
-    .collection('users')
-    .where('uid', isEqualTo: user.uid)
-    .limit(1)
-    .getDocuments();
+        .collection('users')
+        .where('uid', isEqualTo: user.uid)
+        .limit(1)
+        .getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
-    if(documents.length <= 0)
-    {
+    if (documents.length <= 0) {
       ref.setData({
-      'pictureWins': 0,
-      'lastSeen': DateTime.now(),
-    }, merge: true);
+        'pictureWins': 0,
+        'lastSeen': DateTime.now(),
+      }, merge: true);
     }
-    
-    int imageVotes;//probably old code
-    int playerVotes;//also probably old
+
+    int imageVotes; //probably old code
+    int playerVotes; //also probably old
     User.instance.displayName = user.displayName;
     User.instance.email = googleUser.email;
     User.instance.uid = user.uid;
@@ -141,20 +137,18 @@ class AuthService {
       Timestamp lastSeenFromDataBase = ds['lastSeen'];
 
       DateTime startOfToday = DateTime.now();
-      startOfToday = DateTime(startOfToday.year, startOfToday.month, startOfToday.day, 0, 0, 0, 0);
+      startOfToday = DateTime(
+          startOfToday.year, startOfToday.month, startOfToday.day, 0, 0, 0, 0);
       DateTime lastSeen = lastSeenFromDataBase.toDate();
       print("lastSeen: " + lastSeen.toString());
 
-      if(lastSeen.isAfter(startOfToday))
-      {
+      if (lastSeen.isAfter(startOfToday)) {
         playerVotes = 1;
         imageVotes = 1;
         User.instance.pictureAddedForCompetition = false;
         User.instance.playerVotes = 1;
         User.instance.imageVotes = 1;
-      }
-      else
-      {
+      } else {
         playerVotes = 0;
         imageVotes = 0;
         User.instance.pictureAddedForCompetition = true;
@@ -162,28 +156,47 @@ class AuthService {
         User.instance.imageVotes = 0;
       }
       ref.setData({
-      'uid': user.uid,
-      'email': googleUser.email,
-      'playerVotes': playerVotes,
-      'imageVotes': imageVotes,
-      'picturesAddedForCompetition': false,
+        'uid': user.uid,
+        'email': googleUser.email,
+        'playerVotes': playerVotes,
+        'imageVotes': imageVotes,
+        'picturesAddedForCompetition': false,
 
-      //These may be unnecessary :D
-      'photoUrl': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now(),
-      'phoneNumber': user.phoneNumber
-    }, merge: true);
+        //These may be unnecessary :D
+        'photoUrl': user.photoUrl,
+        'displayName': user.displayName,
+        'lastSeen': DateTime.now(),
+        'phoneNumber': user.phoneNumber
+      }, merge: true);
     });
-
   }
 
-  void signOut() async{
+  void signOut() async {
     // Firebase sign out
     await _auth.signOut();
 
     // Google sign out
     await _googleSignIn.signOut();
+  }
+
+  void deleteUser() async {
+    // Firebase sign out
+    await _auth.signOut();
+
+    // Google sign out
+    await _googleSignIn.signOut();
+
+    await Firestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: User.instance.uid)
+        .limit(1)
+        .getDocuments()
+        .then((val) {
+      val.documents[0].reference.delete();
+    });
+
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    user.delete();
   }
 }
 
@@ -214,75 +227,78 @@ class UserProfileState extends State<UserProfile> {
     return Column(children: <Widget>[
       Container(
           padding: EdgeInsets.all(20),
-          child: Text(this.profileName(),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 20
-          ),
-          )
-          ),
+          child: Text(
+            this.profileName(),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20),
+          )),
       //Text(_loading.toString())
     ]);
   }
 
-  String profileName(){
-    if(_profile.toString() == "{}")
+  String profileName() {
+    if (_profile.toString() == "{}")
       return "Et ole vielä kirjautunut sisään.";
     else
       return "Kirjauduttu käyttäjällä:\n" + User.instance.displayName;
-
   }
 }
 
 class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-          return StreamBuilder(
-        stream: authService.user,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: <Widget>[
-
-                MaterialButton(
-                  onPressed: (){ 
+    return StreamBuilder(
+      stream: authService.user,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: <Widget>[
+              MaterialButton(
+                  onPressed: () {
                     //Navigation.openStartPage(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyApp()),
-                );
-                  
+                    );
                   },
-                    color: Colors.green,
-                    textColor: Colors.black,
-                    child: Text("Jatka käyttäjällä")),
-
-                MaterialButton(
+                  color: Colors.green,
+                  textColor: Colors.black,
+                  child: Text("Jatka käyttäjällä")),
+              MaterialButton(
                   onPressed: () => authService.signOut(),
-                    color: Colors.red,
-                    textColor: Colors.black,
-                    child: Text("Kirjaudu ulos")),
-
-              ],
-            );
-          } else {
-            return MaterialButton(
-              onPressed: () => authService.googleSignIn(),
-              color: Colors.white54,
-              textColor: Colors.black,
-              child: Text("Kirjaudu sisään Google tilillä"),
-            );
-          }
-        },
+                  color: Colors.red,
+                  textColor: Colors.black,
+                  child: Text("Kirjaudu ulos")),
+            ],
+          );
+        } else {
+          return Column(
+            children: <Widget>[
+              MaterialButton(
+                onPressed: () => authService.googleSignIn(),
+                color: Colors.white54,
+                textColor: Colors.black,
+                child: Text("Kirjaudu sisään Google tilillä"),
+              ),
+              Text(
+                "Kirjautumalla sisään tietosi tallentuvat NSA:n sekä FBI:n tietokantaan.. :D",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
-class MaterialStartPage extends StatelessWidget
-{
+
+class MaterialStartPage extends StatelessWidget {
   @override
-  Widget build(BuildContext ctx)
-  {
-    return MaterialApp(theme: MasterTheme.mainTheme,
-    home: StartPageForm(),);
+  Widget build(BuildContext ctx) {
+    return MaterialApp(
+      theme: MasterTheme.mainTheme,
+      home: StartPageForm(),
+    );
   }
 }

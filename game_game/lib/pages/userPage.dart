@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/NavigationBar/Navigation.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
@@ -120,14 +121,22 @@ class _UserPageState extends State<UserPage> {
   }
 
   void signOut() async {
-    User.instance.firebaseAuth.signOut();
-    print("Firebase authenticator sign out");
-    User.instance.googleSignIn.signOut();
-    print("Google sign out");
+    authService.deleteUser(); //authService.user;
+
+    // User.instance.firebaseAuth.signOut();
+    // print("Firebase authenticator sign out");
+    // User.instance.googleSignIn.signOut();
+    // print("Google sign out");
 
     //Delete!!
     //Tyhjennä databeis
 
-    User.instance.user.delete();
+    //User.instance.user.delete();
+
+    Navigation.openUserAuthentication(context);
+
+    setState(() {
+      
+    });
   }
 }
