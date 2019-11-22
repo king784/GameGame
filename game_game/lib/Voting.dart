@@ -173,12 +173,7 @@ class PlayerVotingState extends State<PlayerVoting> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(30.0),
-            child: Text(
-              timeText,
-              style: TextStyle(
-                fontSize: 30,
-              ),
-            ),
+            child: Text(timeText, style: Theme.of(context).textTheme.display4),
           ),
           Column(
             children: <Widget>[
@@ -250,7 +245,7 @@ class PlayerVotingState extends State<PlayerVoting> {
                     value: value,
                     child: Text(
                       value,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.body1,
                     ),
                   );
                 }).toList(),
@@ -668,8 +663,10 @@ class PlayerVotingState extends State<PlayerVoting> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(player.lastName),
-                        Text(player.firstName),
+                        Text(player.lastName,
+                            style: Theme.of(context).textTheme.body2),
+                        Text(player.firstName,
+                            style: Theme.of(context).textTheme.body2),
                       ],
                     ),
                   ),
@@ -689,15 +686,14 @@ class PlayerVotingState extends State<PlayerVoting> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        player.currentVotes.toString(),
-                        style: Theme.of(context).textTheme.display4,
-                      ),
-                    ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            player.currentVotes.toString(),
+                            style: Theme.of(context).textTheme.display4,
+                          ),
+                        ),
                       ],
                     ),
-                    
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -788,7 +784,12 @@ class PlayerVotingState extends State<PlayerVoting> {
                   player.lastName),
               actions: <Widget>[
                 new FlatButton(
-                  child: new Text("Kyllä"),
+                  child: new Text(
+                    "Kyllä",
+                    style: TextStyle(
+                      color: MasterTheme.ktpGreen,
+                    ),
+                  ),
                   onPressed: () {
                     giveVote(player);
                     Navigator.of(context).pop();
@@ -812,7 +813,7 @@ class PlayerVotingState extends State<PlayerVoting> {
           return Theme(
             data: MasterTheme.mainTheme,
             child: AlertDialog(
-              title: new Text("Ei ääniä jäljellä."),
+              title: new Text("Ei ääniä jäljellä.", style: Theme.of(context).textTheme.caption),
               actions: <Widget>[
                 new FlatButton(
                   child: new Row(
