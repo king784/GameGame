@@ -28,6 +28,8 @@ class User {
   bool VIP;
   bool bannedFromChat;
   bool pictureAddedForCompetition;
+  bool hasAcceptedTerms = false;
+  bool hasLoadedUser = false;
   int watchedGames;
   int maxVotes, playerVotes, imageVotes;
   int pictureWins;
@@ -117,8 +119,12 @@ class User {
     if (querySnapshot.documents.length <= 0) {
       return;
     }
-    visitedGames =
+    if(querySnapshot.documents[0]['visitedGames'] != null)
+    {
+      visitedGames =
         GetVisitedGamesList(querySnapshot.documents[0]['visitedGames']);
+    }
+    
     //print(Global.greenPen("VISITEDGAMESLENGTH!!!: " + visitedGames.length.toString()));
   }
 

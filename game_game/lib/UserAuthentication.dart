@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Globals.dart';
+import 'package:flutter_testuu/TermsPopUp.dart';
 import 'package:flutter_testuu/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 //import 'package:';
 
+import 'NavigationBar/Navigation.dart';
 import 'Themes/MasterTheme.dart';
 import 'StartPageForm.dart';
 import 'pages/main.dart';
@@ -34,20 +37,6 @@ class UserAuthentication extends StatelessWidget {
             children: <Widget>[
               UserProfile(),
               LoginButton(),
-
-              //MaterialButton(
-              //  onPressed: () => authService.googleSignIn(),
-              //  color: Colors.white54,
-              //  textColor: Colors.black,
-              //  child: Text("Kirjaudu sisään Google tilillä"),
-              //),
-
-              //MaterialButton(
-              //  onPressed: () => authService.signOut(),
-              //  color: Colors.red,
-              //  textColor: Colors.black,
-              //  child: Text("Poistu"),
-              //)
             ],
           ),
         ),
@@ -119,7 +108,10 @@ class AuthService {
         .getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
     if (documents.length <= 0) {
+      List<Timestamp> tempTime = new List<Timestamp>();
       ref.setData({
+        'visitedGames': tempTime,
+        'acceptedTerms': false,
         'pictureWins': 0,
         'lastSeen': DateTime.now(),
       }, merge: true);
@@ -168,6 +160,9 @@ class AuthService {
         'lastSeen': DateTime.now(),
         'phoneNumber': user.phoneNumber
       }, merge: true);
+
+      User.instance.hasAcceptedTerms = ds['acceptedTerms'];
+      User.instance.hasLoadedUser = true; // Userdata has been loaded.
     });
   }
 
@@ -255,17 +250,15 @@ class LoginButton extends StatelessWidget {
             children: <Widget>[
               MaterialButton(
                   onPressed: () {
-                    //Navigation.openStartPage(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
-                    );
+                    termsPopUp(context, function:(){Navigation.openStartPage(context);});
                   },
                   color: Colors.green,
                   textColor: Colors.black,
                   child: Text("Jatka käyttäjällä")),
               MaterialButton(
-                  onPressed: () => authService.signOut(),
+                  onPressed: () {
+                    authService.signOut();
+                  },
                   color: Colors.red,
                   textColor: Colors.black,
                   child: Text("Kirjaudu ulos")),
@@ -280,17 +273,13 @@ class LoginButton extends StatelessWidget {
                 textColor: Colors.black,
                 child: Text("Kirjaudu sisään Google tilillä"),
               ),
-              Text(
-                "Kirjautumalla sisään tietosi tallentuvat NSA:n sekä FBI:n tietokantaan.. :D",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
-              ),
             ],
           );
         }
       },
     );
   }
+
 }
 
 class MaterialStartPage extends StatelessWidget {
