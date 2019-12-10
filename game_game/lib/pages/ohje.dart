@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/NavigationBar/Navigation.dart';
+import 'package:flutter_testuu/NavigationBar/mainMenuAtTop.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -60,7 +61,10 @@ class _OhjeState extends State<Ohje> {
                                   padding: EdgeInsets.all(paddingVal),
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.user),
-                                    onPressed: () => Navigation.openUserPage(context),
+                                    onPressed: () {
+                                      NavBarState.setActiveIndex(0);
+                                      Navigation.openUserPage(context);
+                                      },
                                     color: MasterTheme.btnColours[0],
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,
@@ -127,7 +131,10 @@ class _OhjeState extends State<Ohje> {
                                   padding: EdgeInsets.all(paddingVal),
                                   child: IconButton(
                                     icon: Icon(FontAwesomeIcons.gamepad),
-                                    onPressed: ()=> Navigation.openActivitiesPage(context),
+                                    onPressed: () {
+                                      NavBarState.setActiveIndex(1);
+                                      Navigation.openActivitiesPage(context);
+                                      },
                                     color: MasterTheme.btnColours[2],
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,

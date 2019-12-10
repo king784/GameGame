@@ -10,7 +10,7 @@ import 'Navigation.dart';
 class MenuItem {
   final String name;
   final Color color;
-  final double x;
+  double x;
   final IconData icon;
 
   MenuItem({this.name, this.color, this.x, this.icon});
@@ -22,43 +22,22 @@ class NavBar extends StatefulWidget {
 
 class NavBarState extends State<NavBar> {
   static int activeIndex =
-      3; //page that is active at the start, starts from help page so 3
+      2; //page that is active at the start, starts from help page so 3
   bool gameDay = false;
   bool gameDayHasBeenChecked = false;
 
-  List items = [
-    MenuItem(
-      x: -1.0,
-      name: 'user',
-      color: MasterTheme.btnColours[0],
-      icon: FontAwesomeIcons.user,
-    ),
-    MenuItem(
-      x: -0.33,
-      name: 'home',
-      color: MasterTheme.btnColours[1],
-      icon: FontAwesomeIcons.basketballBall,
-    ),
-    MenuItem(
-      x: 0.33,
-      name: 'activities',
-      color: MasterTheme.btnColours[2],
-      icon: FontAwesomeIcons.gamepad,
-    ),
-    MenuItem(
-      x: 1.0,
-      name: 'help',
-      color: MasterTheme.btnColours[3],
-      icon: FontAwesomeIcons.question,
-    ),
-  ];
+  static List items = new List();
 
-  MenuItem active;
+  static MenuItem active;
 
   @override
   void initState() {
     super.initState();
-    active = items[activeIndex]; //first active item
+    initializeMenuItems();
+    if(active == null)
+    {
+      active = items[items.length-1];
+    }
   }
 
   @override
@@ -80,16 +59,16 @@ class NavBarState extends State<NavBar> {
                   activeIndex = 0;
                   Navigation.openUserPage(context);
                 }),
+                // _menuButton(items[1], function: () {
+                //   activeIndex = 1;
+                //   Navigation.openGameLiveViewPage(context);
+                // }),
                 _menuButton(items[1], function: () {
                   activeIndex = 1;
-                  Navigation.openGameLiveViewPage(context);
+                  Navigation.openActivitiesPage(context);
                 }),
                 _menuButton(items[2], function: () {
                   activeIndex = 2;
-                  Navigation.openActivitiesPage(context);
-                }),
-                _menuButton(items[3], function: () {
-                  activeIndex = 3;
                   Navigation.openHelpPage(context);
                 }),
               ],
@@ -101,13 +80,60 @@ class NavBarState extends State<NavBar> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 1000),
               height: 8,
-              width: Global.SCREENWIDTH * 0.25,
+              width: Global.SCREENWIDTH * (1/items.length),
               color: active.color,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void initializeMenuItems()
+  {
+    items = [
+    MenuItem(
+      x: -1.0,
+      name: 'user',
+      color: MasterTheme.btnColours[0],
+      icon: FontAwesomeIcons.user,
+    ),
+    // MenuItem(
+    //   x: -0.33,
+    //   name: 'gameLiveView',
+    //   color: MasterTheme.btnColours[1],
+    //   icon: FontAwesomeIcons.basketballBall,
+    // ),
+    MenuItem(
+      x: 1.0,
+      name: 'activities',
+      color: MasterTheme.btnColours[2],
+      icon: FontAwesomeIcons.gamepad,
+    ),
+    MenuItem(
+      x: 1.0,
+      name: 'help',
+      color: MasterTheme.btnColours[3],
+      icon: FontAwesomeIcons.question,
+    ),
+  ];
+    // Calculate x correctly
+    for(int i = 0; i < items.length; i++)
+    {
+      // https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
+      // double percent = ((i/items.length) - 0) / (1-0);
+      // items[i].x = ((1 + 1) * percent) - 1; // (i/items.length);
+
+      double range2 = 1.0 + 1.0;
+      items[i].x = (i/(items.length-1));
+      items[i].x = items[i].x * range2 - 1;
+    }
+  }
+
+  static void setActiveIndex(int newIndex)
+  {
+    activeIndex = newIndex;
+    active = items[activeIndex];
   }
 
   Widget _menuButton(MenuItem item, {Function() function}) {
