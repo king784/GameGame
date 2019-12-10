@@ -53,7 +53,7 @@ class _OhjeState extends State<Ohje> {
                                   child: Text(
                                     'Omat tilastot',
                                     textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style: Theme.of(context).textTheme.subhead,
                                   ),
                                 ),
                                 Padding(
@@ -120,7 +120,7 @@ class _OhjeState extends State<Ohje> {
                                   child: Text(
                                     'Aktiviteetit',
                                     textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style: Theme.of(context).textTheme.subhead,
                                   ),
                                 ),
                                 Padding(

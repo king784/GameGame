@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_testuu/Assets/visualAssets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'dart:math';
@@ -79,43 +80,7 @@ class PlayerVotingState extends State<PlayerVoting> {
           body: SafeArea(
             child: Column(
               children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                            child: FloatingActionButton(
-                                heroTag: 'backBtn1',
-                                child: Icon(
-                                  FontAwesomeIcons.arrowLeft,
-                                  color: MasterTheme.accentColour,
-                                  size: 40,
-                                ),
-                                backgroundColor: Colors.transparent,
-                                //onPressed: () => Navigation.openPage(context, 'activities'),
-                                onPressed: () =>
-                                    Navigation.openActivitiesPage(context),
-                                elevation: 0),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text(
-                                'Pelaajaäänestys',
-                                textAlign: TextAlign.right,
-                                style: Theme.of(context).textTheme.title,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      playersGot ? _playerSortingBar() : SizedBox.shrink(),
-                    ],
-                  ),
-                ),
+                TopTitleBar(context, 'Pelaajaäänestys', function:(){ Navigation.openActivitiesPage(context);}),
                 Expanded(
                   child: Container(
                     child: SingleChildScrollView(
@@ -136,6 +101,7 @@ class PlayerVotingState extends State<PlayerVoting> {
   }
 
   _content() {
+    playersGot ? _playerSortingBar() : SizedBox.shrink();
     if (votingDone) {
       return Padding(
         padding: const EdgeInsets.all(10.0),
@@ -298,54 +264,55 @@ class PlayerVotingState extends State<PlayerVoting> {
     for (int i = 0; i < allPlayers.length; i++) {
       if (allPlayers[i].currentVotes == winnerVote) {
         winnerPlayers.add(
-          SizedBox(
-            width: Global.SCREENWIDTH * 0.8,
-            child: Card(
-              color: MasterTheme.bgBoxColour,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          allPlayers[i].firstName +
-                              ' ' +
-                              allPlayers[i].lastName,
-                          style: allPlayers[i].team ==
-                                  "KTP" // Check if home team or away
-                              ? new TextStyle(
-                                  color: MasterTheme.accentColour,
-                                  fontFamily: Theme.of(context)
-                                      .textTheme
-                                      .subhead
-                                      .fontFamily,
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .subhead
-                                      .fontSize)
-                              : new TextStyle(
-                                  color: MasterTheme.awayTeamColour,
-                                  fontFamily: Theme.of(context)
-                                      .textTheme
-                                      .subhead
-                                      .fontFamily,
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .subhead
-                                      .fontSize),
-                        ),
-                      ),
-                      Text(
-                        "Ääniä: " + allPlayers[i].currentVotes.toString(),
-                        style: Theme.of(context).textTheme.body1,
-                      )
-                    ]),
-              ),
-            ),
-          ),
+          _winnerPlayerCard(context, allPlayers[i])
+          // SizedBox(
+          //   width: Global.SCREENWIDTH * 0.8,
+          //   child: Card(
+          //     color: MasterTheme.bgBoxColour,
+          //     child: Padding(
+          //       padding: const EdgeInsets.all(15.0),
+          //       child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           children: <Widget>[
+          //             Padding(
+          //               padding: const EdgeInsets.all(15.0),
+          //               child: Text(
+          //                 allPlayers[i].firstName +
+          //                     ' ' +
+          //                     allPlayers[i].lastName,
+          //                 style: allPlayers[i].team ==
+          //                         "KTP" // Check if home team or away
+          //                     ? new TextStyle(
+          //                         color: MasterTheme.accentColour,
+          //                         fontFamily: Theme.of(context)
+          //                             .textTheme
+          //                             .subhead
+          //                             .fontFamily,
+          //                         fontSize: Theme.of(context)
+          //                             .textTheme
+          //                             .subhead
+          //                             .fontSize)
+          //                     : new TextStyle(
+          //                         color: MasterTheme.awayTeamColour,
+          //                         fontFamily: Theme.of(context)
+          //                             .textTheme
+          //                             .subhead
+          //                             .fontFamily,
+          //                         fontSize: Theme.of(context)
+          //                             .textTheme
+          //                             .subhead
+          //                             .fontSize),
+          //               ),
+          //             ),
+          //             Text(
+          //               "Ääniä: " + allPlayers[i].currentVotes.toString(),
+          //               style: Theme.of(context).textTheme.body1,
+          //             )
+          //           ]),
+          //     ),
+          //   ),
+          // ),
         );
       }
     }
@@ -710,6 +677,91 @@ class PlayerVotingState extends State<PlayerVoting> {
                             : SizedBox.shrink(),
                       ],
                     )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+_winnerPlayerCard(BuildContext context, Player player) {
+    return Card(
+      color: player.team == "KTP"? MasterTheme.ktpGreen:MasterTheme.awayTeamColour,
+      child: Column(
+        children: <Widget>[
+          // Team name
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  player.team,
+                  style: Theme.of(context).textTheme.display2,
+                ),
+              ),
+            ],
+          ),
+
+          // Player name
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(player.lastName,
+                            style: Theme.of(context).textTheme.body2),
+                        Text(player.firstName,
+                            style: Theme.of(context).textTheme.body2),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 8.0, 0.0),
+                  child: Text(
+                    player.playerNumber.toString(),
+                    style: Theme.of(context).textTheme.display2,
+                  ),
+                )),
+                Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Äänet:',
+                            style: Theme.of(context).textTheme.body2,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom:8.0),
+                          child: Text(
+                            player.currentVotes.toString(),
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  
                   ],
                 ),
               ],

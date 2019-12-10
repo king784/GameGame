@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Admin/AddQuestions.dart';
 import 'package:flutter_testuu/Trivia.dart';
-import 'package:flutter_testuu/Voting.dart';
+import 'package:flutter_testuu/PlayerVoting.dart';
 import 'package:flutter_testuu/pages/gameLiveView.dart';
 import 'package:flutter_testuu/pages/PictureCompetition.dart';
 
@@ -103,16 +103,6 @@ class RouteGenerator {
         }
         return _errorRoute();
 
-      case '/summary':
-        Global.CURRENTROUTE = "/summary";
-        if (args is String) {
-          return MaterialPageRoute(
-            settings: RouteSettings(isInitialRoute: true),
-            builder: (_) => Summary(),
-          );
-        }
-        return _errorRoute();
-
       case '/userAuthentication':
         if (args is String) {
           return MaterialPageRoute(
@@ -126,7 +116,6 @@ class RouteGenerator {
         return _errorRoute();
     }
   }
-
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
         settings: RouteSettings(isInitialRoute: true),

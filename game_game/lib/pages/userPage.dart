@@ -36,7 +36,7 @@ class _UserPageState extends State<UserPage> {
                     height: Global.SCREENHEIGHT,
                     child: SingleChildScrollView(
                       child: Column(
-                        children: <Widget>[                          
+                        children: <Widget>[
                           SizedBox(
                             width: screenWidth,
                             child: Card(
@@ -96,20 +96,11 @@ class _UserPageState extends State<UserPage> {
                   ),
                 ),
                 Align(
-                    alignment: Alignment.bottomCenter,
-                    child: RaisedButton(
-                      color: MasterTheme.accentColour,
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Poista käyttäjä',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                      onPressed: () {
-                        signOut();
-                        print("Tilisi poistettu äksdee :D");
-                      },
-                    )),
+                  alignment: Alignment.bottomCenter,
+                  child: NiceButton('Poista käyttäjä', context, function: () {
+                    signOut();
+                  }),
+                ),
               ],
             ),
           ),
@@ -137,8 +128,6 @@ class _UserPageState extends State<UserPage> {
 
     Navigation.openUserAuthentication(context);
 
-    setState(() {
-      
-    });
+    setState(() {});
   }
 }

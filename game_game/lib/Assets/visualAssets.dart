@@ -4,15 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
 
-NiceButton(String text, BuildContext context, Color colour,
-    {Function() function}) {
+NiceButton(String text, BuildContext context, {Function() function}) {
   double buttonWidth = Global.SCREENWIDTH * .9;
   return Padding(
     padding: const EdgeInsets.all(7.0),
     child: SizedBox(
       width: buttonWidth,
       child: RaisedButton(
-        color: colour,
+        color: MasterTheme.ktpGreen,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
@@ -29,8 +28,7 @@ NiceButton(String text, BuildContext context, Color colour,
   );
 }
 
-NiceButtonWithIcon(
-    String text, BuildContext context, IconData icon, Color colour,
+NiceButtonWithIcon(String text, BuildContext context, IconData icon,
     {Function() function}) {
   double buttonWidth = Global.SCREENWIDTH * .9;
   double iconSize = 50;
@@ -39,7 +37,7 @@ NiceButtonWithIcon(
     child: SizedBox(
       width: buttonWidth,
       child: RaisedButton(
-        color: colour,
+        color: MasterTheme.ktpGreen,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -72,33 +70,36 @@ NiceButtonWithIcon(
 TopTitleBar(BuildContext context, String title, {Function() function}) {
   return Align(
     alignment: Alignment.topCenter,
-    child: Row(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-          child: IconButton(
-              icon: Icon(
-                FontAwesomeIcons.arrowLeft,
-                color: MasterTheme.accentColour,
-                size: 40,
-              ),
-              color: Colors.transparent,
-              onPressed: () {
-                function();
-              },
-              tooltip: 'Takaisin'),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              title,
-              textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.title,
-            ),
+    child: Container(
+      color: MasterTheme.ktpGreen,
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+            child: IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.arrowLeft,
+                  color: MasterTheme.primaryColour,
+                  size: 40,
+                ),
+                color: Colors.transparent,
+                onPressed: () {
+                  function();
+                },
+                tooltip: 'Takaisin'),
           ),
-        )
-      ],
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                title,
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
