@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/Assets/visualAssets.dart';
 import 'package:flutter_testuu/NavigationBar/Navigation.dart';
 import 'package:flutter_testuu/NavigationBar/topBar.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
 import 'package:flutter_testuu/Globals.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../user.dart';
 import 'package:flutter_testuu/UserAuthentication.dart';
 
@@ -34,7 +36,7 @@ class _UserPageState extends State<UserPage> {
                     height: Global.SCREENHEIGHT,
                     child: SingleChildScrollView(
                       child: Column(
-                        children: <Widget>[
+                        children: <Widget>[                          
                           SizedBox(
                             width: screenWidth,
                             child: Card(

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_testuu/Assets/visualAssets.dart';
 import 'package:flutter_testuu/Globals.dart';
 import 'package:flutter_testuu/NavigationBar/Navigation.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
@@ -50,36 +51,39 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     if (competitionStatusChecked) {
       return Column(
         children: <Widget>[
-          Align(
-            alignment: Alignment.topCenter,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                  child: FloatingActionButton(
-                      heroTag: 'backBtn1',
-                      child: Icon(
-                        FontAwesomeIcons.arrowLeft,
-                        color: MasterTheme.accentColour,
-                        size: 40,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      onPressed: () => Navigation.openActivitiesPage(context),
-                      elevation: 0),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      'Kuvaäänestys',
-                      textAlign: TextAlign.right,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //   child: Row(
+          //     children: <Widget>[
+          //       Padding(
+          //         padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+          //         child: FloatingActionButton(
+          //             heroTag: 'backBtn1',
+          //             child: Icon(
+          //               FontAwesomeIcons.arrowLeft,
+          //               color: MasterTheme.accentColour,
+          //               size: 40,
+          //             ),
+          //             backgroundColor: Colors.transparent,
+          //             onPressed: () => Navigation.openActivitiesPage(context),
+          //             elevation: 0),
+          //       ),
+          //       Expanded(
+          //         child: Padding(
+          //           padding: EdgeInsets.all(20),
+          //           child: Text(
+          //             'Kuvaäänestys',
+          //             textAlign: TextAlign.right,
+          //             style: Theme.of(context).textTheme.title,
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          TopTitleBar(context, 'Kuvaäänestys', function: () {
+            Navigation.openActivitiesPage(context);
+          }),
           _addingPictureWidget(),
           Expanded(
             child: Container(

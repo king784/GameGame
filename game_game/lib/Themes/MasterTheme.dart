@@ -10,6 +10,7 @@ class MasterTheme {
   static Color opaqueWhite = Color.fromARGB(175, 255, 255, 255);
   static Color primaryColour = Colors.white;
   static Color disabledColor = Colors.grey;
+  static Color buttonColor = Colors.white;
 
   static String regular = 'Quicksand-Regular';
   static String bold = 'Quicksand-Bold';
@@ -90,7 +91,7 @@ class MasterTheme {
       subhead: TextStyle(
           fontFamily: semibold, fontSize: 30, color: Colors.black),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: ktpGreen),
+          fontFamily: light, fontSize: btnFontSize, color: buttonColor),
     ),
   );
 }
