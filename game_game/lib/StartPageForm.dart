@@ -46,7 +46,7 @@ class StartPageFormState extends State<StartPageForm> {
               child: Text(
                 'Syötä pelikoodi:',
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.display1
               ),
             ),
             Padding(

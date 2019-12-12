@@ -124,11 +124,11 @@ class _StartState extends State<Start> {
                         Navigation.openUserPage(context);
                       },
                       // Navigation.openPage(context, 'userPageWithoutMenu'),
-                      color: MasterTheme.accentColour,
+                      color: MasterTheme.primaryColour,
                       padding: EdgeInsets.all(10),
                       child: Text("Näytä vain omat tietoni",
                       textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.button),
+                          style: Theme.of(context).textTheme.body1),
                     ),
                   ),
                 ],

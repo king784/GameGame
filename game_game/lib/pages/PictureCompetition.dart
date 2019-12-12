@@ -98,13 +98,10 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         );
       } else {
         return Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text('Olet jo lisännyt oman kuvasi kisaan. Onnea!',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.caption),
-          ),
+          padding: EdgeInsets.all(20),
+          child: Text('Olet jo lisännyt oman kuvasi kisaan. Onnea!',
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.caption),
         );
       }
     }
