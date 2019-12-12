@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_testuu/Assets/visualAssets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'NavigationBar/Navigation.dart';
 import 'Themes/MasterTheme.dart';
@@ -116,37 +117,9 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                 body: SafeArea(
                   child: Column(
                     children: <Widget>[
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                              child: FloatingActionButton(
-                                  heroTag: 'backBtn1',
-                                  child: Icon(
-                                    FontAwesomeIcons.arrowLeft,
-                                    color: MasterTheme.accentColour,
-                                    size: 40,
-                                  ),
-                                  backgroundColor: Colors.transparent,
-                                  onPressed: () =>
-                                      Navigation.openActivitiesPage(context),
-                                  elevation: 0),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                  'Trivia',
-                                  textAlign: TextAlign.right,
-                                  style: Theme.of(context).textTheme.title,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      TopTitleBar(context, 'Trivia', function: () {
+                        Navigation.openActivitiesPage(context);
+                      }),
                       Expanded(
                         child: Container(
                           child: SingleChildScrollView(
@@ -157,7 +130,7 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.all(20.0),
                                   child: Text(
                                     "Trivia ei ole käynnissä nyt.",
-                                    style: Theme.of(context).textTheme.subtitle,
+                                    style: Theme.of(context).textTheme.subhead,
                                   ),
                                 ),
                               ],
@@ -180,38 +153,9 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                     body: SafeArea(
                       child: Column(
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                                  child: FloatingActionButton(
-                                      heroTag: 'backBtn1',
-                                      child: Icon(
-                                        FontAwesomeIcons.arrowLeft,
-                                        color: MasterTheme.accentColour,
-                                        size: 40,
-                                      ),
-                                      backgroundColor: Colors.transparent,
-                                      onPressed: () =>
-                                          Navigation.openActivitiesPage(
-                                              context),
-                                      elevation: 0),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Text(
-                                      'Trivia',
-                                      textAlign: TextAlign.right,
-                                      style: Theme.of(context).textTheme.title,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                          TopTitleBar(context, 'Trivia', function: () {
+                            Navigation.openActivitiesPage(context);
+                          }),
                           Expanded(
                             child: Container(
                               child: SingleChildScrollView(
@@ -246,50 +190,21 @@ class TriviaState extends State<Trivia> with TickerProviderStateMixin {
                     body: SafeArea(
                       child: Column(
                         children: <Widget>[
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                                  child: FloatingActionButton(
-                                      heroTag: 'backBtn1',
-                                      child: Icon(
-                                        FontAwesomeIcons.arrowLeft,
-                                        color: MasterTheme.accentColour,
-                                        size: 40,
-                                      ),
-                                      backgroundColor: Colors.transparent,
-                                      onPressed: () {
-                                        questions.clear();
-                                        questions.addAll(allQuestions);
-                                        currentQuestion = questions.removeAt(
-                                            Random().nextInt(questions.length));
-                                        questionNumber = 0;
-                                        finalScore = 0;
-                                        Navigation.openActivitiesPage(context);
-                                        // Navigation.openPage(context, 'activities');
-                                        questionsLoaded = true;
-                                        // customTimer.cancel();
-                                        customTimer = null;
-                                        timeLeft = 10;
-                                        Navigation.openActivitiesPage(context);
-                                      },
-                                      elevation: 0),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Text(
-                                      'Trivia',
-                                      textAlign: TextAlign.right,
-                                      style: Theme.of(context).textTheme.title,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                          TopTitleBar(context, 'Trivia', function: () {
+                            questions.clear();
+                            questions.addAll(allQuestions);
+                            currentQuestion = questions
+                                .removeAt(Random().nextInt(questions.length));
+                            questionNumber = 0;
+                            finalScore = 0;
+                            Navigation.openActivitiesPage(context);
+                            // Navigation.openPage(context, 'activities');
+                            questionsLoaded = true;
+                            // customTimer.cancel();
+                            customTimer = null;
+                            timeLeft = 10;
+                            Navigation.openActivitiesPage(context);
+                          }),
                           Expanded(
                             child: Container(
                               child: SingleChildScrollView(
@@ -728,89 +643,4 @@ String scoreText(final int score) {
   }
 
   return theText;
-}
-
-class Summary extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double buttonsWidth = screenWidth / 3;
-    double buttonHeight = screenHeight / 10;
-
-    // TODO: implement build
-    return new WillPopScope(
-        onWillPop: () async => false,
-        child: Theme(
-          data: MasterTheme.mainTheme,
-          child: Scaffold(
-            body: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                          child: FloatingActionButton(
-                              heroTag: 'backBtn5',
-                              child: Icon(
-                                FontAwesomeIcons.arrowLeft,
-                                color: MasterTheme.accentColour,
-                                size: 40,
-                              ),
-                              backgroundColor: Colors.transparent,
-                              //onPressed: () => Navigation.openPage(context, 'activities'),
-                              onPressed: () {
-                                if (allQuestions.length > 0) {
-                                  questions.clear();
-                                  questions.addAll(allQuestions);
-                                  currentQuestion = questions.removeAt(
-                                      Random().nextInt(questions.length));
-                                  //NextImage(currentQuestion.imagePath);
-                                  questionNumber = 0;
-                                  finalScore = 0;
-                                  questionsLoaded = true;
-                                  Navigation.openActivitiesPage(context);
-                                  // Navigation.openPage(context, 'activities');
-                                  // customTimer.cancel();
-                                  // customTimer = null;
-                                  // timeLeft = 10;
-                                }
-                              },
-                              elevation: 0),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              'Pelaajaäänestys',
-                              textAlign: TextAlign.right,
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          new Text(scoreText(finalScore),
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.display3),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ));
-  }
 }

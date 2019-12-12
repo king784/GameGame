@@ -38,18 +38,19 @@ class StartPageFormState extends State<StartPageForm> {
     return Form(
         key: _formKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+              padding: EdgeInsets.all(10),
               child: Text(
                 'Syötä pelikoodi:',
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.display1
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+              padding: EdgeInsets.all(10),
               child: TextFormField(
                 decoration: InputDecoration(
                   labelText: 'esim. XQ34',

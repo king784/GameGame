@@ -19,13 +19,10 @@ class MasterTheme {
   static String light = 'Quicksand-Light';
 
   static double headlineSize = 50;
-  static double display1Size = 40;
-  static double display2Size = 30;
-  static double display3Size = 35;
-  static double display4Size = 25;
+  static double displaySize = 40;
   static double titleSize = 30;
   static double subTitleSize = 22;
-  static double subHeadSize = 19;
+  static double subHeadSize = 22;
   static double body1Size = 15;
   static double body2Size = 15;
   static double btnFontSize = 20;
@@ -45,24 +42,24 @@ class MasterTheme {
     fontFamily: regular,
     textTheme: TextTheme(
       headline: TextStyle(fontFamily: bold, fontSize: headlineSize),
-      title: TextStyle(fontFamily: semibold, fontSize: titleSize),
-      subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize),
+      title: TextStyle(fontFamily: semibold, fontSize: titleSize, color: primaryColour),
+      subtitle: TextStyle(fontFamily: light, fontSize: subTitleSize, color: primaryColour),
       display1: TextStyle(
-          fontFamily: medium, fontSize: display1Size, color: ktpGreen),
+          fontFamily: medium, fontSize: displaySize, color: ktpGreen),
       display2: TextStyle(
-          fontFamily: medium, fontSize: display2Size, color: Colors.black),
+          fontFamily: medium, fontSize: displaySize, color: primaryColour),
       display3: TextStyle(
-          fontFamily: bold, fontSize: display3Size, color: Colors.black),
+          fontFamily: bold, fontSize: displaySize, color: accentColour),
       display4: TextStyle(
-          fontFamily: bold, fontSize: display4Size, color: ktpGreen),
+          fontFamily: bold, fontSize: displaySize, color: awayTeamColour),
       body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: Colors.black),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size, color:primaryColour),
       caption: TextStyle(
           fontFamily: regular, fontSize: body2Size, color: ktpGreen),
       subhead: TextStyle(
-          fontFamily: semibold, fontSize: btnFontSize, color: Colors.black),
+          fontFamily: semibold, fontSize: subHeadSize, color: Colors.black),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: primaryColour),
+          fontFamily: light, fontSize: btnFontSize, color: buttonColor),
     ),
   );
 
@@ -91,7 +88,7 @@ class MasterTheme {
       subhead: TextStyle(
           fontFamily: semibold, fontSize: 30, color: Colors.black),
       button: TextStyle(
-          fontFamily: light, fontSize: btnFontSize, color: buttonColor),
+          fontFamily: light, fontSize: btnFontSize, color: ktpGreen),
     ),
   );
 }
