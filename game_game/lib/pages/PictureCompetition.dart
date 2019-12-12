@@ -57,7 +57,8 @@ class _PictureCompetitionState extends State<PictureCompetition> {
           _addingPictureWidget(),
           Expanded(
             child: Container(
-              child: SingleChildScrollView(
+              color: MasterTheme.ktpGreen,
+              child: SingleChildScrollView(                
                 child: _competitionContent(),
               ),
             ),
@@ -68,7 +69,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
       return Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(8),
             child: Text('Tarkistetaan kilpailun tilaa..',
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.caption),
@@ -85,7 +86,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
     } else {
       if (!pictureAdded && pictureAddedCheck) {
         return Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(8),
           child: NiceButtonWithIcon('Lisää tästä oma kuvasi kisaan', context,
               FontAwesomeIcons.solidImage, function: () {
             _createImagePopUpDialog(context);
@@ -98,7 +99,7 @@ class _PictureCompetitionState extends State<PictureCompetition> {
         );
       } else {
         return Padding(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(8),
           child: Text('Olet jo lisännyt oman kuvasi kisaan. Onnea!',
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.caption),
