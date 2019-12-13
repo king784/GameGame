@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Assets/visualAssets.dart';
 import 'package:flutter_testuu/NavigationBar/Navigation.dart';
@@ -34,7 +35,9 @@ class _StartState extends State<Start> {
             .size
             .width); //update the screensizes for the global values class
 
-    if (userLoc.userLocationOk) {
+    if (userLoc.loadingLocation) {
+      messageAboutLocation = "Sijaintiasi päivitetään.";
+    } else if (userLoc.userLocationOk) {
       messageAboutLocation = "Sijainti on kunnossa.";
     } else if (!userLoc.userLocationOk && userLoc.locationOn) {
       if (userLoc.distanceFromRadius() != null) {
@@ -42,66 +45,58 @@ class _StartState extends State<Start> {
             "Matka hyväksyttävälle etäisyydelle tapahtumapaikasta: " +
                 userLoc.distanceFromRadius().toString() +
                 "m.";
-      } else if (!userLoc.positionDataEnabled || !userLoc.locationOn) {
-        messageAboutLocation =
-            "Sijainti ei ole käytössä.\nKäy asetuksista antamassa lupa sijainnille ja käynnistä sitten sovellus uudestaan.";
       }
-      return WillPopScope(
-        //onwill popscope disables the use of the android back button
-        onWillPop: () async => false,
-        child: Theme(
-          data: MasterTheme.mainTheme,
-          child: Scaffold(
-            backgroundColor: MasterTheme.ktpGreen,
-            body: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      height: Global.SCREENHEIGHT,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Text(messageAboutLocation,
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
+    } else if (!userLoc.positionDataEnabled || !userLoc.locationOn) {
+      messageAboutLocation =
+          "Sijainti ei ole käytössä.\nKäy asetuksista antamassa lupa sijainnille ja käynnistä sitten sovellus uudestaan.";
+    }
+    return WillPopScope(
+      //onwill popscope disables the use of the android back button
+      onWillPop: () async => false,
+      child: Theme(
+        data: MasterTheme.mainTheme,
+        child: Scaffold(
+          backgroundColor: MasterTheme.ktpGreen,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    height: Global.SCREENHEIGHT,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Text(messageAboutLocation,                                
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                          userLoc.userLocationOk
+                              ? Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Card(
+                                    color: MasterTheme.primaryColour,
+                                    child: StartPageForm(),
                                   ),
-                                ),
-                              ],
-                            ),
-                            userLoc.userLocationOk
-                                ? Padding(
-                                    padding: EdgeInsets.all(15),
-                                    child: Card(
-                                      color: MasterTheme.primaryColour,
-                                      child: StartPageForm(),
-                                    ),
-                                  )
-                                : SizedBox.shrink(),
-                          ],
-                        ),
+                                )
+                              : SizedBox.shrink()
+                        ],
                       ),
                     ),
                   ),
-                  NiceButton('Näytä vain omat tiedot', context,
-                      customColour: MasterTheme.accentColour, function: () {
-                    NavBarState.activeIndex = 0;
-                    Navigation.openUserPage(context);
-                  }),
-                ],
-              ),
+                ),
+                !userLoc.loadingLocation? NiceButton('Näytä vain omat tiedot', context,
+                    customColour: MasterTheme.accentColour, function: () {
+                  NavBarState.setActiveIndex(0);
+                  Navigation.openUserPage(context);
+                }):SizedBox.shrink(),
+              ],
             ),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   void checkUserLocation() {

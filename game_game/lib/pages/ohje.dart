@@ -65,7 +65,7 @@ class _OhjeState extends State<Ohje> {
                                       NavBarState.setActiveIndex(0);
                                       Navigation.openUserPage(context);
                                       },
-                                    color: MasterTheme.btnColours[0],
+                                    color: MasterTheme.ktpGreen,
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,
                                   ),
@@ -135,7 +135,7 @@ class _OhjeState extends State<Ohje> {
                                       NavBarState.setActiveIndex(1);
                                       Navigation.openActivitiesPage(context);
                                       },
-                                    color: MasterTheme.btnColours[2],
+                                    color: MasterTheme.ktpGreen,
                                     alignment: Alignment.topLeft,
                                     iconSize: 50,
                                   ),

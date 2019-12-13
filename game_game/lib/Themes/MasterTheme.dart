@@ -19,7 +19,7 @@ class MasterTheme {
   static String light = 'Quicksand-Light';
 
   static double headlineSize = 50;
-  static double displaySize = 40;
+  static double displaySize = 35;
   static double titleSize = 30;
   static double subTitleSize = 22;
   static double subHeadSize = 22;

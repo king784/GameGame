@@ -603,16 +603,17 @@ class PlayerVotingState extends State<PlayerVoting> {
 
   Widget playerCard(BuildContext context, Player player) {
     return Card(
+      color: getTeamColor(player.team),
       child: Column(
         children: <Widget>[
           // Team name
           Row(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
                 child: Text(
                   player.team,
-                  style: Theme.of(context).textTheme.display4,
+                  style: Theme.of(context).textTheme.display2,
                 ),
               ),
             ],
@@ -620,7 +621,7 @@ class PlayerVotingState extends State<PlayerVoting> {
 
           // Player name
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(5.0),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -640,10 +641,10 @@ class PlayerVotingState extends State<PlayerVoting> {
                 ),
                 Expanded(
                     child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 8.0, 0.0),
+                  padding: const EdgeInsets.only(left:15),
                   child: Text(
-                    player.playerNumber.toString(),
-                    style: Theme.of(context).textTheme.display1,
+                    player.playerNumber.toString(),//player num
+                    style: Theme.of(context).textTheme.display2,
                   ),
                 )),
                 Column(
@@ -653,10 +654,10 @@ class PlayerVotingState extends State<PlayerVoting> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(5),
                           child: Text(
-                            player.currentVotes.toString(),
-                            style: Theme.of(context).textTheme.display4,
+                            player.currentVotes.toString(),//current votes
+                            style: Theme.of(context).textTheme.subtitle,
                           ),
                         ),
                       ],
@@ -666,14 +667,21 @@ class PlayerVotingState extends State<PlayerVoting> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         (User.instance.playerVotes > 0)
-                            ? FloatingActionButton(
-                                backgroundColor: Colors.white,
-                                child: Icon(FontAwesomeIcons.plus,
-                                    color: getTeamColor(player.team)),
-                                onPressed: () {
-                                  showVotePopup(player);
-                                },
-                              )
+                            ? Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(width: 40, height: 40,
+                                child: FloatingActionButton(
+                                  
+                                    backgroundColor: Colors.white,
+                                    child: Icon(FontAwesomeIcons.plus,
+                                    
+                                        color: getTeamColor(player.team)),
+                                    onPressed: () {
+                                      showVotePopup(player);
+                                    },
+                                  ),
+                              ),
+                            )
                             : SizedBox.shrink(),
                       ],
                     )
@@ -699,7 +707,7 @@ _winnerPlayerCard(BuildContext context, Player player) {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(
                   player.team,
-                  style: Theme.of(context).textTheme.display2,
+                  style: Theme.of(context).textTheme.display1,
                 ),
               ),
             ],
@@ -816,9 +824,9 @@ _winnerPlayerCard(BuildContext context, Player player) {
 
   Color getTeamColor(String teamName) {
     if (teamName == "KTP") {
-      return MasterTheme.accentColour;
+      return MasterTheme.ktpGreen;
     } else {
-      return Color(0);
+      return MasterTheme.awayTeamColour;
     }
   }
 
@@ -830,6 +838,7 @@ _winnerPlayerCard(BuildContext context, Player player) {
           return Theme(
             data: MasterTheme.mainTheme,
             child: AlertDialog(
+              backgroundColor: MasterTheme.accentColour,
               title: new Text("Annatko äänen pelaajalle " +
                   player.firstName +
                   " " +
@@ -851,7 +860,7 @@ _winnerPlayerCard(BuildContext context, Player player) {
                   child: new Text(
                     "En",
                     style: TextStyle(
-                      color: MasterTheme.awayTeamColour,
+                      color: MasterTheme.primaryColour,
                     ),
                   ),
                   onPressed: () {
