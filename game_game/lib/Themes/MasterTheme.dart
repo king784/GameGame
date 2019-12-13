@@ -55,7 +55,7 @@ class MasterTheme {
       body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: Colors.black),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size, color:primaryColour),
       caption: TextStyle(
-          fontFamily: regular, fontSize: body2Size, color: ktpGreen),
+          fontFamily: regular, fontSize: body2Size, color: accentColour),
       subhead: TextStyle(
           fontFamily: semibold, fontSize: subHeadSize, color: Colors.black),
       button: TextStyle(

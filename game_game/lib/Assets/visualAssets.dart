@@ -4,14 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Globals.dart';
 
-NiceButton(String text, BuildContext context, {Function() function}) {
+NiceButton(String text, BuildContext context, {Color customColour, Function() function}) {
   double buttonWidth = Global.SCREENWIDTH * .9;
   return Padding(
     padding: const EdgeInsets.all(7.0),
     child: SizedBox(
       width: buttonWidth,
       child: RaisedButton(
-        color: MasterTheme.ktpGreen,
+        color: customColour != null ? customColour : MasterTheme.ktpGreen,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
