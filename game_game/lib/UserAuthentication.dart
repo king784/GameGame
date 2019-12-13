@@ -13,8 +13,6 @@ import 'Themes/MasterTheme.dart';
 import 'StartPageForm.dart';
 import 'pages/main.dart';
 
-void main() => runApp(UserAuthentication());
-
 class UserAuthentication extends StatelessWidget {
   bool firstTime = false;
 

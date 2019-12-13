@@ -104,13 +104,9 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/userAuthentication':
-        if (args is String) {
-          return MaterialPageRoute(
-            settings: RouteSettings(isInitialRoute: true),
-            builder: (_) => UserAuthentication(),
-          );
-        }
-        return _errorRoute();
+        Global.CURRENTROUTE = "/userAuthentication";
+        return MaterialPageRoute(builder: (_) => UserAuthentication());
+        
 
       default:
         return _errorRoute();

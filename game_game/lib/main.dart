@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_testuu/Themes/MasterTheme.dart';
+import 'package:flutter_testuu/UserAuthentication.dart';
 import 'package:flutter_testuu/pages/gameLiveView.dart';
 import 'NavigationBar/route_generator.dart';
 
@@ -12,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: MasterTheme.mainTheme,
       title: 'Game Game Messis',
-      home: GameLiveView(),
-      initialRoute: '/startPage',
+      home: UserAuthentication(),
+      initialRoute: '/userAuthentication',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
