@@ -162,6 +162,8 @@ class AuthService {
       User.instance.hasAcceptedTerms = ds['acceptedTerms'];
       User.instance.hasLoadedUser = true; // Userdata has been loaded.
     });
+
+    print("Kirjautuu");
   }
 
   void signOut() async {
@@ -248,7 +250,14 @@ class LoginButton extends StatelessWidget {
             children: <Widget>[
               MaterialButton(
                   onPressed: () {
-                    termsPopUp(context, "TermsTextii", function:(){Navigation.openStartPage(context);});
+                    if(!User.instance.hasAcceptedTerms)
+                    {
+                      termsPopUp(context, "TermsTextii", function:(){Navigation.openStartPage(context);});
+                    }
+                    else
+                    {
+                      Navigation.openStartPage(context);
+                    }
                   },
                   color: Colors.green,
                   textColor: Colors.black,
