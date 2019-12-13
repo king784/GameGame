@@ -250,7 +250,7 @@ class LoginButton extends StatelessWidget {
             children: <Widget>[
               MaterialButton(
                   onPressed: () {
-                    termsPopUp(context, function:(){Navigation.openStartPage(context);});
+                    termsPopUp(context, "TermsTextii", function:(){Navigation.openStartPage(context);});
                   },
                   color: Colors.green,
                   textColor: Colors.black,

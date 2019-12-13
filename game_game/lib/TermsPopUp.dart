@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_testuu/user.dart';
 
 import 'Globals.dart';
 import 'Themes/MasterTheme.dart';
 
-termsPopUp(BuildContext context, {Function() function}) async {
+termsPopUp(BuildContext context,  String termsText, {Function() function}) async {
   return showDialog(
     barrierDismissible: false,
     context: context,
@@ -15,10 +17,8 @@ termsPopUp(BuildContext context, {Function() function}) async {
             children: <Widget>[
               SizedBox(
                   width: Global.SCREENWIDTH * .9,
-                  child: Expanded(
-                    child: Text(
-                        "Kirjautumalla sisään tietosi tallentuvat NSA:n sekä FBI:n tietokantaan.. :D"),
-                  )),
+                  child: Text(
+                      termsText)),
               ButtonBar(
                 alignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -27,8 +27,8 @@ termsPopUp(BuildContext context, {Function() function}) async {
                         style: Theme.of(context).textTheme.body1),
                     onPressed: () {
                       agree();
-                      function();
                       Navigator.of(context).pop(context);
+                      function();
                     },
                     color: Theme.of(context).accentColor,
                   ),
@@ -52,6 +52,14 @@ termsPopUp(BuildContext context, {Function() function}) async {
 }
 
 void agree() {
+  var ref = Firestore.instance.collection("users").where('uid', isEqualTo: User.instance.uid).getDocuments().then((val){
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot freshSnap = await transaction.get(val.documents[0].reference);
+      await transaction.update(freshSnap.reference, {
+        'acceptedTerms': true,
+      });
+    });
+  });
   print("Hyävksytty :D");
 }
 
