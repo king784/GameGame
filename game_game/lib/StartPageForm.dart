@@ -59,7 +59,7 @@ class StartPageFormState extends State<StartPageForm> {
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Syötä koodi, se löytyy pelialueelta.';
+                    return 'Syötä koodi, se löytyy tapahtuma-alueelta.';
                   } else if (value.toString() != _currentGameCode) {
                     print(value.toString() + ', ' + _currentGameCode);
                     return 'Antamasi koodi näyttäisi olevan väärin.';

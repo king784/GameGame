@@ -95,7 +95,7 @@ class NavBarState extends State<NavBar> {
     MenuItem(
       x: -1.0,
       name: 'user',
-      color: MasterTheme.btnColours[0],
+      color: MasterTheme.primaryColour,
       icon: FontAwesomeIcons.user,
     ),
     // MenuItem(
@@ -107,13 +107,13 @@ class NavBarState extends State<NavBar> {
     MenuItem(
       x: 1.0,
       name: 'activities',
-      color: MasterTheme.btnColours[2],
+      color: MasterTheme.primaryColour,
       icon: FontAwesomeIcons.gamepad,
     ),
     MenuItem(
       x: 1.0,
       name: 'help',
-      color: MasterTheme.btnColours[3],
+      color: MasterTheme.primaryColour,
       icon: FontAwesomeIcons.question,
     ),
   ];

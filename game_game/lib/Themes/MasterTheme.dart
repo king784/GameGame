@@ -19,7 +19,7 @@ class MasterTheme {
   static String light = 'Quicksand-Light';
 
   static double headlineSize = 50;
-  static double displaySize = 40;
+  static double displaySize = 35;
   static double titleSize = 30;
   static double subTitleSize = 22;
   static double subHeadSize = 22;
@@ -55,7 +55,7 @@ class MasterTheme {
       body1: TextStyle(fontFamily: regular, fontSize: body1Size, color: Colors.black),
       body2: TextStyle(fontFamily: regular, fontSize: body2Size, color:primaryColour),
       caption: TextStyle(
-          fontFamily: regular, fontSize: body2Size, color: ktpGreen),
+          fontFamily: regular, fontSize: body2Size, color: accentColour),
       subhead: TextStyle(
           fontFamily: semibold, fontSize: subHeadSize, color: Colors.black),
       button: TextStyle(
